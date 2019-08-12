@@ -52,39 +52,6 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label>Estado Lavadora</label>
-                    <select name="estado_lavadora" id="" class="form-control" data-placeholder="-- Seleccione una opción --">
-                       @switch($lavadora->estado_lavadora)
-                           @case('DISPONIBLE')
-                            <option value="DISPONIBLE" selected>DISPONIBLE</option>
-                            <option value="SERVICIO">SERVICIO</option>
-                            <option value="MANTENIMIENTO">MANTENIMIENTO</option>
-                            <option value="INACTIVA">INACTIVA</option>
-                           @break
-                            @case('SERVICIO')
-                            <option value="DISPONIBLE" >DISPONIBLE</option>
-                            <option value="SERVICIO" selected>SERVICIO</option>
-                            <option value="MANTENIMIENTO">MANTENIMIENTO</option>
-                            <option value="INACTIVA">INACTIVA</option>
-                            @break
-                            @case('MANTENIMIENTO')
-                            <option value="DISPONIBLE" >DISPONIBLE</option>
-                            <option value="SERVICIO">SERVICIO</option>
-                            <option value="MANTENIMIENTO" selected>MANTENIMIENTO</option>
-                            <option value="INACTIVA">INACTIVA</option>
-                            @break
-                            @case('INACTIVA')
-                            <option value="DISPONIBLE" >DISPONIBLE</option>
-                            <option value="SERVICIO">SERVICIO</option>
-                            <option value="MANTENIMIENTO" selected>MANTENIMIENTO</option>
-                            <option value="INACTIVA">INACTIVA</option>
-                            @break
-                        @endswitch
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
                     <label>Bodegas</label>
                     {!! Form::select('bodega_id',$bodegas,$lavadora->bodega->id,['class'=>'form-control','placeholder'=>'-- Seleccione una opción --','required']) !!}
                 </div>

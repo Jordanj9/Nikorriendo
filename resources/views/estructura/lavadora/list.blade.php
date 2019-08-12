@@ -40,7 +40,7 @@
                     <tr class="danger">
                         <th>SERIAL</th>
                         <th>MARCA</th>
-                        <th>ESTADO-BODEGA</th>
+                        <th>EN BODEGA?</th>
                         <th>ESTADO-LAVADORA</th>
                         <th>BODEGA</th>
                         <th>CREADO</th>

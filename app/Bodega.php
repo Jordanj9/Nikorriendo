@@ -28,4 +28,8 @@ class Bodega extends Model {
         return $this->belongsTo(Sucursal::class);
     }
 
+    public function lavadoras(){
+        return $this->hasMany(Lavadora::class);
+    }
+
 }

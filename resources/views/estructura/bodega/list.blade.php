@@ -92,7 +92,7 @@
                 let url = 'bodega/'+id;
                 axios.delete(url).then(result => {
                     let data = result.data;
-                    if(data.status == 'ok'){
+                    if(data.status == 'ok') {
                         Swal.fire(
                             'Eliminado!',
                             data.message,
@@ -100,10 +100,18 @@
                         ).then(result => {
                             location.reload();
                         });
-                    }else{
+                    }else if(data.status == 'warning'){
                         Swal.fire(
-                            'Error!',
-                            data.message,
+                            'Atención',
+                             data.message,
+                            'warning'
+                        ).then(result => {
+                            location.reload();
+                        });
+                    }else {
+                        Swal.fire(
+                            'error',
+                             data.message,
                             'danger'
                         ).then(result => {
                             location.reload();

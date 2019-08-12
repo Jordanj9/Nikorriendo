@@ -112,6 +112,13 @@ class BodegaController extends Controller {
     public function destroy(Bodega $bodega) {
 
         $nombre =  $bodega->nombre;
+
+        if(count($bodega->lavadoras) > 0){
+            return response()->json([
+                'status' => 'warning',
+                'message'=>"la bodega " .$nombre. " no pudo ser eliminado(a) porque tiene lavadoras asociadas. Error:"
+            ]);
+        }
         $result = $bodega->delete();
 
         if($result){
