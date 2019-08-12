@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class MenuController extends Controller
-{
+class MenuController extends Controller {
+
     /**
      * Show the view menu usuarios.
      *
@@ -14,4 +14,14 @@ class MenuController extends Controller
     public function usuarios() {
         return view('menu.usuarios')->with('location', 'usuarios');
     }
+
+    /**
+     * Show the view menu estructura.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function estructura() {
+        return view('menu.estructura')->with('location', 'estructura');
+    }
+
 }

@@ -53,12 +53,11 @@ class UsuarioController extends Controller {
         foreach ($user->attributesToArray() as $key => $value) {
             if ($key === 'email') {
                 $user->$key = $value;
-            } elseif ($key === 'password') {
-                $user->$key = bcrypt($value);
             } else {
                 $user->$key = strtoupper($value);
             }
         }
+        $user->password = bcrypt($request->password);
         $u = Auth::user();
         $result = $user->save();
         $user->grupousuarios()->sync($request->grupos);
