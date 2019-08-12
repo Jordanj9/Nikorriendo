@@ -2,12 +2,12 @@
 @section('breadcrumb')
 <h1>
     Estructura
-    <small>Bodegas del Sistema</small>
+    <small>Lavadoras del Sistema</small>
 </h1>
 <ol class="breadcrumb">
     <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
     <li><a href="{{route('admin.estructura')}}"><i class="fa fa-users"></i> Estructura</a></li>
-    <li><a href="{{route('bodega.index')}}"><i class="fa fa-users"></i> Bodegas</a></li>
+    <li><a href="{{route('bodega.index')}}"><i class="fa fa-users"></i> Lavadoras</a></li>
     <li class="active"><a> Crear</a></li>
 </ol>
 @endsection
@@ -15,14 +15,14 @@
 <div class="row clearfix">
     <div class="col-md-12">
         <div class="alert alert-warning">
-            <p class="h4"><strong>Agregue nuevas Bodegas,</strong> gestiona la información de cada una de las bodegas de la empresa.
+            <p class="h4"><strong>Agregue nuevas Lavadoras,</strong> gestiona la información de cada una de las lavadoras de la empresa.
             </p>
         </div>
     </div>
 </div>
 <div class="box">
     <div class="box-header with-border">
-        <h3 class="box-title">Crear Bodega</h3>
+        <h3 class="box-title">Crear Lavadora</h3>
         <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
                     title="Minimizar">
@@ -37,30 +37,30 @@
             @endcomponent
         </div>
         <div class="col-md-12">
-            {!! Form::open(['route'=>'bodega.store','method'=>'POST','role'=>'form'])!!}
+            {!! Form::open(['route'=>'lavadora.store','method'=>'POST','role'=>'form'])!!}
             <div class="col-md-6">
                 <div class="form-group">
-                    <label>Nombre</label>
-                    <input type="text" class="form-control" placeholder="Nombre de la Bodega" name="nombre"/>
+                    <label>Serial</label>
+                    <input type="number" class="form-control" placeholder="Numero de Identificación de la lavadora" name="serial" required/>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label>Direccion</label>
-                    <input type="text" class="form-control" placeholder="Dirección" name="direccion"/>
+                    <label>Marca</label>
+                    <input type="text" class="form-control" placeholder="Marca de la Lavadora" name="marca" required/>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label>Sucursales</label>
-                    {!! Form::select('sucursal_id',$sucursales,null,['class'=>'form-control','placeholder'=>'-- Seleccione una opción --','required']) !!}
+                    <label>Bodegas</label>
+                    {!! Form::select('bodega_id',$bodegas,null,['class'=>'form-control','placeholder'=>'-- Seleccione una opción --','required']) !!}
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-md-12" style="margin-top: 20px !important">
                     <button class="btn btn-success icon-btn pull-right" type="submit"><i class="fa fa-fw fa-lg fa-save"></i>Guardar</button>
                     <button class="btn btn-info icon-btn pull-right" type="reset"><i class="fa fa-fw fa-lg fa-trash-o"></i>Limpiar</button>
-                    <a class="btn btn-danger icon-btn pull-right" href="{{route('bodega.index')}}"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancelar</a>
+                    <a class="btn btn-danger icon-btn pull-right" href="{{route('lavadora.index')}}"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancelar</a>
                 </div>
             </div>
             {!! Form::close() !!}

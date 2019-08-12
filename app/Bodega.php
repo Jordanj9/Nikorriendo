@@ -25,7 +25,7 @@ class Bodega extends Model {
     ];
 
     public function sucursal() {
-        return $this->belongsTo('App\Sucursal');
+        return $this->belongsTo(Sucursal::class);
     }
 
 }

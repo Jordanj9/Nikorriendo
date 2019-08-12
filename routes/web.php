@@ -55,6 +55,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'estructura'], function() {
     //BODEGAS
     Route::resource('bodega', 'BodegaController');
     //LAVADORAS
+    Route::resource('lavadora', 'LavadoraController');
     //EMPLLEADOS
     //ASIGNAR LAVADORA EMPLEADO
 });

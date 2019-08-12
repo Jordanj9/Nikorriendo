@@ -24,4 +24,7 @@ class Lavadora extends Model {
             //
     ];
 
+    public function bodega() {
+        return $this->belongsTo(Bodega::class);
+    }
 }
