@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>EMERGENCIA</title>
+        <title>{{config('app.name', 'Nikorriendo') }}</title>
         <link href='https://fonts.googleapis.com/css?family=Lobster|Open+Sans:400,400italic,300italic,300|Raleway:300,400,600' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.min.css')}}">
         <link rel="stylesheet" type="text/css" href="{{ asset('css/plugins/font-awesome-4.7.0/css/font-awesome.min.css')}}"/>
@@ -18,7 +18,7 @@
                     <div class="logo text-center">
                         <img src="{{asset('images/logomio.png')}}" alt="logo" width="250">
                         <h2 style="color: #cc0000">Bienvenido!</h2>
-                        <h3 style="color: #cc0000">Sistema de Emergencias - Ambulancias Valledupar</h3>
+                        <h3 style="color: #cc0000">Sistema de Alquiler - Nikorriendo Valledupar</h3>
                     </div>
                 </div>
             </div>
@@ -38,7 +38,7 @@
                     <div class="row bort">
                         <div class="copyright">
                             © 2019. Todos los Derechos Reservados.
-                            <div class="credits">Desarrollado por <a href="#">Jordan Cuadro</a>
+                            <div class="credits">Desarrollado por <a href="#">Jordan Cuadro-Camilo Colon</a>
                             </div>
                         </div>
                     </div>

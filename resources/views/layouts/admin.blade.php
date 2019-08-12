@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>EMERGENCIA</title>
+        <title>{{config('app.name','Nikorriendo')}}</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <!-- Bootstrap 3.3.7 -->
@@ -21,7 +21,7 @@
         <link rel="stylesheet" href="{{ asset('dist/css/ripples.min.css')}}">
         <link rel="stylesheet" href="{{ asset('dist/css/MaterialAdminLTE.min.css')}}">
         <!-- Plugins -->
-        <link rel="stylesheet" type="text/css" href="{{asset('plugins/chosen_v1.7.0/chosen.css')}}"/> 
+        <link rel="stylesheet" type="text/css" href="{{asset('plugins/chosen_v1.7.0/chosen.css')}}"/>
         <link href="{{asset('plugins/pnotify/dist/pnotify.css')}}" rel="stylesheet">
         <link href="{{asset('plugins/pnotify/dist/pnotify.buttons.css')}}" rel="stylesheet">
         <link href="{{asset('plugins/pnotify/dist/pnotify.nonblock.css')}}" rel="stylesheet">
@@ -53,7 +53,7 @@
                 <!-- Logo -->
                 <a href="{{route('home')}}" class="logo">
                     <!-- mini logo for sidebar mini 50x50 pixels -->
-                    <span class="logo-mini">C<b>D</b>V</span>
+                    <span class="logo-mini">N<b>i</b>k<b>o</b></span>
                     <!-- logo for regular state and mobile devices -->
                     <span class="logo-lg">{{ config('app.name', 'Consejo') }}<b> Valledupar</b></span>
                 </a>
@@ -78,7 +78,7 @@
                                                             <ul class="dropdown-menu">
                                                                 <li class="header">You have 10 notifications</li>
                                                                 <li>
-                                                                     inner menu: contains the actual data 
+                                                                     inner menu: contains the actual data
                                                                     <ul class="menu">
                                                                         <li>
                                                                             <a href="#">
@@ -96,7 +96,7 @@
                                                                                 <i class="fa fa-users text-red"></i> 5 new members joined
                                                                             </a>
                                                                         </li>
-                            
+
                                                                         <li>
                                                                             <a href="#">
                                                                                 <i class="fa fa-shopping-cart text-green"></i> 25 sales made

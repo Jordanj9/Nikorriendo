@@ -87,7 +87,6 @@ class UsuarioController extends Controller {
      */
     public function operaciones() {
         $user = User::where('identificacion', $_POST["id"])->first();
-        dd($user);
         if ($user == null) {
             flash("<strong>El usuario</strong> consultado no se encuentra registrado!")->error();
             return redirect()->route('admin.usuarios');

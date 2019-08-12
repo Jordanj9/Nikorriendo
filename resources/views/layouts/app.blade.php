@@ -5,7 +5,7 @@
 
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>{{ config('app.name', 'Consejo') }}</title>
+        <title>{{ config('app.name', 'Nikorriendo') }}</title>
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script><!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -33,7 +33,7 @@
         <div id="app">
 
             <div class="col-md-12">
-                @yield('content') 
+                @yield('content')
             </div>
         </div>
 
@@ -44,9 +44,9 @@
         <!-- Material Design -->
         <script src="{{ asset('dist/js/material.min.js')}}"></script>
         <script src="{{ asset('dist/js/ripples.min.js')}}"></script>
-        @yield('script') 
+        @yield('script')
         <script>
-$.material.init();
+          $.material.init();
         </script>
     </body>
 </html>
