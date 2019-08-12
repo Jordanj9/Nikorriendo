@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Bodega extends Model {
+class Lavadora extends Model {
 
     /**
      * The attributes that are mass assignable.
@@ -12,7 +12,7 @@ class Bodega extends Model {
      * @var array
      */
     protected $fillable = [
-        'id', 'nombre', 'direccion', 'sucursal_id', 'created_at', 'updated_at'
+        'id', 'serial', 'marca', 'estado_bodega', 'estado_lavadora', 'bodega_id', 'created_at', 'updated_at'
     ];
 
     /**
@@ -23,9 +23,5 @@ class Bodega extends Model {
     protected $hidden = [
             //
     ];
-
-    public function sucursal() {
-        return $this->belongsTo('App\Sucursal');
-    }
 
 }
