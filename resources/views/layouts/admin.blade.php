@@ -168,15 +168,26 @@
                     <!-- sidebar menu: : style can be found in sidebar.less -->
                     <ul class="sidebar-menu" data-widget="tree">
                         <li class="header"><h4>MENÚ PRINCIPAL</h4></li>
-                        @if($location=='home')
+                        @if(session()->exists('MOD_INICIO'))
+                        @if($location=='inicio')
                         <li class="active"><a href="{{route('home')}}"><i class="fa fa-home"></i> <span>Inicio</span></a></li>
                         @else
                         <li><a href="{{route('home')}}"><i class="fa fa-home"></i> <span>Inicio</span></a></li>
                         @endif
+                        @endif
+                        @if(session()->exists('MOD_USUARIOS'))
                         @if($location=='usuarios')
                         <li class="active"><a href="{{route('admin.usuarios')}}"><i class="fa fa-users"></i> <span>Usuarios</span></a></li>
                         @else
                         <li><a href="{{route('admin.usuarios')}}"><i class="fa fa-users"></i> <span>Usuarios</span></a></li>
+                        @endif
+                        @endif
+                        @if(session()->exists('MOD_ESTRUCTURA'))
+                        @if($location=='estructura')
+                        <li class="active"><a href="{{route('admin.estructura')}}"><i class="fa fa-th-list"></i> <span>Estructura</span></a></li>
+                        @else
+                        <li><a href="{{route('admin.estructura')}}"><i class="fa fa-th-list"></i> <span>Estructura</span></a></li>
+                        @endif
                         @endif
                     </ul>
                     <li>

@@ -22,6 +22,7 @@
         </div>
     </div>
     <div class="box-body">
+        @if(session()->exists('MOD_INICIO'))
         <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
                 <span class="info-box-icon bg-green-gradient"><i class="fa fa-home"></i></span>
@@ -33,6 +34,8 @@
             </div>
             <!-- /.info-box -->
         </div>
+        @endif
+        @if(session()->exists('MOD_USUARIOS'))
         <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
                 <span class="info-box-icon bg-aqua-gradient"><i class="fa fa-users"></i></span>
@@ -44,6 +47,20 @@
             </div>
             <!-- /.info-box -->
         </div>
+        @endif
+        @if(session()->exists('MOD_ESTRUCTURA'))
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-yellow-gradient"><i class="fa fa-th-list"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Gestión De</span>
+                    <a href="{{route('admin.estructura')}}" class="info-box-number">Estructura</a>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        @endif
         <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
                 <span class="info-box-icon bg-red-gradient"><i class="fa fa-sign-out"></i></span>

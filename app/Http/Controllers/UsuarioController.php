@@ -53,12 +53,11 @@ class UsuarioController extends Controller {
         foreach ($user->attributesToArray() as $key => $value) {
             if ($key === 'email') {
                 $user->$key = $value;
-            } elseif ($key === 'password') {
-                $user->$key = bcrypt($value);
             } else {
                 $user->$key = strtoupper($value);
             }
         }
+        $user->password = bcrypt($request->password);
         $u = Auth::user();
         $result = $user->save();
         $user->grupousuarios()->sync($request->grupos);
@@ -87,7 +86,6 @@ class UsuarioController extends Controller {
      */
     public function operaciones() {
         $user = User::where('identificacion', $_POST["id"])->first();
-        dd($user);
         if ($user == null) {
             flash("<strong>El usuario</strong> consultado no se encuentra registrado!")->error();
             return redirect()->route('admin.usuarios');
