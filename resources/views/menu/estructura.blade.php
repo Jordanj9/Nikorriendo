@@ -24,7 +24,7 @@
     <div class="box-body">
         <div class="button-demo">
             @if(session()->exists('PAG_ESTRUCTURA-SUCURSAL'))
-            <a href="{{route('modulo.index')}}" class="btn bg-yellow-gradient margin">
+            <a href="{{route('sucursal.index')}}" class="btn bg-yellow-gradient margin">
                 <div>
                     <span style="color: white">SUCURSALES</span>
                     <span class="ink animated"></span>
@@ -37,7 +37,7 @@
                     <span style="color: white">BODEGAS</span>
                     <span class="ink animated"></span>
                 </div>
-            </a> 
+            </a>
             @endif
             @if(session()->exists('PAG_ESTRUCTURA-LAVADORA'))
             <a href="{{route('grupousuario.index')}}" class="btn bg-yellow-gradient margin">

@@ -51,9 +51,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'usuarios'], function() {
 //GRUPO DE RUTAS PARA LA ESTRUCTURA DE LA EMPRESA
 Route::group(['middleware' => 'auth', 'prefix' => 'estructura'], function() {
     //SUCURSALES
+     Route::resource('sucursal','SucursalController');
     //BODEGAS
     //LAVADORAS
     //EMPLLEADOS
-    //LISTAR CLIENTE
     //ASIGNAR LAVADORA EMPLEADO
 });
