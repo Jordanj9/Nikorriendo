@@ -14,11 +14,11 @@ class CreateLavadorasTable extends Migration {
     public function up() {
         Schema::create('lavadoras', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigIncrements('serial');
+            $table->bigInteger('serial');
             $table->string('marca', 20);
             $table->enum('estado_bodega', ['SI', 'NO']);
             $table->string('estado_lavadora', 30);
-            $table->foreign('bodega_id')->references('id')->on('bodegas')->onDelete('cascade');
+            $table->bigInteger('bodega_id')->unsigned();
             $table->foreign('bodega_id')->references('id')->on('bodegas')->onDelete('cascade');
             $table->timestamps();
         });
