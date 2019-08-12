@@ -39,7 +39,18 @@ class SucursalController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $sucursal = new Sucursal($request->all());
+        foreach ($sucursal->attributesToArray() as $key => $value) {
+            $sucursal->$key = strtoupper($value);
+        }
+        $result = $sucursal->save();
+        if ($result) {
+            flash("El sucursal <strong>" . $sucursal->nombre . "</strong> fue almacenado(a) de forma exitosa!")->success();
+            return redirect()->route('sucursal.index');
+        } else {
+            flash("El sucursal <strong>" . $sucursal->nombre . "</strong> no pudo ser almacenado(a). Error: " . $result)->error();
+            return redirect()->route('sucurs.index');
+        }
     }
 
     /**
@@ -61,7 +72,9 @@ class SucursalController extends Controller
      */
     public function edit(Sucursal $sucursal)
     {
-        //
+        return view('estructura.sucursal.edit')
+            ->with('location', 'estructura')
+            ->with('sucursal', $sucursal);
     }
 
     /**
@@ -73,7 +86,21 @@ class SucursalController extends Controller
      */
     public function update(Request $request, Sucursal $sucursal)
     {
-        //
+        foreach ($sucursal->attributesToArray() as $key => $value) {
+            if (isset($request->$key)) {
+                $sucursal->$key = strtoupper($request->$key);
+            }
+        }
+
+        $result = $sucursal->save();
+
+        if ($result) {
+            flash("La sucursal <strong>" . $sucursal->nombre . "</strong> fue modificado(a) de forma exitosa!")->success();
+            return redirect()->route('sucursal.index');
+        } else {
+            flash("La sucursal <strong>" . $sucursal->nombre . "</strong> no pudo ser modificado(a). Error: " . $result)->error();
+            return redirect()->route('sucursal.index');
+        }
     }
 
     /**
@@ -82,8 +109,23 @@ class SucursalController extends Controller
      * @param  \App\Sucursal  $sucursal
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Sucursal $sucursal)
+    public function destroy($id)
     {
-        //
+        $sucursal = Sucursal::find($id);
+        $nombre =  $sucursal->nombre;
+        $result = $sucursal->delete();
+
+        if($result){
+             return response()->json([
+                'status' => 'ok',
+                 'message'=>"la sucursal ". $nombre ." fue eliminado(a) de forma exitosa!"
+             ]);
+        }else {
+            return response()->json([
+                'status' => 'error',
+                'message'=>"la sucursal " .$nombre. " no pudo ser eliminado(a). Error:"
+            ]);
+        }
+
     }
 }

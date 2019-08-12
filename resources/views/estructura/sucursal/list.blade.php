@@ -51,13 +51,14 @@
                     @foreach($sucursales as $sucursal)
                         <tr>
                             <td>{{$sucursal->nombre}}</td>
-                            <td>{{$sucursal->municipo}}</td>
+                            <td>{{$sucursal->municipio}}</td>
                             <td>{{$sucursal->departamento}}</td>
                             <td>{{$sucursal->direccion}}</td>
                             <td>{{$sucursal->created_at}}</td>
                             <td>{{$sucursal->updated_at}}</td>
                             <td style="text-align: center;">
-                                <a href="{{ route('sucursal.edit',$sucursal->id)}}" data-toggle="tooltip" data-placement="top" title="Editar Módulo" style="color: green; margin-left: 10px;"><i class="fa fa-edit"></i></a>
+                                <a href="{{ route('sucursal.edit',$sucursal->id)}}" data-toggle="tooltip" data-placement="top" title="Editar Sucursal" style="color: green; margin-left: 10px;"><i class="fa fa-edit"></i></a>
+                                <a href="#" onclick="eliminar(event,{{$sucursal->id}})" data-toggle="tooltip" data-placement="top" title="Eliminar Sucursal" style="color: red; margin-left: 10px;"><i class="fa fa-trash-o"></i></a>
                             </td>
                         </tr>
                     @endforeach
@@ -68,12 +69,52 @@
     </div>
 @endsection
 @section('script')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script type="text/javascript">
         $(function () {
             $('#example1').DataTable();
         });
         function ir(id) {
             $("#id").val(id);
+        }
+        function eliminar(event,id){
+            event.preventDefault();
+            Swal.fire({
+                title: 'Estas seguro(a)?',
+                text: "no podras revertilo!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, eliminarlo!',
+                cancelButtonText:'cancelar'
+            }).then((result) => {
+                if (result.value) {
+                    let url = 'sucursal/'+id;
+                    axios.delete(url).then(result => {
+                       let data = result.data;
+                        if(data.status == 'ok'){
+                            Swal.fire(
+                                'Eliminado!',
+                                 data.message,
+                                'success'
+                            ).then(result => {
+                                location.reload();
+                            });
+                        }else{
+                            Swal.fire(
+                                'Error!',
+                                 data.message,
+                                'danger'
+                            ).then(result => {
+                                location.reload();
+                            });
+                        }
+                    });
+                }
+            })
+
         }
     </script>
 @endsection

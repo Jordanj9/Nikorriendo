@@ -47,19 +47,19 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Direccion</label>
-                        <input type="text" class="form-control" placeholder="Direccion de ubicacion de la sucursal"  required name="descripcion"/>
+                        <input type="text" class="form-control" placeholder="Direccion de ubicacion de la sucursal"  required name="direccion"/>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Municipio</label>
-                        <input type="text" class="form-control" placeholder="Municipio donde se encuetra la sucursal" required name="descripcion"/>
+                        <input type="text" class="form-control" placeholder="Municipio donde se encuetra la sucursal" required name="municipio"/>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Departamento</label>
-                        <input type="text" class="form-control" placeholder="Departamento donde se encutra la sucursal" required name="descripcion"/>
+                        <input type="text" class="form-control" placeholder="Departamento donde se encutra la sucursal" required name="departamento"/>
                     </div>
                 </div>
                 <div class="form-group">
