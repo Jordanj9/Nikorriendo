@@ -4,7 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Sucursal extends Model {
+class Sucursal extends Model
+{
 
     /**
      * The attributes that are mass assignable.
@@ -21,11 +22,17 @@ class Sucursal extends Model {
      * @var array
      */
     protected $hidden = [
-            //
+        //
     ];
 
-    public function bodegas() {
+    public function bodegas()
+    {
         return $this->hasMany('App\Bodega');
+    }
+
+    public function personas()
+    {
+        return $this->hasMany(Persona::class);
     }
 
 }

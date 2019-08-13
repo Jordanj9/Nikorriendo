@@ -6,6 +6,7 @@ use App\Lavadora_persona;
 use App\Persona;
 use App\Lavadora;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LavadoraPersonaController extends Controller {
 
@@ -20,7 +21,7 @@ class LavadoraPersonaController extends Controller {
         if (count($per) > 0) {
             foreach ($per as $i) {
                 if ($i->tipo == "MENSAJERO" && $i->estado == "ACTIVO") {
-                    $personas[$i->id] = $i->primer_nombre . ' ' . $i->segundo_nombre . ' ' . $i->primer_apellido . ' ' . $i->segundo_apellido . ' -CARGO:' . $i->tipo;
+                    $personas[$i->id] = $i->primer_nombre . ' ' . $i->segundo_nombre . ' ' . $i->primer_apellido . ' ' . $i->segundo_apellido . ' -CARGO:' . $i->tipo.' -SUCURSAL:'.$i->sucursal->nombre;
                 }
             }
         }
@@ -28,8 +29,8 @@ class LavadoraPersonaController extends Controller {
         $lavadoras = null;
         if (count($lav) > 0) {
             foreach ($lav as $l) {
-                $existe = Lavadora_persona::where('lavadora_id', $l->id)->first();
-                if ($existe == null) {
+                $existe = $l->personas->count();
+                if ($existe == 0) {
                     $lavadoras[$l->id] = $l->serial . ' - ' . $l->marca . ' - BODEGA:' . $l->bodega->nombre . ' - SUCURSAL:' . $l->bodega->sucursal->nombre;
                 }
             }
@@ -110,31 +111,13 @@ class LavadoraPersonaController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function privilegios() {
-        $grupos = Grupousuario::all()->sortBy('nombre')->pluck('nombre', 'id');
-        $paginas2 = Pagina::all()->sortBy('nombre');
-        $paginas = null;
-        foreach ($paginas2 as $p) {
-            $paginas[$p->id] = $p->nombre . " ==> " . $p->descripcion;
-        }
-        return view('usuarios.privilegios.list')
-                        ->with('location', 'usuarios')
-                        ->with('grupos', $grupos)
-                        ->with('paginas', $paginas);
-    }
-
-    /**
-     * Show the view privilegios.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function getPrivilegios($id) {
-        $grupo = Grupousuario::find($id);
-        $paginas = $grupo->paginas;
+    public function getAsignadas($id) {
+        $persona = Persona::find($id);
+        $lavadoras = $persona->lavadoras;
         $array = null;
-        foreach ($paginas as $value) {
+        foreach ($lavadoras as $value) {
             $obj["id"] = $value->id;
-            $obj["value"] = $value->nombre . " ==> " . $value->descripcion;
+            $obj["value"] =$value->serial . ' - ' . $value->marca . ' - BODEGA:' . $value->bodega->nombre . ' - SUCURSAL:' . $value->bodega->sucursal->nombre;
             $array[] = $obj;
         }
         return json_encode($array);
@@ -145,17 +128,17 @@ class LavadoraPersonaController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function setPrivilegios() {
-        if (!isset($_POST["privilegios"])) {
-            DB::table('grupousuario_pagina')->where('grupousuario_id', '=', $_POST["id"])->delete();
-            flash("<strong>Privilegios </strong> eliminados de forma exitosa!")->success();
-            return redirect()->route('grupousuario.privilegios');
+    public function setAsignadas() {
+        if (!isset($_POST["asignadas"])) {
+            DB::table('lavadora_personas')->where('persona_id', '=', $_POST["id"])->delete();
+            flash("<strong>Lavadoras </strong> eliminadas de forma exitosa!")->success();
+            return redirect()->route('lavadora_persona.index');
         } else {
-            $grupo = Grupousuario::find($_POST["id"]);
-            $grupo->paginas()->sync($_POST["privilegios"]);
-            $grupo->paginas;
-            flash("<strong>Privilegios </strong> asignados de forma exitosa!")->success();
-            return redirect()->route('grupousuario.privilegios');
+            $persona = Persona::find($_POST["id"]);
+            $persona->lavadoras()->sync($_POST["asignadas"]);
+            $persona->lavadoras;
+            flash("<strong>Lavadoras </strong> asignadas de forma exitosa!")->success();
+            return redirect()->route('lavadora_persona.index');
         }
     }
 

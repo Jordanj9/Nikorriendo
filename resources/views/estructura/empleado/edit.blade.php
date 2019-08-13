@@ -37,10 +37,18 @@
             @endcomponent
         </div>
         <div class="col-md-12">
-            {!! Form::open(['route'=>['persona.update',$persona->id],'method'=>'PUT','role'=>'form',])!!}
+            {!! Form::open(['route'=>['persona.update',$persona->id],'method'=>'PUT','role'=>'form'])!!}
             <div class="col-md-12">
                 <div class="alert alert-success">
                     <p class="h5"><center><b>Información del empleado</b></center></p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Sucursal</label>
+                    {!! Form::select('sucursal_id',
+                      $sucursales,$persona->sucursal_id,
+                    ['class'=>'form-control','placeholder'=>'-- Seleccione una opción --','required']) !!}
                 </div>
             </div>
             <div class="col-md-6">
@@ -182,7 +190,6 @@
                 </div>
             </div>
         {!! Form::close() !!}
-        </form>
     </div>
 </div>
 @endsection

@@ -45,6 +45,14 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
+                        <label>Sucursal</label>
+                        {!! Form::select('sucursal_id',
+                          $sucursales,null,
+                        ['class'=>'form-control','placeholder'=>'-- Seleccione una opción --','required']) !!}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
                         <label>Identificación</label>
                         <input type="number" class="form-control" placeholder="identificacion del empleado" name="identificacion" required />
                     </div>

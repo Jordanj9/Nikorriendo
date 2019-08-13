@@ -45,6 +45,10 @@
                             <td class="contact bg-green" colspan="2" ><center><b>Información del empleado</b></center></td>
                         </tr>
                         <tr class="read">
+                            <td class="contact"><b>Sucursal</b></td>
+                            <td class="subject">{{$persona->sucursal->nombre}}</td>
+                        </tr>
+                        <tr class="read">
                             <td class="contact"><b>Identificacion</b></td>
                             <td class="subject">{{$persona->identificacion}}</td>
                         </tr>
@@ -102,6 +106,14 @@
                             <td class="contact"><b>Telefono</b></td>
                             <td class="subject">{{$persona->contacto_emergencia->telefono}}</td>
                         </tr>
+                        <tr class="read">
+                            <td class="contact bg-green" colspan="2" ><center><b>Lavadoras Asignadas</b></center></td>
+                        </tr>
+                        @foreach($persona->lavadoras as $lavadora)
+                             <tr class="read">
+                                <td class="contact">{{$lavadora->serial.' - '.$lavadora->marca.' -BODEGA:'.$lavadora->bodega->nombre.' -SUCURSAL:'.$lavadora->bodega->sucursal->nombre}}</td>
+                            </tr>
+                        @endforeach
                         </tbody>
                     </table>
                 </div>

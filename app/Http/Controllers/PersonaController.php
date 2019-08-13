@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Contacto_emergencia;
 use App\Persona;
+use App\Sucursal;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -17,9 +18,9 @@ class PersonaController extends Controller
     public function index()
     {
         $empleados = Persona::all();
-        if(count($empleados)>0){
-            foreach ($empleados as $item){
-                $item->nombre = $item->primer_nombre." ".$item->primer_apellido;
+        if (count($empleados) > 0) {
+            foreach ($empleados as $item) {
+                $item->nombre = $item->primer_nombre . " " . $item->primer_apellido;
             }
         }
         return view('estructura.empleado.list')
@@ -34,14 +35,16 @@ class PersonaController extends Controller
      */
     public function create()
     {
+        $sucursales = Sucursal::all()->pluck('nombre', 'id');
         return view('estructura.empleado.create')
-            ->with('location', 'estructura');
+            ->with('location', 'estructura')
+            ->with('sucursales', $sucursales);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -63,22 +66,24 @@ class PersonaController extends Controller
         $persona->contacto_emergencia_id = $contacto->id;
 
         foreach ($persona->attributesToArray() as $key => $value) {
-            if($key == 'email'){
+            if ($key == 'email') {
                 $persona->$key = $value;
                 continue;
             }
-             $persona->$key = strtoupper($value);
+            $persona->$key = strtoupper($value);
         }
         $result1 = $persona->save();
         if ($result1 && $result2) {
-            $user = new User();
-            $user->identificacion = $persona->identificacion;
-            $user->nombres = $persona->primer_nombre.' '.$persona->segundo_nombre;
-            $user->apellidos = $persona->primer_apellido.' '.$persona->segundo_apellido;
-            $user->email = $persona->email;
-            $user->estado = 'ACTIVO';
-            $user->password = bcrypt($user->identificacion);
-            $user->save();
+            if(!User::where('identificacion', $persona->identificacion)){
+                $user = new User();
+                $user->identificacion = $persona->identificacion;
+                $user->nombres = $persona->primer_nombre . ' ' . $persona->segundo_nombre;
+                $user->apellidos = $persona->primer_apellido . ' ' . $persona->segundo_apellido;
+                $user->email = $persona->email;
+                $user->estado = 'ACTIVO';
+                $user->password = bcrypt($user->identificacion);
+                $user->save();
+            }
             flash("El empleado <strong>" . $persona->nombre . "</strong> fue almacenado(a) de forma exitosa!")->success();
             return redirect()->route('persona.index');
         } else {
@@ -91,7 +96,7 @@ class PersonaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Persona  $persona
+     * @param \App\Persona $persona
      * @return \Illuminate\Http\Response
      */
     public function show(Persona $persona)
@@ -104,21 +109,23 @@ class PersonaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Persona  $persona
+     * @param \App\Persona $persona
      * @return \Illuminate\Http\Response
      */
     public function edit(Persona $persona)
     {
+        $sucursales = Sucursal::all()->pluck('nombre', 'id');
         return view('estructura.empleado.edit')
             ->with('location', 'estructura')
-            ->with('persona', $persona);
+            ->with('persona', $persona)
+           ->with('sucursales',$sucursales);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Persona  $persona
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Persona $persona
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Persona $persona)
@@ -139,8 +146,8 @@ class PersonaController extends Controller
         $result2 = $contacto->save();
 
         foreach ($persona->attributesToArray() as $key => $value) {
-            if(isset($request->$key)){
-                if($key == 'email'){
+            if (isset($request->$key)) {
+                if ($key == 'email') {
                     $persona->$key = $request->$key;
                     continue;
                 }
@@ -151,10 +158,10 @@ class PersonaController extends Controller
         $result1 = $persona->save();
 
         if ($result1 && $result2) {
-            $user = User::where('identificacion',$identificicacion)->first();
+            $user = User::where('identificacion', $identificicacion)->first();
             $user->identificacion = $persona->identificacion;
-            $user->nombres = $persona->primer_nombre.' '.$persona->segundo_nombre;
-            $user->apellidos = $persona->primer_apellido.' '.$persona->segundo_apellido;
+            $user->nombres = $persona->primer_nombre . ' ' . $persona->segundo_nombre;
+            $user->apellidos = $persona->primer_apellido . ' ' . $persona->segundo_apellido;
             $user->email = $persona->email;
             $user->estado = $persona->estado;
             $user->save();
@@ -169,13 +176,13 @@ class PersonaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Persona  $persona
+     * @param \App\Persona $persona
      * @return \Illuminate\Http\Response
      */
     public function destroy(Persona $persona)
     {
-        $nombre =  $persona->primer_nombre.' '.$persona->primer_apellido;
-        $user = User::where('identificacion',$persona->identificacion)->first();
+        $nombre = $persona->primer_nombre . ' ' . $persona->primer_apellido;
+        $user = User::where('identificacion', $persona->identificacion)->first();
 
         /*if(count($bodega->lavadoras) > 0){
             return response()->json([
@@ -187,15 +194,15 @@ class PersonaController extends Controller
         $result = $persona->delete();
         $result2 = $user->delete();
 
-        if($result &&  $result2){
+        if ($result && $result2) {
             return response()->json([
                 'status' => 'ok',
-                'message'=>"el empleado ". $nombre ." fue eliminado(a) de forma exitosa!"
+                'message' => "el empleado " . $nombre . " fue eliminado(a) de forma exitosa!"
             ]);
-        }else {
+        } else {
             return response()->json([
                 'status' => 'error',
-                'message'=>"el empleado " .$nombre. " no pudo ser eliminado(a). Error:"
+                'message' => "el empleado " . $nombre . " no pudo ser eliminado(a). Error:"
             ]);
         }
     }
