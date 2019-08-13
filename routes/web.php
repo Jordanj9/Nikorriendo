@@ -57,5 +57,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'estructura'], function() {
     //LAVADORAS
     Route::resource('lavadora', 'LavadoraController');
     //EMPLLEADOS
+    Route::resource('persona', 'PersonaController');
     //ASIGNAR LAVADORA EMPLEADO
 });

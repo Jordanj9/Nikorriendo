@@ -23,6 +23,6 @@ class Contacto_emergencia extends Model
     protected $hidden = [
             //
     ];
-    
-  
+
+
 }

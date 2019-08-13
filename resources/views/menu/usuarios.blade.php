@@ -37,9 +37,9 @@
                     <span>PÁGINAS DEL SISTEMA</span>
                     <span class="ink animated"></span>
                 </div>
-            </a>  
+            </a>
             @endif
-            @if(session()->exists('PAG_GRUPOS-ROLES'))
+            @if(session()->exists('PAG_GRUPO-ROLES'))
             <a href="{{route('grupousuario.index')}}" class="btn bg-aqua margin">
                 <div>
                     <span>GRUPOS O ROLES DE USUARIOS</span>

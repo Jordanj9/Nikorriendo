@@ -48,7 +48,7 @@
             </a>
             @endif
             @if(session()->exists('PAG_ESTRUCTURA-EMPLEADO'))
-            <a href="{{route('grupousuario.privilegios')}}" class="btn bg-yellow-gradient margin">
+            <a href="{{route('persona.index')}}" class="btn bg-yellow-gradient margin">
                 <div>
                     <span style="color: white">EMPLEADOS</span>
                     <span class="ink animated"></span>
