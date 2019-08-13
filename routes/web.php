@@ -59,4 +59,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'estructura'], function() {
     //EMPLLEADOS
     Route::resource('persona', 'PersonaController');
     //ASIGNAR LAVADORA EMPLEADO
+    Route::resource('lavadora_persona', 'LavadoraPersonaController');
+    Route::get('privilegios', 'GrupousuarioController@privilegios')->name('grupousuario.privilegios');
+    Route::get('grupousuario/{id}/privilegios', 'GrupousuarioController@getPrivilegios');
+    Route::post('grupousuario/privilegios', 'GrupousuarioController@setPrivilegios')->name('grupousuario.guardar');
 });

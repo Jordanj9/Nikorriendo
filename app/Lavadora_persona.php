@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Lavadora extends Model {
+class Lavadora_persona extends Model {
 
     /**
      * The attributes that are mass assignable.
@@ -12,7 +12,7 @@ class Lavadora extends Model {
      * @var array
      */
     protected $fillable = [
-        'id', 'serial', 'marca', 'estado_bodega', 'estado_lavadora', 'bodega_id', 'created_at', 'updated_at'
+        'id', 'lavadora_id', 'persona_id', 'created_at', 'updated_at'
     ];
 
     /**
@@ -24,12 +24,12 @@ class Lavadora extends Model {
             //
     ];
 
-    public function bodega() {
-        return $this->belongsTo(Bodega::class);
+    public function lavadora() {
+        return $this->belongsTo('App\Lavadora');
     }
 
-    public function lavadora_personas() {
-        return $this->hasMany('App\Lavadora_persona');
+    public function persona() {
+        return $this->belongsTo('App\Persona');
     }
 
 }

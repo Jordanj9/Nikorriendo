@@ -56,7 +56,7 @@
             </a>
             @endif
             @if(session()->exists('PAG_ESTRUCTURA-ASIGNAR-LAVADORA'))
-            <a href="{{route('usuario.create')}}" class="btn bg-yellow-gradient margin">
+            <a href="{{route('lavadora_persona.index')}}" class="btn bg-yellow-gradient margin">
                 <div>
                     <span style="color: white">ASIGNAR LAVADORA A EMPLEADO</span>
                     <span class="ink animated"></span>

@@ -7,19 +7,18 @@ use App\Lavadora;
 use App\Sucursal;
 use Illuminate\Http\Request;
 
-class LavadoraController extends Controller
-{
+class LavadoraController extends Controller {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         $lavadoras = Lavadora::all();
         return view('estructura.lavadora.list')
-            ->with('location', 'estructura')
-            ->with('lavadoras', $lavadoras);
+                        ->with('location', 'estructura')
+                        ->with('lavadoras', $lavadoras);
     }
 
     /**
@@ -27,12 +26,11 @@ class LavadoraController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         $bodegas = Bodega::all()->pluck('nombre', 'id');
         return view('estructura.lavadora.create')
-            ->with('location', 'estructura')
-            ->with('bodegas', $bodegas);
+                        ->with('location', 'estructura')
+                        ->with('bodegas', $bodegas);
     }
 
     /**
@@ -41,8 +39,12 @@ class LavadoraController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
+        $existe = Lavadora::where([['serial', $request->serial], ['bodega_id', $request->bodega_id]])->first();
+        if ($existe != null) {
+            flash(" <strong> Atención!.</strong>  El serial <strong>" . $request->serial . "</strong> ya fue asignado a una lavadora.")->warning();
+            return redirect()->route('lavadora.create');
+        }
         $lavadora = new Lavadora($request->all());
         foreach ($lavadora->attributesToArray() as $key => $value) {
             $lavadora->$key = strtoupper($value);
@@ -63,8 +65,7 @@ class LavadoraController extends Controller
      * @param  \App\Lavadora  $lavadora
      * @return \Illuminate\Http\Response
      */
-    public function show(Lavadora $lavadora)
-    {
+    public function show(Lavadora $lavadora) {
         //
     }
 
@@ -74,13 +75,12 @@ class LavadoraController extends Controller
      * @param  \App\Lavadora  $lavadora
      * @return \Illuminate\Http\Response
      */
-    public function edit(Lavadora $lavadora)
-    {
-        $bodegas= Bodega::all()->pluck('nombre', 'id');
+    public function edit(Lavadora $lavadora) {
+        $bodegas = Bodega::all()->pluck('nombre', 'id');
         return view('estructura.lavadora.edit')
-            ->with('location', 'estructura')
-            ->with('lavadora', $lavadora)
-            ->with('bodegas',$bodegas);
+                        ->with('location', 'estructura')
+                        ->with('lavadora', $lavadora)
+                        ->with('bodegas', $bodegas);
     }
 
     /**
@@ -90,8 +90,7 @@ class LavadoraController extends Controller
      * @param  \App\Lavadora  $lavadora
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Lavadora $lavadora)
-    {
+    public function update(Request $request, Lavadora $lavadora) {
         foreach ($lavadora->attributesToArray() as $key => $value) {
             if (isset($request->$key)) {
                 $lavadora->$key = strtoupper($request->$key);
@@ -115,21 +114,21 @@ class LavadoraController extends Controller
      * @param  \App\Lavadora  $lavadora
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Lavadora $lavadora)
-    {
-        $serial =  $lavadora->serial;
+    public function destroy(Lavadora $lavadora) {
+        $serial = $lavadora->serial;
         $result = $lavadora->delete();
 
-        if($result){
+        if ($result) {
             return response()->json([
-                'status' => 'ok',
-                'message'=>"la lavadora ". $serial ." fue eliminado(a) de forma exitosa!"
+                        'status' => 'ok',
+                        'message' => "la lavadora " . $serial . " fue eliminado(a) de forma exitosa!"
             ]);
-        }else {
+        } else {
             return response()->json([
-                'status' => 'error',
-                'message'=>"la lavadora " .$serial. " no pudo ser eliminado(a). Error:"
+                        'status' => 'error',
+                        'message' => "la lavadora " . $serial . " no pudo ser eliminado(a). Error:"
             ]);
         }
     }
+
 }
