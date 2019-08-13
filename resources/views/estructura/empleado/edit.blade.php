@@ -125,7 +125,8 @@
                     <label>Estado</label>
                     {!! Form::select('estado',
                       ['ACTIVO'=>'ACTIVO','INACTIVO'=>'INACTIVO'],$persona->estado,
-                    ['class'=>'form-control','placeholder'=>'-- Seleccione una opción --','required']) !!}
+                      ['class'=>'form-control','placeholder'=>'-- Seleccione una opción --','required'])
+                    !!}
                 </div>
             </div>
 
@@ -171,7 +172,7 @@
                 </div>
             </div>
 
-            <input type="hidden" name="id_contacto" value="{{$persona->contacto_emergencia->id}}">
+            <input type="hidden" name="id_contacto" value="{{$persona->contacto_emergencia_id}}">
 
             <div class="form-group">
                 <div class="col-md-12" style="margin-top: 20px !important">

@@ -65,6 +65,7 @@
                             <td style="text-align: center;">
                                 <a href="{{ route('persona.edit',$empleado->id)}}" data-toggle="tooltip" data-placement="top" title="Editar empleado" style="color: green; margin-left: 10px;"><i class="fa fa-edit"></i></a>
                                 <a href="#" onclick="eliminar(event,{{$empleado->id}})" data-toggle="tooltip" data-placement="top" title="Eliminar empleado" style="color: red; margin-left: 10px;"><i class="fa fa-trash-o"></i></a>
+                                <a href="{{ route('persona.show',$empleado->id)}}" data-toggle="tooltip" data-placement="top" title="Mostrar empleado" style="color: cornflowerblue; margin-left: 10px;"><i class="fa fa-eye"></i></a>
                             </td>
                         </tr>
                     @endforeach

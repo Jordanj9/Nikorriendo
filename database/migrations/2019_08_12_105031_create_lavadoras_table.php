@@ -14,7 +14,7 @@ class CreateLavadorasTable extends Migration {
     public function up() {
         Schema::create('lavadoras', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('serial');
+            $table->bigInteger('serial')->unique();
             $table->string('marca', 20);
             $table->enum('estado_bodega', ['SI', 'NO'])->default('SI');
             $table->enum('estado_lavadora', ['SERVICIO','MANTENIMIENTO','DISPONIBLE','INACTIVA'])->default('DISPONIBLE');//SERVICIO, MANTENIMIENTO,DISPONIBLE,INACTIVA

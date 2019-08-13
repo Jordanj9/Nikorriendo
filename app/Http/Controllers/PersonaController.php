@@ -96,7 +96,9 @@ class PersonaController extends Controller
      */
     public function show(Persona $persona)
     {
-        //
+        return view('estructura.empleado.show')
+            ->with('location', 'estructura')
+            ->with('persona', $persona);
     }
 
     /**
@@ -122,6 +124,7 @@ class PersonaController extends Controller
     public function update(Request $request, Persona $persona)
     {
         $identificicacion = $persona->identificacion;
+
         $contacto = Contacto_emergencia::find($request->get('id_contacto'));
         $contacto->nombres = $request->get('nombre_contacto');
         $contacto->parentezco = $request->get('parentezco_contacto');
@@ -136,27 +139,29 @@ class PersonaController extends Controller
         $result2 = $contacto->save();
 
         foreach ($persona->attributesToArray() as $key => $value) {
-            if($key == 'email'){
-                $persona->$key = $request->$key;
-                continue;
+            if(isset($request->$key)){
+                if($key == 'email'){
+                    $persona->$key = $request->$key;
+                    continue;
+                }
+                $persona->$key = strtoupper($request->$key);
             }
-            $persona->$key = strtoupper($request->$key);
         }
+
         $result1 = $persona->save();
 
         if ($result1 && $result2) {
-            $user = User::where('identificacion',$identificicacion);
+            $user = User::where('identificacion',$identificicacion)->first();
             $user->identificacion = $persona->identificacion;
             $user->nombres = $persona->primer_nombre.' '.$persona->segundo_nombre;
             $user->apellidos = $persona->primer_apellido.' '.$persona->segundo_apellido;
             $user->email = $persona->email;
-            $user->estado = 'ACTIVO';
-            $user->password = bcrypt($user->identificacion);
+            $user->estado = $persona->estado;
             $user->save();
-            flash("El empleado <strong>" . $persona->nombre . "</strong> fue almacenado(a) de forma exitosa!")->success();
+            flash("El empleado <strong>" . $persona->nombre . "</strong> fue modificado(a) de forma exitosa!")->success();
             return redirect()->route('persona.index');
         } else {
-            flash("El empleado <strong>" . $persona->nombre . "</strong> no pudo ser almacenado(a). Error: ")->error();
+            flash("El empleado <strong>" . $persona->nombre . "</strong> no pudo ser modificado(a). Error: ")->error();
             return redirect()->route('persona.index');
         }
     }
