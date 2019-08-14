@@ -52,7 +52,7 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label>Bodegas</label>
+                    <label>Bodega</label>
                     {!! Form::select('bodega_id',$bodegas,null,['class'=>'form-control','placeholder'=>'-- Seleccione una opción --','required']) !!}
                 </div>
             </div>

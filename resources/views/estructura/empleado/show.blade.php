@@ -111,7 +111,7 @@
                         </tr>
                         @foreach($persona->lavadoras as $lavadora)
                              <tr class="read">
-                                <td class="contact">{{$lavadora->serial.' - '.$lavadora->marca.' -BODEGA:'.$lavadora->bodega->nombre.' -SUCURSAL:'.$lavadora->bodega->sucursal->nombre}}</td>
+                                <td  colspan="2" class="contact">{{$lavadora->serial.' - '.$lavadora->marca.' -BODEGA:'.$lavadora->bodega->nombre.' -SUCURSAL:'.$lavadora->bodega->sucursal->nombre}}</td>
                             </tr>
                         @endforeach
                         </tbody>

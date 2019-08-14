@@ -24,4 +24,8 @@ class MenuController extends Controller {
         return view('menu.estructura')->with('location', 'estructura');
     }
 
+    public function mantenimiento() {
+        return view('menu.mantenimiento')->with('location', 'mantenimiento');
+    }
+
 }

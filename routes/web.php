@@ -24,6 +24,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function() {
     Route::get('usuarios', 'MenuController@usuarios')->name('admin.usuarios');
     Route::get('estructura', 'MenuController@estructura')->name('admin.estructura');
+    Route::get('mantenimiento', 'MenuController@mantenimiento')->name('admin.mantenimiento');
     Route::post('acceso', 'HomeController@confirmaRol')->name('rol');
     Route::get('inicio', 'HomeController@inicio')->name('inicio');
 //    Route::get('auditoria', 'MenuController@auditoria')->name('admin.auditoria');
@@ -63,4 +64,12 @@ Route::group(['middleware' => 'auth', 'prefix' => 'estructura'], function() {
     Route::get('privilegios', 'GrupousuarioController@privilegios')->name('grupousuario.privilegios');
     Route::get('lavadora_persona/{id}/asignadas', 'LavadoraPersonaController@getAsignadas');
     Route::post('lavadora_persona/asignadas', 'LavadoraPersonaController@setAsignadas')->name('lavadora_persona.guardar');
+});
+
+//GRUPO DE RUTAS PARA LA GESTION DE LOS MANTENIMIENTOS DE LAS LAVADORAS DE LA EMPRESA
+Route::group(['middleware' => 'auth', 'prefix' => 'mantenimiento'], function() {
+    //REPUESTOS
+    Route::resource('repuesto', 'RepuestoController');
+    //MANTENIMIENTOS
+    Route::resource('mantenimiento','MantenimientoController');
 });

@@ -40,4 +40,8 @@ class Persona extends Model
         return $this->belongsTo(Sucursal::class);
     }
 
+    public function mantenimientos(){
+        return $this->hasMany(Mantenimiento::class);
+    }
+
 }

@@ -33,4 +33,8 @@ class Lavadora extends Model {
         return $this->belongsToMany(Persona::class,'lavadora_personas');
     }
 
+    public function mantenimientos(){
+        return $this->hasMany(Mantenimiento::class);
+    }
+
 }
