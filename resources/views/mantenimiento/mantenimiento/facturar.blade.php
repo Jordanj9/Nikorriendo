@@ -28,6 +28,7 @@
             {!! Form::open(['route'=>'repuesto.store','method'=>'POST','role'=>'form','class'=>''])!!}
 
             <div class="col-md-12">
+
                 <table class="table">
                     <tbody>
                     <tr class="read">
@@ -44,7 +45,7 @@
                     <tr class="read">
                         <td class="contact"><b>LAVADORA POR MANTENIMIENTO</b></td>
                         <td class="subject">
-                           {!! Form::select('estado_mantenimiento_id',$mantenimientos,null,['class'=>'form-control','placeholder'=>'-- Seleccione una opción --','required']) !!}
+                           {!! Form::select('estado_mantenimiento_id',$mantenimientos,null,['class'=>'form-control chosen-select','placeholder'=>'-- Seleccione una opción --','required']) !!}
                         </td>
                     </tr>
                     </tbody>
@@ -62,26 +63,17 @@
 
             <div class="clearfix"></div>
             <div id="resultados" class="col-md-12" style="margin-top:10px">
-                <table class="table table-responsive" style="overflow-x: scroll;">
+                <table class="table table-responsive" style="overflow-x: scroll;" id="detalle-repuesto">
+                    <thead>
+                        <tr>
+                            <th class="text-center">ID</th>
+                            <th>DESCRIPCION</th>
+                            <th class="text-right">PRECIO UNIT.</th>
+                            <th class="text-right">PRECIO TOTAL</th>
+                            <th></th>
+                        </tr>
+                    </thead>
                     <tbody>
-                    <tr>
-                        <th class="text-center">ID</th>
-                        <th>DESCRIPCION</th>
-                        <th class="text-right">PRECIO UNIT.</th>
-                        <th class="text-right">PRECIO TOTAL</th>
-                        <th></th>
-                    </tr>
-                    <tr>
-                        <td class="text-center">999910</td>
-                        <td>Test motherboard</td>
-                        <td class="text-right">150.00</td>
-                        <td class="text-right">150.00</td>
-                        <td class="text-center"><a href="#" onclick="eliminar('25224')"><i class="glyphicon glyphicon-trash"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td class="text-right" colspan="3">TOTAL $</td>
-                        <td class="text-right">169.50</td>
-                    </tr>
                     </tbody>
                 </table>
             </div><!-- Carga los datos ajax -->
@@ -89,96 +81,48 @@
 
             {!! Form::close() !!}
     </div>
-
         <!-- Modal -->
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                        <h4 class="modal-title" id="myModalLabel">Buscar Repuesto</h4>
                     </div>
                     <div class="modal-body">
-
                         <div class="outer_div">
                             <div class="table-responsive">
-                                <table class="table">
-                                    <tbody>
+                                <table class="table" id="example1">
+                                    <thead class="danger">
                                         <tr class="warning">
                                             <th>ID</th>
                                             <th>Repuesto</th>
-                                            <th><span class="pull-right">Cant.</span></th>
-                                            <th><span class="pull-right">Precio</span></th>
+                                            <th><span class="">Precio</span></th>
                                             <th class="text-center" style="width: 36px;">Agregar</th>
                                         </tr>
-                                    <tr>
-                                        <td>00001</td>
-                                        <td>Casas</td>
-                                        <td class="col-xs-1">
-                                            <div class="pull-right">
-                                                <input type="text" class="form-control" style="text-align:right" id="cantidad_1" value="1">
-                                            </div></td>
-                                        <td class="col-xs-2"><div class="pull-right">
-                                                <input type="text" class="form-control" style="text-align:right" id="precio_venta_1" value="10000.00">
-                                            </div></td>
-                                        <td class="text-center"><a class="btn btn-info" href="#" onclick="agregar('1')"><i class="glyphicon glyphicon-plus"></i></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>00002</td>
-                                        <td>Shampoo</td>
-                                        <td class="col-xs-1">
-                                            <div class="pull-right">
-                                                <input type="text" class="form-control" style="text-align:right" id="cantidad_661" value="1">
-                                            </div></td>
-                                        <td class="col-xs-2"><div class="pull-right">
-                                                <input type="text" class="form-control" style="text-align:right" id="precio_venta_661" value="4.50">
-                                            </div></td>
-                                        <td class="text-center"><a class="btn btn-info" href="#" onclick="agregar('661')"><i class="glyphicon glyphicon-plus"></i></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>999910</td>
-                                        <td>Test motherboard</td>
-                                        <td class="col-xs-1">
-                                            <div class="pull-right">
-                                                <input type="text" class="form-control" style="text-align:right" id="cantidad_662" value="1">
-                                            </div></td>
-                                        <td class="col-xs-2"><div class="pull-right">
-                                                <input type="text" class="form-control" style="text-align:right" id="precio_venta_662" value="150.00">
-                                            </div></td>
-                                        <td class="text-center"><a class="btn btn-info" href="#" onclick="agregar('662')"><i class="glyphicon glyphicon-plus"></i></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>46546546464654646546</td>
-                                        <td>Kg. Tortillas Rojas</td>
-                                        <td class="col-xs-1">
-                                            <div class="pull-right">
-                                                <input type="text" class="form-control" style="text-align:right" id="cantidad_648" value="1">
-                                            </div></td>
-                                        <td class="col-xs-2"><div class="pull-right">
-                                                <input type="text" class="form-control" style="text-align:right" id="precio_venta_648" value="16.00">
-                                            </div></td>
-                                        <td class="text-center"><a class="btn btn-info" href="#" onclick="agregar('648')"><i class="glyphicon glyphicon-plus"></i></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>muleta</td>
-                                        <td class="col-xs-1">
-                                            <div class="pull-right">
-                                                <input type="text" class="form-control" style="text-align:right" id="cantidad_664" value="1">
-                                            </div></td>
-                                        <td class="col-xs-2"><div class="pull-right">
-                                                <input type="text" class="form-control" style="text-align:right" id="precio_venta_664" value="52.00">
-                                            </div></td>
-                                        <td class="text-center"><a class="btn btn-info" href="#" onclick="agregar('664')"><i class="glyphicon glyphicon-plus"></i></a></td>
-                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($repuestos as $repuesto)
+                                        <tr>
+                                            <td>{{$repuesto->id}}</td>
+                                            <td>{{$repuesto->nombre}}</td>
+                                            <td>${{$repuesto->precio}}</td>
+                                            <td class="text-center">
+                                                <a href="#" onclick="agregar(event,{
+                                                    id: '{{$repuesto->id}}',
+                                                    nombre:'{{$repuesto->nombre}}',
+                                                    precio:'{{$repuesto->precio}}'
+                                                })" data-toggle="tooltip" data-placement="top" title="Agregar Repuesto" style="color: deepskyblue; margin-left: 10px;"><i class="glyphicon glyphicon-plus"></i></a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>
@@ -187,6 +131,9 @@
 @endsection
 @section('script')
     <script type="text/javascript">
+        let detalles_repuestos = [];
+        let total = 0;
+
         $(function () {
             $('#example1').DataTable();
         });
@@ -195,6 +142,58 @@
             event.preventDefault();
             $('#myModal').modal('show');
         }
+
+        /*let trtotal = document.createElement('tr');
+        html = `<td class="text-right" colspan="3">TOTAL $</td>
+                    <td class="text-right">${total}</td>
+                    `;
+        trtotal.innerHTML = html;
+        tabla.appendChild(trtotal);*/
+
+        function agregar(event,repuesto) {
+
+            event.preventDefault();
+
+            let tabla = document.querySelector('#detalle-repuesto tbody');
+            let band = true;
+
+            detalles_repuestos.forEach(x => {
+               if(x.id == repuesto.id){
+                  band = false;
+               }
+            });
+
+            if(band){
+                detalles_repuestos.push(repuesto);
+                total = parseInt(total) + parseInt(repuesto.precio);
+            }
+
+            let html = '';
+
+            detalles_repuestos.forEach( x => {
+                html += `<tr>
+                            <td class="text-center">${x.id}</td>
+                            <td>${x.nombre}</td>
+                            <td class="text-right">${x.precio}</td>
+                            <td class="text-right">${x.precio}</td>
+                            <td class="text-center"><a href="#" onclick="eliminar(${x.id})"><i class="glyphicon glyphicon-trash"></i></a></td>
+                        </tr>
+                       `;
+            });
+
+            tabla.innerHTML = html;
+
+            let trtotal = document.createElement('tr');
+            html = `<tr>
+                        <td class="text-right" colspan="3">TOTAL $</td>
+                        <td class="text-right">${total}</td>
+                    </tr>
+                    `;
+            trtotal.innerHTML = html;
+            tabla.appendChild(trtotal);
+
+        }
+
     </script>
 @endsection
 
