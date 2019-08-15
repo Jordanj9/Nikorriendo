@@ -16,6 +16,7 @@ class LavadoraPersonaController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
+
         $per = Persona::all()->sortBy('primer_nombre');
         $personas = null;
         if (count($per) > 0) {
@@ -27,6 +28,8 @@ class LavadoraPersonaController extends Controller {
         }
         $lav = Lavadora::all();
         $lavadoras = null;
+        $lavadoras =collect($lavadoras);
+
         if (count($lav) > 0) {
             foreach ($lav as $l) {
                 $existe = $l->personas->count();
@@ -35,8 +38,9 @@ class LavadoraPersonaController extends Controller {
                 }
             }
         }
-        if ($personas == null || $lavadoras == null) {
-            flash("<strong>Atención!</strong> debe registrar empleados y lavadoras perviamente para poder acceder a esta función.")->warning();
+
+        if ($personas == null) {
+            flash("<strong>Atención!</strong> debe registrar empleados para poder acceder a esta función.")->warning();
             return redirect()->route('admin.estructura');
         } else {
             return view('estructura.asignar_lavadora.list')
@@ -44,6 +48,7 @@ class LavadoraPersonaController extends Controller {
                             ->with('lavadoras', $lavadoras)
                             ->with('personas', $personas);
         }
+
     }
 
     /**
