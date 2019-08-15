@@ -24,7 +24,7 @@
     <div class="box-body">
         <div class="button-demo">
             @if(session()->exists('PAG_SERVICIO-SERVICIOS'))
-            <a href="{{route('repuesto.index')}}" class="btn bg-red-gradient margin">
+            <a href="{{route('servicio.index')}}" class="btn bg-red-gradient margin">
                 <div>
                     <span style="color: white">SERVICIOS</span>
                     <span class="ink animated"></span>

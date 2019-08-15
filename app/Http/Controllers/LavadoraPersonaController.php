@@ -16,20 +16,18 @@ class LavadoraPersonaController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-
         $per = Persona::all()->sortBy('primer_nombre');
         $personas = null;
         if (count($per) > 0) {
             foreach ($per as $i) {
                 if ($i->tipo == "MENSAJERO" && $i->estado == "ACTIVO") {
-                    $personas[$i->id] = $i->primer_nombre . ' ' . $i->segundo_nombre . ' ' . $i->primer_apellido . ' ' . $i->segundo_apellido . ' -CARGO:' . $i->tipo.' -SUCURSAL:'.$i->sucursal->nombre;
+                    $personas[$i->id] = $i->primer_nombre . ' ' . $i->segundo_nombre . ' ' . $i->primer_apellido . ' ' . $i->segundo_apellido . ' -CARGO:' . $i->tipo . ' -SUCURSAL:' . $i->sucursal->nombre;
                 }
             }
         }
         $lav = Lavadora::all();
         $lavadoras = null;
-        $lavadoras =collect($lavadoras);
-
+        $lavadoras = collect($lavadoras);
         if (count($lav) > 0) {
             foreach ($lav as $l) {
                 $existe = $l->personas->count();
@@ -38,7 +36,6 @@ class LavadoraPersonaController extends Controller {
                 }
             }
         }
-
         if ($personas == null) {
             flash("<strong>Atención!</strong> debe registrar empleados para poder acceder a esta función.")->warning();
             return redirect()->route('admin.estructura');
@@ -48,7 +45,6 @@ class LavadoraPersonaController extends Controller {
                             ->with('lavadoras', $lavadoras)
                             ->with('personas', $personas);
         }
-
     }
 
     /**
@@ -122,7 +118,7 @@ class LavadoraPersonaController extends Controller {
         $array = null;
         foreach ($lavadoras as $value) {
             $obj["id"] = $value->id;
-            $obj["value"] =$value->serial . ' - ' . $value->marca . ' - BODEGA:' . $value->bodega->nombre . ' - SUCURSAL:' . $value->bodega->sucursal->nombre;
+            $obj["value"] = $value->serial . ' - ' . $value->marca . ' - BODEGA:' . $value->bodega->nombre . ' - SUCURSAL:' . $value->bodega->sucursal->nombre;
             $array[] = $obj;
         }
         return json_encode($array);
