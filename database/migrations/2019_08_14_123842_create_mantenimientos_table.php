@@ -17,8 +17,8 @@ class CreateMantenimientosTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('persona_id')->unsigned();
             $table->foreign('persona_id')->references('id')->on('personas')->onDelete('cascade');
-            $table->bigInteger('lavadora_id')->unsigned();
-            $table->foreign('lavadora_id')->references('id')->on('lavadoras')->onDelete('cascade');
+            $table->bigInteger('estado_mantenimiento_id')->unsigned();
+            $table->foreign('estado_mantenimiento_id')->references('id')->on('estado_mantenimientos')->onDelete('cascade');
             $table->decimal('total',10,2);
             $table->timestamps();
         });
@@ -32,8 +32,6 @@ class CreateMantenimientosTable extends Migration
             $table->decimal('precio',8,2);
             $table->timestamps();
         });
-
-
     }
 
     /**

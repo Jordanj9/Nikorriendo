@@ -12,7 +12,7 @@ class Mantenimiento extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'persona_id', 'lavadora_id', 'fecha_entrega', 'total','created_at', 'updated_at'
+        'id', 'persona_id', 'estado_mantenimiento_id', 'total','created_at', 'updated_at'
     ];
 
     /**
@@ -24,8 +24,8 @@ class Mantenimiento extends Model
         //
     ];
 
-    public function lavadora(){
-        return $this->belongsTo(Lavadora::class);
+    public function estado_mantenimiento(){
+      return $this->belongsTo(Estado_mantenimiento::class);
     }
 
     public function persona(){

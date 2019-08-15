@@ -292,7 +292,11 @@
             styling: 'bootstrap3'
         });
     }
+
+
 </script>
+
 @yield('script')
+
 </body>
 </html>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Estado_mantenimiento;
 use App\Lavadora;
 use App\Mantenimiento;
 use App\Persona;
@@ -34,22 +35,33 @@ class MantenimientoController extends Controller
             return redirect()->route('admin.mantenimiento');
         }
 
-        $aux = Lavadora::where([
-                     ['estado_bodega','SI']
-                    ]);
+        $aux = Estado_mantenimiento::where([
+                      ['estado','PENDIENTE']
+                    ])->get();
 
-        $lavadoras = null;
+        //estos son los mantenimientos que se encuentran por realizar
+        $mantenimientos = null;
+        $mantenimientos = collect($mantenimientos);
 
-        foreach ($aux as $item) {
-             if($item->bodega->sucursal_id == $persona->sucursal_id){
-               $lavadoras[] = $item;
-             }
+        if(count($aux)>0){
+            foreach ($aux as $item) {
+                if($item->lavadora->bodega->sucursal_id == $persona->sucursal_id){
+                    $mantenimientos[$item->id] = $item->lavadora->serial.' - '.$item->lavadora->marca.' FECHA '.$item->created_at;
+                }
+            }
         }
 
-        return view('mantenimiento.mantenimiento.facturar')
-             ->with('location','mantenimiento')
-             ->with('lavadoras',$lavadoras)
-             ->with('persona',$persona);
+        if(count($mantenimientos) > 0){
+            return view('mantenimiento.mantenimiento.facturar')
+                ->with('location','mantenimiento')
+                ->with('mantenimientos',$mantenimientos)
+                ->with('persona',$persona);
+        }else{
+            flash("no <strong>" . 'hay' . "</strong> mantenimientos por realizar en esta sucursal")->warning();
+            return redirect()->route('admin.mantenimiento');
+        }
+
+
     }
 
     /**
