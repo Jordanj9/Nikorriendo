@@ -62,6 +62,19 @@
                     <!-- /.info-box -->
                 </div>
             @endif
+            @if(session()->exists('MOD_SERVICIO'))
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-red-gradient"><i class="fa   fa-indent"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Gestión De</span>
+                            <a href="{{route('admin.servicio')}}" class="info-box-number">Servicios</a>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                </div>
+            @endif
             @if(session()->exists('MOD_MANTENIMIENTO'))
                 <div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box">
@@ -77,7 +90,7 @@
             @endif
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="info-box">
-                    <span class="info-box-icon bg-red-gradient"><i class="fa fa-sign-out"></i></span>
+                    <span class="info-box-icon bg-danger"><i class="fa fa-sign-out"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">Adiós</span>
                         <a href="{{ route('logout') }}" onclick="event.preventDefault();

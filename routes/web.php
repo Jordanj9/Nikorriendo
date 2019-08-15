@@ -24,6 +24,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function() {
     Route::get('usuarios', 'MenuController@usuarios')->name('admin.usuarios');
     Route::get('estructura', 'MenuController@estructura')->name('admin.estructura');
+    Route::get('servicio', 'MenuController@servicio')->name('admin.servicio');
     Route::get('mantenimiento', 'MenuController@mantenimiento')->name('admin.mantenimiento');
     Route::post('acceso', 'HomeController@confirmaRol')->name('rol');
     Route::get('inicio', 'HomeController@inicio')->name('inicio');
@@ -40,7 +41,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'usuarios'], function() {
     Route::resource('grupousuario', 'GrupousuarioController');
     Route::get('grupousuario/{id}/delete', 'GrupousuarioController@destroy')->name('grupousuario.delete');
     Route::get('privilegios', 'GrupousuarioController@privilegios')->name('grupousuario.privilegios');
-    Route::get('grupousuario/{id}/privilegios', 'GrupousuarioController@getPrivilegios');
+    Route::get('grupousuario/{id}/traerdata/privilegios', 'GrupousuarioController@getPrivilegios');
     Route::post('grupousuario/privilegios', 'GrupousuarioController@setPrivilegios')->name('grupousuario.guardar');
     //USUARIOS
     Route::resource('usuario', 'UsuarioController');
@@ -61,9 +62,13 @@ Route::group(['middleware' => 'auth', 'prefix' => 'estructura'], function() {
     Route::resource('persona', 'PersonaController');
     //ASIGNAR LAVADORA EMPLEADO
     Route::resource('lavadora_persona', 'LavadoraPersonaController');
-    Route::get('privilegios', 'GrupousuarioController@privilegios')->name('grupousuario.privilegios');
     Route::get('lavadora_persona/{id}/asignadas', 'LavadoraPersonaController@getAsignadas');
     Route::post('lavadora_persona/asignadas', 'LavadoraPersonaController@setAsignadas')->name('lavadora_persona.guardar');
+});
+
+//GRUPO DE RUTAS PARA LA GESTION DE LOS SERVICIOS
+Route::group(['middleware' => 'auth', 'prefix' => 'servicio'], function() {
+    //SERVICIOS
 });
 
 //GRUPO DE RUTAS PARA LA GESTION DE LOS MANTENIMIENTOS DE LAS LAVADORAS DE LA EMPRESA
@@ -71,5 +76,5 @@ Route::group(['middleware' => 'auth', 'prefix' => 'mantenimiento'], function() {
     //REPUESTOS
     Route::resource('repuesto', 'RepuestoController');
     //MANTENIMIENTOS
-    Route::resource('mantenimiento','MantenimientoController');
+    Route::resource('mantenimiento', 'MantenimientoController');
 });
