@@ -137,7 +137,7 @@
                                         <div class="pull-right">
                                             <a class="btn btn-default btn-flat" href="{{ route('logout') }}"
                                                onclick="event.preventDefault();
-                                               document.getElementById('logout-form').submit();">
+                                                       document.getElementById('logout-form').submit();">
                                                 Salir
                                             </a>
                                             <form id="logout-form" action="{{ route('logout') }}" method="POST"
@@ -217,7 +217,7 @@
                     </ul>
                     <li>
                         <a href="{{ route('logout') }}" onclick="event.preventDefault();
-                        document.getElementById('logout-form2').submit();">
+                                document.getElementById('logout-form2').submit();">
                             <i class="fa fa-sign-out"></i> Salir
                         </a>
                         <form id="logout-form2" action="{{ route('logout') }}" method="POST" style="display: none;">
