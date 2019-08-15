@@ -78,17 +78,7 @@ class HomeController extends Controller {
         foreach ($modulos as $value) {
             session([$value->nombre => $value->nombre]);
         }
-        $not = Notificacion::where([['user_id', $user->id], ['estado', 'SIN LEER']])->get();
-        $notificaciones = null;
-        $total = 0;
-        $total = count($not);
-        if ($total > 0) {
-            foreach ($not as $n) {
-                $notificaciones[] = $n;
-            }
-        }
-        session(['notificaciones' => $notificaciones]);
-        session(['total' => $total]);
+      
         return view('home')->with('location', 'inicio');
     }
 
