@@ -4,8 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Persona extends Model
-{
+class Persona extends Model {
 
     /**
      * The attributes that are mass assignable.
@@ -22,26 +21,27 @@ class Persona extends Model
      * @var array
      */
     protected $hidden = [
-        //
+            //
     ];
 
-    public function contacto_emergencia()
-    {
+    public function contacto_emergencia() {
         return $this->hasOne(Contacto_emergencia::class, 'id');
     }
 
-    public function lavadoras()
-    {
-        return $this->belongsToMany(Lavadora::class,'lavadora_personas');
+    public function lavadoras() {
+        return $this->belongsToMany(Lavadora::class, 'lavadora_personas');
     }
 
-    public function sucursal()
-    {
+    public function sucursal() {
         return $this->belongsTo(Sucursal::class);
     }
 
-    public function mantenimientos(){
+    public function mantenimientos() {
         return $this->hasMany(Mantenimiento::class);
+    }
+
+    public function servicios() {
+        return $this->hasMany('App\Servicio');
     }
 
 }
