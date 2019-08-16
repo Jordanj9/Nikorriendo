@@ -6,6 +6,7 @@ use App\Servicio;
 use App\Lavadora;
 use App\Persona;
 use App\Cliente;
+use App\Bodega;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,8 +30,31 @@ class ServicioController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        return view('servicio.servicios.create')
-                        ->with('location', 'servicio');
+        $u = Auth::user();
+        $persona = Persona::where([['identificacion', $u->identificacion], ['tipo', 'CENTRAL']])->first();
+        $existe = false;
+        if ($persona != null) {
+            $bodegas = Bodega::where('sucursal_id', $persona->sucursal_id)->get();
+            if (count($bodegas) > 0) {
+                foreach ($bodegas as $i) {
+                    $disponible = Lavadora::where([['estado', 'DISPONIBLE'], ['bodega_id', $i->id]])->get();
+                    if (count($disponible) > 0) {
+                        $existe = true;
+                    }
+                }
+            }
+            if ($existe) {
+                $mensaje = "SI";
+            } else {
+                $mensaje = "Atencion!. No hay lavadoras disponibles en el momento";
+            }
+            return view('servicio.servicios.create')
+                            ->with('location', 'servicio')
+                            ->with('mensaje', $mensaje);
+        } else {
+            flash("Usted no posee permisos para acceder a esta funcionalidad.")->warning();
+            return redirect()->route('servicio.index');
+        }
     }
 
     /**

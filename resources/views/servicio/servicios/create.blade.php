@@ -11,6 +11,17 @@
     <li class="active"><a> Crear</a></li>
 </ol>
 @endsection
+@if($mensaje != 'SI')
+<div class="col-md-12">
+    <div class="card">
+        <div class="body">
+            <div class="alert alert-warning">
+                <strong>{{$mensaje}}</strong>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
 @section('content')
 <div class="row clearfix">
     <div class="col-md-12">
@@ -72,6 +83,20 @@
                 </div>
             </div>
             <div class="form-group">
+                <div class="col-sm-12">
+                    <div class="col-md-12">
+                        <label class="control-label">Ubicación de Residencia (Arrastre el marcador <i style="color:red; font-size: 20px" class="fa fa-map-marker"></i> hasta su dirección de residencia)</label>
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" readonly="" class="form-control" placeholder="Longitud" name="longitud" id="longitud" />
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" readonly="" class="form-control" placeholder="Latitud" name="latitud" id="latitud" /><br/>
+                    </div>
+                    <div class="col-md-12" id="map" style="height: 400px;"></div>
+                </div>
+            </div>
+            <div class="form-group">
                 <div class="col-md-12" style="margin-top: 20px !important">
                     <button class="btn btn-success icon-btn pull-right" type="submit"><i class="fa fa-fw fa-lg fa-save"></i>Guardar</button>
                     <button class="btn btn-info icon-btn pull-right" type="reset"><i class="fa fa-fw fa-lg fa-trash-o"></i>Limpiar</button>
@@ -84,55 +109,111 @@
 </div>
 @endsection
 @section('script')
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACMXJBl7W2A6fYConiB7bfeCkKuNusyyo&callback=initMap"></script>
 <script type="text/javascript">
-    $(function () {
-        $('#example1').DataTable();
-    });
-    function limpiar() {
-        $("#nombre").html("");
-        $("#telefono_cliente").html("");
-        $("#direccion_servicio").html("");
-        $("#direccion_cliente").html("");
-        $("#latitud_cliente").html("");
-        $("#longitud_cliente").html("");
-        $("#latitud_servicio").html("");
-        $("#longitud_servicio").html("");
-    }
-    function inhabilitar() {
-        $("#nombre").attr('disabled', true);
-        $("#telefono_cliente").attr('disabled', true);
-        $("#direccion_cliente").attr('disabled', true);
-    }
-    function ir() {
-        var id = $("#telefono_cliente").val();
-        if (id.length <= 0) {
-            notify('Atención', 'Debe ingresar un telefono.', 'error');
-        } else {
-            limpiar();
-            $.ajax({
-                type: 'GET',
-                url: url + "servicio/servicio/" + id + "/getcliente",
-                data: {},
-            }).done(function (msg) {
-                if (msg !== "null") {
-                    var m = JSON.parse(msg);
-                    $("#id_cliente").val(m.id);
-                    $("#nombre").val(m.nom);
-                    $("#apellidos").val(m.ape);
-                    $("#telefono_cliente").val(m.tel);
-                    $("#direccion_cliente").val(m.dir);
-                    $("#direccion_servicio").val(m.dir);
-                    $("#latitud_cliente").val(m.lat);
-                    $("#longitud_cliente").val(m.lon);
-                    $("#latitud_servicio").val(m.lat);
-                    $("#longitud_servicio").val(m.lon);
-                    inhabilitar();
-                } else {
-                    notify('Atención', 'No se encontro registro con ese telefono. Debe llenar el formulario.', 'error');
-                    $("#telefono_cliente").removeAttr('disabled');
-                }
-            });
-        }
-    }
+                        $(function () {
+                            $('#example1').DataTable();
+                        });
+                        function limpiar() {
+                            $("#nombre").html("");
+                            $("#telefono_cliente").html("");
+                            $("#direccion_servicio").html("");
+                            $("#direccion_cliente").html("");
+                            $("#latitud_cliente").html("");
+                            $("#longitud_cliente").html("");
+                            $("#latitud_servicio").html("");
+                            $("#longitud_servicio").html("");
+                        }
+                        function inhabilitar() {
+                            $("#nombre").attr('disabled', true);
+                            $("#telefono_cliente").attr('disabled', true);
+                            $("#direccion_cliente").attr('disabled', true);
+                        }
+                        function ir() {
+                            var id = $("#telefono_cliente").val();
+                            if (id.length <= 0) {
+                                notify('Atención', 'Debe ingresar un telefono.', 'error');
+                            } else {
+                                limpiar();
+                                $.ajax({
+                                    type: 'GET',
+                                    url: url + "servicio/servicio/" + id + "/getcliente",
+                                    data: {},
+                                }).done(function (msg) {
+                                    if (msg !== "null") {
+                                        var m = JSON.parse(msg);
+                                        $("#id_cliente").val(m.id);
+                                        $("#nombre").val(m.nom);
+                                        $("#apellidos").val(m.ape);
+                                        $("#telefono_cliente").val(m.tel);
+                                        $("#direccion_cliente").val(m.dir);
+                                        $("#direccion_servicio").val(m.dir);
+                                        $("#latitud_cliente").val(m.lat);
+                                        $("#longitud_cliente").val(m.lon);
+                                        $("#latitud_servicio").val(m.lat);
+                                        $("#longitud_servicio").val(m.lon);
+                                        inhabilitar();
+                                    } else {
+                                        notify('Atención', 'No se encontro registro con ese telefono. Debe llenar el formulario.', 'error');
+                                        $("#telefono_cliente").removeAttr('disabled');
+                                    }
+                                });
+                            }
+                        }
+
+                        var marker;          //variable del marcador
+                        var coords = {};    //coordenadas obtenidas con la geolocalización
+
+//Funcion principal
+                        initMap = function () {
+                            //usamos la API para geolocalizar el usuario
+                            navigator.geolocation.getCurrentPosition(
+                                    function (position) {
+                                        coords = {
+                                            lng: position.coords.longitude,
+                                            lat: position.coords.latitude
+                                        };
+                                        setMapa(coords, 'map');  //pasamos las coordenadas al metodo para crear el mapa
+                                    }, function (error) {
+                                console.log(error);
+                            });
+                        }
+
+                        function setMapa(coords, mapa) {
+                            //Se crea una nueva instancia del objeto mapa
+                            var map = new google.maps.Map(document.getElementById(mapa),
+                                    {
+                                        zoom: 10,
+                                        center: new google.maps.LatLng(coords.lat, coords.lng),
+                                    });
+                            //Creamos el marcador en el mapa con sus propiedades
+                            //para nuestro obetivo tenemos que poner el atributo draggable en true
+                            //position pondremos las mismas coordenas que obtuvimos en la geolocalización
+                            marker = new google.maps.Marker({
+                                map: map,
+                                draggable: true,
+                                animation: google.maps.Animation.DROP,
+                                position: new google.maps.LatLng(coords.lat, coords.lng),
+
+                            });
+                            //agregamos un evento al marcador junto con la funcion callback al igual que el evento dragend que indica 
+                            //cuando el usuario a soltado el marcador
+                            marker.addListener('click', toggleBounce);
+                            marker.addListener('dragend', function (event)
+                            {
+                                //escribimos las coordenadas de la posicion actual del marcador dentro del input #coords
+                                $("#latitud").val(this.getPosition().lat());
+                                $("#longitud").val(this.getPosition().lng());
+                            });
+                        }
+
+//callback al hacer clic en el marcador lo que hace es quitar y poner la animacion BOUNCE
+                        function toggleBounce() {
+                            if (marker.getAnimation() !== null) {
+                                marker.setAnimation(null);
+                            } else {
+                                marker.setAnimation(google.maps.Animation.BOUNCE);
+                            }
+                        }
 </script>
 @endsection
