@@ -12,7 +12,7 @@ class Cliente extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'telefono', 'nombre', 'direccion', 'latitud', 'longitud', 'created_at', 'updated_at'
+        'id', 'telefono', 'nombre', 'direccion','barrio', 'latitud', 'longitud', 'created_at', 'updated_at'
     ];
 
     /**
@@ -25,6 +25,6 @@ class Cliente extends Model
     ];
 
     public function servicios(){
-        return $this->hasMany('App\Servicio');
+        return $this->hasMany(Servicio::class);
     }
 }

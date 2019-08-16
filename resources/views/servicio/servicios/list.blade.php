@@ -46,34 +46,34 @@
                         <th>FECHA FIN</th>
                         <th>FECHA RECOGIDA</th>
                         <th>ESTADO</th>
-                        <th>MENSAJERO</th>
                         <th>ACCIONES</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($servicios as $servicio)
                     <tr>
-                        <td>{{$servico->cliente->nombre}}</td>
+                        <td>{{$servicio->cliente->nombre}}</td>
                         <td>{{$servicio->direccion}}</td>
-                        <td>{{$servicio->fechaentrega}}</td>
-                        <td>{{$servicio->fechafin}}</td>
-                        <td>{{$servicio->fecharecogido}}</td>
+                        <td>{{$servicio->fechaentrega == null ? 'SIN ENTREGAR' : $servicio->fechaentrega }}</td>
+                        <td>{{$servicio->fechafin == null ? 'SIN CALCULAR' : $servicio->fechafin }}</td>
+                        <td>{{$servicio->fecharecogido == null ? 'SIN RECOGER' : $servicio->fecharecogido  }}</td>
                         <td>@if($servicio->estado == 'PENDIENTE')
                             <label class="label label-warning">{{$servicio->estado}}</label>
-                            @elseif($servico->estado == 'ASIGNADA')
+                            @elseif($servicio->estado == 'ASIGNADA')
                             <label class="label label-info">{{$servicio->estado}}</label>
-                            @elseif($servico->estado == 'RECOGER')
+                            @elseif($servicio->estado == 'RECOGER')
                             <label class="label label-danger">{{$servicio->estado}}</label>
-                            @elseif($servico->estado == 'ENTREGADA')
+                            @elseif($servicio->estado == 'ENTREGADA')
                             <label class="label label-primary">{{$servicio->estado}}</label>
+                            @elseif($servicio->estado == 'CANCELADO')
+                            <label class="label label-inverse">{{$servicio->estado}}</label>
                             @else
                             <label class="label label-success">{{$servicio->estado}}</label>
                             @endif
                         </td>
-                        <td>{{$servicio->persona->primer_nombre." ".$servicio->persona->segundo." ".$servicio->persona->primer_apellido." ".$servicio->segundo_apellido}}</td>
                         <td style="text-align: center;">
-                            <a href="{{ route('servicio.show',$servico->id)}}" data-toggle="tooltip" data-placement="top" title="Editar Servico" style="color: green; margin-left: 10px;"><i class="fa fa-edit"></i></a>
-                            <a href="#" onclick="eliminar(event,{{$bodega->id}})" data-toggle="tooltip" data-placement="top" title="Eliminar Servico" style="color: red; margin-left: 10px;"><i class="fa fa-trash-o"></i></a>
+                            <a href="{{route('servicio.show',$servicio->id)}}" data-toggle="tooltip" data-placement="top" title="Detalle del Servicio" style="color: deepskyblue; margin-left: 10px;"><i class="fa fa-eye"></i></a>
+                            <a href="#" onclick="eliminar(event,{{$servicio->id}})"  data-toggle="tooltip" data-placement="top" title="Cancelar Servicio" style="color: red; margin-left: 10px;"><i class="fa  fa-calendar-times-o"></i></a>
                         </td>
                     </tr>
                     @endforeach
@@ -93,7 +93,6 @@
                                 function ir(id) {
                                 $("#id").val(id);
                                 }
-
                                 function eliminar(event, id){
                                 event.preventDefault();
                                 Swal.fire({
@@ -107,7 +106,7 @@
                                         cancelButtonText:'cancelar'
                                 }).then((result) => {
                                 if (result.value) {
-                                let url = 'bodega/' + id;
+                                let url = 'servicio/' + id;
                                 axios.delete(url).then(result => {
                                 let data = result.data;
                                 if (data.status == 'ok') {

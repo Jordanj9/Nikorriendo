@@ -17,8 +17,10 @@ class CreateServiciosTable extends Migration {
             $table->dateTime('fechaentrega')->nullable();
             $table->dateTime('fecharecogido')->nullable();
             $table->dateTime('fechafin')->nullable();
-            $table->integer('dias');
+            $table->integer('dias')->default(1);
+            $table->integer('num_lavadoras')->default(1);
             $table->string('estado', 50);
+            $table->string('barrio',100);
             $table->string('direccion', 100);
             $table->string('firma_recibido_cliente')->nullable();
             $table->string('firma_entrega_personal')->nullable();
@@ -29,7 +31,7 @@ class CreateServiciosTable extends Migration {
             $table->integer('total');
             $table->bigInteger('cliente_id')->unsigned();
             $table->foreign('cliente_id')->references('id')->on('clientes')->onDelete('cascade');
-            $table->bigInteger('persona_id')->unsigned();
+            $table->bigInteger('persona_id')->unsigned()->nullable();
             $table->foreign('persona_id')->references('id')->on('personas')->onDelete('cascade');
             $table->timestamps();
         });
