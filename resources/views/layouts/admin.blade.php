@@ -97,7 +97,7 @@
                                                                                 <i class="fa fa-users text-red"></i> 5 new members joined
                                                                             </a>
                                                                         </li>
-        
+
                                                                         <li>
                                                                             <a href="#">
                                                                                 <i class="fa fa-shopping-cart text-green"></i> 25 sales made
@@ -292,7 +292,6 @@
                                 $('.sidebar-menu').tree();
                             });
                             $.material.init();
-
                             function notify(title, text, type) {
                                 new PNotify({
                                     title: title,

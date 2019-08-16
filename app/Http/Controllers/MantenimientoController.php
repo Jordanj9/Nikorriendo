@@ -6,6 +6,7 @@ use App\Estado_mantenimiento;
 use App\Lavadora;
 use App\Mantenimiento;
 use App\Persona;
+use App\Repuesto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,6 +29,7 @@ class MantenimientoController extends Controller
      */
     public function create()
     {
+        $repuestos = Repuesto::all();
         $persona = Persona::where('identificacion',Auth::user()->identificacion)->first();
 
         if($persona == null){
@@ -52,10 +54,13 @@ class MantenimientoController extends Controller
         }
 
         if(count($mantenimientos) > 0){
+
             return view('mantenimiento.mantenimiento.facturar')
                 ->with('location','mantenimiento')
                 ->with('mantenimientos',$mantenimientos)
-                ->with('persona',$persona);
+                ->with('persona',$persona)
+                ->with('repuestos',$repuestos);
+
         }else{
             flash("no <strong>" . 'hay' . "</strong> mantenimientos por realizar en esta sucursal")->warning();
             return redirect()->route('admin.mantenimiento');

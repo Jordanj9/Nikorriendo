@@ -14,7 +14,8 @@
     <div class="row clearfix">
         <div class="col-md-12">
             <div class="alert alert-warning">
-                <p class="h4"><strong>Detalles: </strong> gestiona la información de cada una de los repuestos de las lavadoras.
+                <p class="h4"><strong>Detalles: </strong> gestiona la información de cada una de los repuestos de las
+                    lavadoras.
                 </p>
             </div>
         </div>
@@ -29,7 +30,8 @@
                 <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
                         title="Minimizar">
                     <i class="fa fa-minus"></i></button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Cerrar">
+                <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip"
+                        title="Cerrar">
                     <i class="fa fa-times"></i></button>
             </div>
         </div>
@@ -61,8 +63,12 @@
                             <td>{{$repuesto->created_at}}</td>
                             <td>{{$repuesto->updated_at}}</td>
                             <td style="text-align: center;">
-                                <a href="{{ route('repuesto.edit',$repuesto->id)}}" data-toggle="tooltip" data-placement="top" title="Editar repuesto" style="color: green; margin-left: 10px;"><i class="fa fa-edit"></i></a>
-                                <a href="#" onclick="eliminar(event,{{$repuesto->id}})" data-toggle="tooltip" data-placement="top" title="Eliminar repuesto" style="color: red; margin-left: 10px;"><i class="fa fa-trash-o"></i></a>
+                                <a href="{{ route('repuesto.edit',$repuesto->id)}}" data-toggle="tooltip"
+                                   data-placement="top" title="Editar repuesto"
+                                   style="color: green; margin-left: 10px;"><i class="fa fa-edit"></i></a>
+                                <a href="#" onclick="eliminar(event,{{$repuesto->id}})" data-toggle="tooltip"
+                                   data-placement="top" title="Eliminar repuesto"
+                                   style="color: red; margin-left: 10px;"><i class="fa fa-trash-o"></i></a>
                             </td>
                         </tr>
                     @endforeach
@@ -79,10 +85,12 @@
         $(function () {
             $('#example1').DataTable();
         });
+
         function ir(id) {
             $("#id").val(id);
         }
-        function eliminar(event,id){
+
+        function eliminar(event, id) {
             event.preventDefault();
             Swal.fire({
                 title: 'Estas seguro(a)?',
@@ -92,13 +100,13 @@
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Si, eliminarlo!',
-                cancelButtonText:'cancelar'
+                cancelButtonText: 'cancelar'
             }).then((result) => {
                 if (result.value) {
-                    let url = 'repuesto/'+id;
+                    let url = 'repuesto/' + id;
                     axios.delete(url).then(result => {
                         let data = result.data;
-                        if(data.status == 'ok'){
+                        if (data.status == 'ok') {
                             Swal.fire(
                                 'Eliminado!',
                                 data.message,
@@ -106,7 +114,7 @@
                             ).then(result => {
                                 location.reload();
                             });
-                        }else{
+                        } else {
                             Swal.fire(
                                 'Error!',
                                 data.message,
