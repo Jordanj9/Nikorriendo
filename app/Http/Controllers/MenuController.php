@@ -24,6 +24,20 @@ class MenuController extends Controller {
         return view('menu.estructura')->with('location', 'estructura');
     }
 
+    /**
+     * Show the view menu servicio.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function servicio() {
+        return view('menu.servicio')->with('location', 'servicio');
+    }
+
+    /**
+     * Show the view menu mantenimiento.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function mantenimiento() {
         return view('menu.mantenimiento')->with('location', 'mantenimiento');
     }

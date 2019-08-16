@@ -89,7 +89,7 @@ class HomeController extends Controller {
      */
     public function inicio() {
         $user = Auth::user();
-        $not = Notificacion::where([['user_id', $user->id], ['estado', 'SIN LEER']])->get();
+        /*$not = Notificacion::where([['user_id', $user->id], ['estado', 'SIN LEER']])->get();
         $notificaciones = null;
         $total = 0;
         $total = count($not);
@@ -99,7 +99,7 @@ class HomeController extends Controller {
             }
         }
         session(['notificaciones' => $notificaciones]);
-        session(['total' => $total]);
+        session(['total' => $total]);*/
         return view('home')->with('location', 'inicio');
     }
 

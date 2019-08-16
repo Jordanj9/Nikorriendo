@@ -54,7 +54,7 @@
             <div class="form-group">
                 <div class="col-md-12" style="margin-top: 20px !important">
                     <button class="btn btn-success icon-btn pull-right" type="submit"><i class="fa fa-fw fa-lg fa-save"></i>Guardar</button>
-                    <button class="btn btn-warning icon-btn pull-right"><i class="fa fa-fw fa-lg  fa-plus-square"></i>Agregar Repuesto</button>
+                    <a href="" type="button" class="btn btn-warning icon-btn pull-right" onclick="agregarRepuesto(event)"><i class="fa fa-fw fa-lg  fa-plus-square"></i>Agregar Repuesto</a>
                     <button class="btn btn-info icon-btn pull-right" type="reset"><i class="fa fa-fw fa-lg fa-trash-o"></i>Limpiar</button>
                     <a class="btn btn-danger icon-btn pull-right" href="{{route('admin.mantenimiento')}}"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancelar</a>
                 </div>
@@ -90,34 +90,111 @@
             {!! Form::close() !!}
     </div>
 
-        <!-- Modal para agregar los repuestos a los tecnicos -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
                     </div>
                     <div class="modal-body">
-                        ...
+
+                        <div class="outer_div">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tbody>
+                                        <tr class="warning">
+                                            <th>ID</th>
+                                            <th>Repuesto</th>
+                                            <th><span class="pull-right">Cant.</span></th>
+                                            <th><span class="pull-right">Precio</span></th>
+                                            <th class="text-center" style="width: 36px;">Agregar</th>
+                                        </tr>
+                                    <tr>
+                                        <td>00001</td>
+                                        <td>Casas</td>
+                                        <td class="col-xs-1">
+                                            <div class="pull-right">
+                                                <input type="text" class="form-control" style="text-align:right" id="cantidad_1" value="1">
+                                            </div></td>
+                                        <td class="col-xs-2"><div class="pull-right">
+                                                <input type="text" class="form-control" style="text-align:right" id="precio_venta_1" value="10000.00">
+                                            </div></td>
+                                        <td class="text-center"><a class="btn btn-info" href="#" onclick="agregar('1')"><i class="glyphicon glyphicon-plus"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>00002</td>
+                                        <td>Shampoo</td>
+                                        <td class="col-xs-1">
+                                            <div class="pull-right">
+                                                <input type="text" class="form-control" style="text-align:right" id="cantidad_661" value="1">
+                                            </div></td>
+                                        <td class="col-xs-2"><div class="pull-right">
+                                                <input type="text" class="form-control" style="text-align:right" id="precio_venta_661" value="4.50">
+                                            </div></td>
+                                        <td class="text-center"><a class="btn btn-info" href="#" onclick="agregar('661')"><i class="glyphicon glyphicon-plus"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>999910</td>
+                                        <td>Test motherboard</td>
+                                        <td class="col-xs-1">
+                                            <div class="pull-right">
+                                                <input type="text" class="form-control" style="text-align:right" id="cantidad_662" value="1">
+                                            </div></td>
+                                        <td class="col-xs-2"><div class="pull-right">
+                                                <input type="text" class="form-control" style="text-align:right" id="precio_venta_662" value="150.00">
+                                            </div></td>
+                                        <td class="text-center"><a class="btn btn-info" href="#" onclick="agregar('662')"><i class="glyphicon glyphicon-plus"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>46546546464654646546</td>
+                                        <td>Kg. Tortillas Rojas</td>
+                                        <td class="col-xs-1">
+                                            <div class="pull-right">
+                                                <input type="text" class="form-control" style="text-align:right" id="cantidad_648" value="1">
+                                            </div></td>
+                                        <td class="col-xs-2"><div class="pull-right">
+                                                <input type="text" class="form-control" style="text-align:right" id="precio_venta_648" value="16.00">
+                                            </div></td>
+                                        <td class="text-center"><a class="btn btn-info" href="#" onclick="agregar('648')"><i class="glyphicon glyphicon-plus"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>muleta</td>
+                                        <td class="col-xs-1">
+                                            <div class="pull-right">
+                                                <input type="text" class="form-control" style="text-align:right" id="cantidad_664" value="1">
+                                            </div></td>
+                                        <td class="col-xs-2"><div class="pull-right">
+                                                <input type="text" class="form-control" style="text-align:right" id="precio_venta_664" value="52.00">
+                                            </div></td>
+                                        <td class="text-center"><a class="btn btn-info" href="#" onclick="agregar('664')"><i class="glyphicon glyphicon-plus"></i></a></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary">Save changes</button>
                     </div>
                 </div>
             </div>
         </div>
-
-
+</div>
 @endsection
 @section('script')
     <script type="text/javascript">
         $(function () {
             $('#example1').DataTable();
         });
+
+        function agregarRepuesto(event) {
+            event.preventDefault();
+            $('#myModal').modal('show');
+        }
     </script>
 @endsection
 
