@@ -26,7 +26,7 @@
 <div class="row clearfix">
     <div class="col-md-12">
         <div class="alert alert-warning">
-            <p class="h4"><strong>Agregue nuevo servicio,</strong> gestiona la información de cada solicitud de servicios.
+            <p class="h4"><strong>Agregue nuevo servicio,</strong> Gestiona la información de cada solicitud de servicios.
             </p>
         </div>
     </div>
