@@ -23,9 +23,11 @@
     <div class="box-header with-border">
         <h3 class="box-title">Listado de Servicios</h3>
         <div class="box-tools pull-right">
+            @if(session('ROL')=='CENTRAL')
             <a href="{{route('servicio.create')}}" type="button" class="btn btn-box-tool" data-toggle="tooltip"
                title="Nuevo Servicio">
                 <i class="fa fa-plus-circle"></i></a>
+            @endif
             <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
                     title="Minimizar">
                 <i class="fa fa-minus"></i></button>
