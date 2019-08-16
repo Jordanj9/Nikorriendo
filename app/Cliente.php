@@ -25,6 +25,6 @@ class Cliente extends Model
     ];
 
     public function servicios(){
-        return $this->hasMany('App\Servicio');
+        return $this->hasMany(Servicio::class);
     }
 }
