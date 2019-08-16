@@ -188,8 +188,12 @@ class ServicioController extends Controller
      */
     public function destroy(Servicio $servicio)
     {
-        $servicio->estado  = 'CANCELADO';
-        $result = $servicio->save();
+        $result = false;
+
+        if($servicio->estado == 'PENDIENTE' || $servicio->estado == 'ASIGNADO'){
+            $servicio->estado  = 'CANCELADO';
+            $result = $servicio->save();
+        }
 
         if ($result) {
             $u = Auth::user();
