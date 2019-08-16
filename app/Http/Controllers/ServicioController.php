@@ -37,7 +37,7 @@ class ServicioController extends Controller {
             $bodegas = Bodega::where('sucursal_id', $persona->sucursal_id)->get();
             if (count($bodegas) > 0) {
                 foreach ($bodegas as $i) {
-                    $disponible = Lavadora::where([['estado', 'DISPONIBLE'], ['bodega_id', $i->id]])->get();
+                    $disponible = Lavadora::where([['estado_lavadora', 'DISPONIBLE'], ['bodega_id', $i->id]])->get();
                     if (count($disponible) > 0) {
                         $existe = true;
                     }

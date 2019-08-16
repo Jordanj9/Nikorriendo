@@ -18,7 +18,9 @@ class CreateServiciosTable extends Migration {
             $table->dateTime('fecharecogido')->nullable();
             $table->dateTime('fechafin')->nullable();
             $table->integer('dias');
+            $table->integer('num_lavadoras');
             $table->string('estado', 50);
+            $table->string('barrio',100);
             $table->string('direccion', 100);
             $table->string('firma_recibido_cliente')->nullable();
             $table->string('firma_entrega_personal')->nullable();
