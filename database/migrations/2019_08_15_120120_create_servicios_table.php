@@ -31,7 +31,7 @@ class CreateServiciosTable extends Migration {
             $table->integer('total');
             $table->bigInteger('cliente_id')->unsigned();
             $table->foreign('cliente_id')->references('id')->on('clientes')->onDelete('cascade');
-            $table->bigInteger('persona_id')->unsigned();
+            $table->bigInteger('persona_id')->unsigned()->nullable();
             $table->foreign('persona_id')->references('id')->on('personas')->onDelete('cascade');
             $table->timestamps();
         });

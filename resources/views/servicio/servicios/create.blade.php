@@ -116,6 +116,7 @@
         </div>
         <div class="col-md-12">
             {!! Form::open(['route'=>'servicio.store','method'=>'POST','role'=>'form'])!!}
+            <input type="hidden" name="telefono_cliente" id="tel">
             <input type="hidden" name="latitud_cliente" id="latitud_cliente" />
             <input type="hidden" name="longitud_cliente" id="longitud_cliente" />
             <input type="hidden" name="latitud_servicio" id="latitud_servicio" />
@@ -133,13 +134,17 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <label class="control-label">Nombre</label>
                     {!! Form::text('nombre',null,['class'=>'form-control','placeholder'=>'Nombres','required','id'=>'nombre']) !!}
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <label class="control-label">Dirección</label>
                     {!! Form::text('direccion',null,['class'=>'form-control','placeholder'=>'Dirección de residencia','required','id'=>'direccion_cliente']) !!}
+                </div>
+                <div class="col-md-4">
+                    <label>Barrio</label>
+                    <input type="text" class="form-control" placeholder="Barrio del cliente" name="barrio_cliente" id="barrio_cliente"/>
                 </div>
             </div>
             <div class="col-md-12"><h4 class="head" style="color: #2c3e50"><b>Datos del Servicio</b></h4></div>
@@ -154,7 +159,7 @@
             </div>
             <div class="col-md-4">
                 <label>Barrio</label>
-                <input type="text" class="form-control" placeholder="Barrio del servicio" name="barrio" id="barrio"/>
+                <input type="text" class="form-control" placeholder="Barrio del servicio" name="barrio_servicio" id="barrio_servicio"/>
             </div>
 
                <div class="col-md-12">
@@ -168,7 +173,7 @@
                             </div>
                         </div>
                         <div class="input">
-                            <input type="text" placeholder="Buscar en Google Maps" id="direccion_servicio" name="direccion_servico">
+                            <input type="text" placeholder="Buscar en Google Maps" id="direccion_servicio" name="direccion_servicio">
                             <a href="#" class="btn-search" title="Buscar"><i class="fa fa-search"></i></a>
                         </div>
                     </div>
@@ -232,6 +237,7 @@
                             $("#longitud_cliente").html("");
                             $("#latitud_servicio").html("");
                             $("#longitud_servicio").html("");
+                            $("#tel").html('');
                         }
                         function inhabilitar() {
                             $("#nombre").attr('disabled', true);
@@ -255,13 +261,15 @@
                                         $("#nombre").val(m.nom);
                                         $("#apellidos").val(m.ape);
                                         $("#telefono_cliente").val(m.tel);
+                                        $("#barrio_servicio").val(m.bar);
+                                        $("#barrio_cliente").val(m.bar);
                                         $("#direccion_cliente").val(m.dir);
                                         $("#direccion_servicio").val(m.dir);
                                         $("#latitud_cliente").val(m.lat);
                                         $("#longitud_cliente").val(m.lon);
                                         $("#latitud_servicio").val(m.lat);
                                         $("#longitud_servicio").val(m.lon);
-
+                                        $("#tel").val(m.tel);
 
                                         //Creamos el marcador en el mapa con sus propiedades
                                         //para nuestro obetivo tenemos que poner el atributo draggable en true

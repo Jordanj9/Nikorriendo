@@ -15,6 +15,9 @@ class CreateAuditoriaserviciosTable extends Migration
     {
         Schema::create('auditoriaservicios', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('usuario');
+            $table->string('operacion');
+            $table->text('detalles');
             $table->timestamps();
         });
     }
