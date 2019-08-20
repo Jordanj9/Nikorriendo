@@ -63,6 +63,14 @@
                 </div>
             </a>
             @endif
+            @if(session()->exists('PAG_ESTRUCTURA-SUCURSAL'))
+            <a href="{{route('barrio.index')}}" class="btn bg-yellow-gradient margin">
+                <div>
+                    <span style="color: white">BARRIOS</span>
+                    <span class="ink animated"></span>
+                </div>
+            </a>
+            @endif
         </div>
     </div>
 </div>

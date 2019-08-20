@@ -20,6 +20,8 @@ class CreateClientesTable extends Migration {
             $table->string('barrio', 100);
             $table->string('latitud');
             $table->string('longitud');
+            $table->bigInteger('barrio_id')->unsigned();
+            $table->foreign('barrio_id')->references('id')->on('barrios')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -78,6 +78,7 @@ class HomeController extends Controller {
         foreach ($modulos as $value) {
             session([$value->nombre => $value->nombre]);
         }
+      
         return view('home')->with('location', 'inicio');
     }
 
