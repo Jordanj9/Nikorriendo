@@ -28,13 +28,16 @@ class Lavadora extends Model {
         return $this->belongsTo(Bodega::class);
     }
 
-
     public function personas() {
-        return $this->belongsToMany(Persona::class,'lavadora_personas');
+        return $this->belongsToMany(Persona::class, 'lavadora_personas');
     }
 
-    public function mantenimientos(){
+    public function mantenimientos() {
         return $this->hasMany(Mantenimiento::class);
+    }
+
+    public function servicios() {
+        return $this->belongsToMany('App\Servicio');
     }
 
 }

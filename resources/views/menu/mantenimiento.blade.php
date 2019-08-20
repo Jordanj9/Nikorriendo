@@ -31,34 +31,18 @@
                         </div>
                     </a>
                 @endif
-                @if(session()->exists('PAG_ESTRUCTURA-BODEGA'))
-                    <a href="{{route('bodega.index')}}" class="btn bg-purple-gradient margin">
-                        <div>
-                            <span style="color: white">BODEGAS</span>
-                            <span class="ink animated"></span>
-                        </div>
-                    </a>
-                @endif
+                    @if(session()->exists('PAG_MANTENIMIENTO-MANTENIMIENTOS'))
+                        <a href="{{route('mantenimiento.index')}}" class="btn bg-purple-gradient margin">
+                            <div>
+                                <span style="color: white">Repuestos</span>
+                                <span class="ink animated"></span>
+                            </div>
+                        </a>
+                    @endif
                 @if(session()->exists('PAG_MANTENIMIENTO-FACTURAR-MANTENIMIENTO'))
                     <a href="{{route('mantenimiento.create')}}" class="btn bg-purple-gradient margin">
                         <div>
                             <span style="color: white">FACTURAR MANTENIMIENTO</span>
-                            <span class="ink animated"></span>
-                        </div>
-                    </a>
-                @endif
-                @if(session()->exists('PAG_ESTRUCTURA-EMPLEADO'))
-                    <a href="{{route('persona.index')}}" class="btn bg-purple-gradient margin">
-                        <div>
-                            <span style="color: white">EMPLEADOS</span>
-                            <span class="ink animated"></span>
-                        </div>
-                    </a>
-                @endif
-                @if(session()->exists('PAG_ESTRUCTURA-ASIGNAR-LAVADORA'))
-                    <a href="{{route('lavadora_persona.index')}}" class="btn bg-purple-gradient margin">
-                        <div>
-                            <span style="color: white">ASIGNAR LAVADORA A EMPLEADO</span>
                             <span class="ink animated"></span>
                         </div>
                     </a>

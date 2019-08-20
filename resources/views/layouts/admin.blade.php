@@ -44,6 +44,8 @@
         <!-- Google Font -->
         <link rel="stylesheet"
               href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+        @yield('style')
     </head>
     <body class="hold-transition skin-red sidebar-mini">
 
@@ -97,7 +99,7 @@
                                                                                 <i class="fa fa-users text-red"></i> 5 new members joined
                                                                             </a>
                                                                         </li>
-        
+
                                                                         <li>
                                                                             <a href="#">
                                                                                 <i class="fa fa-shopping-cart text-green"></i> 25 sales made
@@ -292,7 +294,6 @@
                                 $('.sidebar-menu').tree();
                             });
                             $.material.init();
-
                             function notify(title, text, type) {
                                 new PNotify({
                                     title: title,

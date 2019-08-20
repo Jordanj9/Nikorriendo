@@ -69,6 +69,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'estructura'], function() {
 //GRUPO DE RUTAS PARA LA GESTION DE LOS SERVICIOS
 Route::group(['middleware' => 'auth', 'prefix' => 'servicio'], function() {
     //SERVICIOS
+    Route::resource('servicio', 'ServicioController');
+    Route::get('servicio/{telefono}/getcliente', 'ServicioController@getClientes')->name('servicio.getclientes');
 });
 
 //GRUPO DE RUTAS PARA LA GESTION DE LOS MANTENIMIENTOS DE LAS LAVADORAS DE LA EMPRESA
