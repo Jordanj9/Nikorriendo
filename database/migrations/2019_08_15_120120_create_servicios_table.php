@@ -20,7 +20,6 @@ class CreateServiciosTable extends Migration {
             $table->integer('dias')->default(1);
             $table->integer('num_lavadoras')->default(1);
             $table->string('estado', 50);
-            $table->string('barrio',100);
             $table->string('direccion', 100);
             $table->string('firma_recibido_cliente')->nullable();
             $table->string('firma_entrega_personal')->nullable();
@@ -35,6 +34,8 @@ class CreateServiciosTable extends Migration {
             $table->foreign('persona_id')->references('id')->on('personas')->onDelete('cascade');
             $table->bigInteger('sucursal_id')->unsigned()->nullable();
             $table->foreign('sucursal_id')->references('id')->on('sucursals')->onDelete('cascade');
+            $table->bigInteger('barrio_id')->unsigned();
+            $table->foreign('barrio_id')->references('id')->on('barrios')->onDelete('cascade');
             $table->timestamps();
         });
 
