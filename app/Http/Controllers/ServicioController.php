@@ -8,24 +8,21 @@ use App\Persona;
 use App\Cliente;
 use App\Auditoriaservicio;
 use App\Bodega;
-use DemeterChain\C;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ServicioController extends Controller
-{
+class ServicioController extends Controller {
 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         $servicios = Servicio::all()->sortBy('estado');
         return view('servicio.servicios.list')
-            ->with('location', 'servicio')
-            ->with('servicios', $servicios);
+                        ->with('location', 'servicio')
+                        ->with('servicios', $servicios);
     }
 
     /**
@@ -33,8 +30,7 @@ class ServicioController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         $u = Auth::user();
         $persona = Persona::where([['identificacion', $u->identificacion], ['tipo', 'CENTRAL']])->first();
         $existe = false;
@@ -54,8 +50,8 @@ class ServicioController extends Controller
                 $mensaje = "Atencion!. No hay lavadoras disponibles en el momento";
             }
             return view('servicio.servicios.create')
-                ->with('location', 'servicio')
-                ->with('mensaje', $mensaje);
+                            ->with('location', 'servicio')
+                            ->with('mensaje', $mensaje);
         } else {
             flash("Usted no posee permisos para acceder a esta funcionalidad.")->warning();
             return redirect()->route('servicio.index');
@@ -68,11 +64,9 @@ class ServicioController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $result_cliente = true;
-        $existe = Cliente::where('telefono',$request->telefono_cliente)->first();
-
+        $existe = Cliente::where('telefono', $request->telefono_cliente)->first();
         if ($existe == null) {
             dd($existe);
             $cliente = new Cliente();
@@ -82,18 +76,14 @@ class ServicioController extends Controller
             $cliente->direccion = $request->direccion;
             $cliente->latitud = $request->latitud_servicio;
             $cliente->longitud = $request->longitud_servicio;
-
             foreach ($cliente->attributesToArray() as $key => $value) {
                 if (isset($cliente->$key)) {
                     $cliente->$key = strtoupper($value);
                 }
             }
-
             $result_cliente = $cliente->save();
         }
-
         if ($result_cliente) {
-
             $servicio = new Servicio();
             $servicio->num_lavadoras = $request->num_lavadoras;
             $servicio->estado = 'PENDIENTE';
@@ -102,24 +92,20 @@ class ServicioController extends Controller
             $servicio->direccion = $request->direccion_servicio;
             $servicio->latitud = $request->latitud_servicio;
             $servicio->longitud = $request->longitud_servicio;
-            $servicio->total =  $servicio->num_lavadoras * $servicio->dias * 7000;
-
+            $servicio->total = $servicio->num_lavadoras * $servicio->dias * 7000;
             if (isset($request->id_cliente)) {
                 $servicio->cliente_id = $request->id_cliente;
-            } else if($existe){
+            } else if ($existe) {
                 $servicio->cliente_id = $existe->id;
-            }else{
+            } else {
                 $servicio->cliente_id = $cliente->id;
             }
-
             foreach ($servicio->attributesToArray() as $key => $value) {
                 if (isset($servicio->$key)) {
                     $servicio->$key = strtoupper($value);
                 }
             }
-
             $result_servicio = $servicio->save();
-
             if ($result_servicio) {
                 $u = Auth::user();
                 $aud = new Auditoriaservicio();
@@ -137,13 +123,10 @@ class ServicioController extends Controller
                 flash("El servico para la dirección <strong>" . $servicio->direccion . "</strong> no pudo ser almacenado. Error: " . $result_servicio)->error();
                 return back()->withInput($request->all());
             }
-
         } else {
             flash("El servico para la dirección <strong>" . $request->direccion_servicio . "</strong> no pudo ser almacenado. Error: " . $result_cliente)->error();
             return back()->withInput($request->all());
         }
-
-
     }
 
     /**
@@ -152,8 +135,7 @@ class ServicioController extends Controller
      * @param \App\Servicio $servicio
      * @return \Illuminate\Http\Response
      */
-    public function show(Servicio $servicio)
-    {
+    public function show(Servicio $servicio) {
         //
     }
 
@@ -163,8 +145,7 @@ class ServicioController extends Controller
      * @param \App\Servicio $servicio
      * @return \Illuminate\Http\Response
      */
-    public function edit(Servicio $servicio)
-    {
+    public function edit(Servicio $servicio) {
         //
     }
 
@@ -175,8 +156,7 @@ class ServicioController extends Controller
      * @param \App\Servicio $servicio
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Servicio $servicio)
-    {
+    public function update(Request $request, Servicio $servicio) {
         //
     }
 
@@ -186,12 +166,11 @@ class ServicioController extends Controller
      * @param \App\Servicio $servicio
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Servicio $servicio)
-    {
+    public function destroy(Servicio $servicio) {
         $result = false;
 
-        if($servicio->estado == 'PENDIENTE' || $servicio->estado == 'ASIGNADO'){
-            $servicio->estado  = 'CANCELADO';
+        if ($servicio->estado == 'PENDIENTE' || $servicio->estado == 'ASIGNADO') {
+            $servicio->estado = 'CANCELADO';
             $result = $servicio->save();
         }
 
@@ -208,20 +187,18 @@ class ServicioController extends Controller
             $aud->save();
 
             return response()->json([
-                'status' => 'ok',
-                'message' => "EL servicio para la direccion " . $servicio->direccion . " fue cancelado(a) de forma exitosa!"
+                        'status' => 'ok',
+                        'message' => "EL servicio para la direccion " . $servicio->direccion . " fue cancelado(a) de forma exitosa!"
             ]);
-
         } else {
             return response()->json([
-                'status' => 'error',
-                'message' => "El servicio para la direccion " . $servicio->direccion . " no pudo ser cancelado(a). Error:"
+                        'status' => 'error',
+                        'message' => "El servicio para la direccion " . $servicio->direccion . " no pudo ser cancelado(a). Error:"
             ]);
         }
     }
 
-    public function getClientes($id)
-    {
+    public function getClientes($id) {
         $cli = Cliente::where('telefono', $id)->first();
         if ($cli !== null) {
             $obj["id"] = $cli->id;
@@ -237,8 +214,7 @@ class ServicioController extends Controller
         }
     }
 
-    function orderMultiDimensionalArray($toOrderArray, $field, $inverse = false)
-    {
+    function orderMultiDimensionalArray($toOrderArray, $field, $inverse = false) {
         $position = array();
         $newRow = array();
         foreach ($toOrderArray as $key => $row) {
