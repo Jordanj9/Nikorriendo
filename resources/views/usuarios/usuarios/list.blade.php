@@ -45,12 +45,12 @@
                         <td>@if($usuario->estado=='ACTIVO')<label class="label label-success">ACTIVO</label>@else<label class="label label-danger">INACTIVO</label>@endif</td>
                         <td>
                             @foreach($usuario->grupousuarios as $grupo)
-                            {{$grupo->nombre}} - 
+                            {{$grupo->nombre}} -
                             @endforeach
                         </td>
                         <td>{{$usuario->created_at}}</td>
                         <td>{{$usuario->updated_at}}</td>
-                        <td>{!! Form::open(['route'=>'usuario.operaciones','method'=>'POST','class'=>'form-horizontal form-label-left'])!!}<input type="hidden" name="id" value="{{$usuario->identificacion}}" /><button class="btn btn-success" style="color: green; margin-left: 10px;" type="submit" data-toggle="tooltip" data-placement="top" title="Editar Usuario"><i class="fa fa-edit"></i></button>{!! Form::close() !!}</td>  
+                        <td>{!! Form::open(['route'=>'usuario.operaciones','method'=>'POST','class'=>'form-horizontal form-label-left'])!!}<input type="hidden" name="id" value="{{$usuario->identificacion}}" /><button class="btn btn-success" style="color: green; margin-left: 10px;" type="submit" data-toggle="tooltip" data-placement="top" title="Editar Usuario"><i class="fa fa-edit"></i></button>{!! Form::close() !!}</td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -92,7 +92,9 @@
 @section('script')
 <script type="text/javascript">
     $(function () {
-        $('#example1').DataTable();
+        $('#example1').DataTable({
+            responsive:true
+        });
     });
     function ir(id) {
         $("#id").val(id);
