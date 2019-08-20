@@ -71,8 +71,7 @@
                             <td>{{$servicio->created_at}}</td>
                             <td>{{$servicio->updated_at}}</td>
                             <td style="text-align: center;">
-                                <a href="{{route('servicio.show',$servicio->id)}}" data-toggle="tooltip" data-placement="top" title="Detalle del Servicio" style="color: deepskyblue; margin-left: 10px;"><i class="fa fa-eye"></i></a>
-                                <a href="#" onclick="eliminar(event,{{$servicio->id}})"  data-toggle="tooltip" data-placement="top" title="Cancelar Servicio" style="color: red; margin-left: 10px;"><i class="fa  fa-calendar-times-o"></i></a>
+                                <a href="{{route('servicio.aceptarServicio',$servicio->id)}}" data-toggle="tooltip" data-placement="top" title="Aceptar Servicio" style="color: green; margin-left: 10px;"><i class="fa fa-check-circle"></i></a>
                             </td>
                         </tr>
                     @endforeach

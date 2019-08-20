@@ -48,7 +48,7 @@
             </a>
             @endif
             @if(session()->exists('PAG_SERVICIO-ENTREGAR'))
-            <a href="{{route('mantenimiento.create')}}" class="btn bg-red-gradient margin">
+            <a href="{{route('servicio.getServiciosPorEntregar')}}" class="btn bg-red-gradient margin">
                 <div>
                     <span style="color: white">SERVICIOS POR ENTREGAR</span>
                     <span class="ink animated"></span>
