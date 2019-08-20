@@ -14,6 +14,7 @@ class SucursalController extends Controller
      */
     public function index()
     {
+
         $sucursales = Sucursal::all();
         return view('estructura.sucursal.list')
             ->with('location', 'estructura')

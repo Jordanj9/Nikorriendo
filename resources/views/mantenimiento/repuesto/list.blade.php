@@ -83,7 +83,9 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script type="text/javascript">
         $(function () {
-            $('#example1').DataTable();
+            $('#example1').DataTable({
+                responsive:true
+            });
         });
 
         function ir(id) {

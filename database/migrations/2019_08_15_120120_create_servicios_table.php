@@ -33,6 +33,8 @@ class CreateServiciosTable extends Migration {
             $table->foreign('cliente_id')->references('id')->on('clientes')->onDelete('cascade');
             $table->bigInteger('persona_id')->unsigned()->nullable();
             $table->foreign('persona_id')->references('id')->on('personas')->onDelete('cascade');
+            $table->bigInteger('sucursal_id')->unsigned()->nullable();
+            $table->foreign('sucursal_id')->references('id')->on('sucursals')->onDelete('cascade');
             $table->timestamps();
         });
 

@@ -1,6 +1,7 @@
 body {
     line-height: 1.2;
-    height: 100%;
+    width: 100%;
+    height: 100vh;
     background: #000000 url('../images/banner02.jpg') no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -32,16 +33,47 @@ table {
     margin-top: 50px;
     color: #fff;
 }
+
+@media (max-width: 468px) {
+    .content
+    {
+        margin-top: 5px;
+    }
+
+}
 .logo img
 {
     display: inline-block;
+}
+
+@media (max-width: 468px) {
+    .logo img
+    {
+        height: 180px;
+    }
+
 }
 .logo h2
 {
     font-family: 'Lobster', cursive;
     font-size: 34px;
-    padding-top: 40px;
+    padding-top: 20px;
 }
+
+@media (max-width: 468px) {
+    .logo h2
+    {
+        font-size: 38px;
+    }
+
+    .logo h3
+    {
+        font-size: 12px;
+    }
+
+}
+
+
 #countdown {
     text-align: center;
     margin:  110px 0px 69px;
@@ -84,7 +116,7 @@ table {
     width: 50px;
     height: 50px;
     line-height: 50px;
-    margin-right: 10px;
+    margin-left: -50px;
 }
 .section-padding
 {
@@ -104,7 +136,7 @@ table {
 {
     font-size: 44px;
 }
-.subcription-info 
+.subcription-info
 {
     width: 40%;
     margin: 0 auto 50px;
@@ -302,7 +334,7 @@ Media Queries
         margin: 0 auto;
     }
     body{
-        overflow-x:hidden; 
+        overflow-x:hidden;
     }
 }
 @media (min-width: 20px) and (max-width: 500px) {

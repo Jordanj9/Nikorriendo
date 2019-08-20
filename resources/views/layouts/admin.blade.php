@@ -34,6 +34,8 @@
         <!-- DataTables -->
         <link rel="stylesheet" href="{{ asset('bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css')}}">
         <link rel="shortcut icon" href="{{asset('images/logomio.png')}}">
+
+        <link rel="stylesheet" href="{{asset('bower_components/datatables.net/css/responsive.dataTables.min.css')}}">
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -72,52 +74,49 @@
 
                     <div class="navbar-custom-menu">
                         <ul class="nav navbar-nav">
-                            <!-- Notifications: style can be found in dropdown.less -->
-                            <!--                            <li class="dropdown notifications-menu">
-                                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                                <i class="fa fa-bell-o"></i>
-                                                                <span class="label label-warning">10</span>
-                                                            </a>
-                                                            <ul class="dropdown-menu">
-                                                                <li class="header">You have 10 notifications</li>
-                                                                <li>
-                                                                     inner menu: contains the actual data
-                                                                    <ul class="menu">
-                                                                        <li>
-                                                                            <a href="#">
-                                                                                <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a href="#">
-                                                                                <i class="fa fa-warning text-yellow"></i> Very long description here that may not fit into the
-                                                                                page and may cause design problems
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a href="#">
-                                                                                <i class="fa fa-users text-red"></i> 5 new members joined
-                                                                            </a>
-                                                                        </li>
-
-                                                                        <li>
-                                                                            <a href="#">
-                                                                                <i class="fa fa-shopping-cart text-green"></i> 25 sales made
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a href="#">
-                                                                                <i class="fa fa-user text-red"></i> You changed your username
-                                                                            </a>
-                                                                        </li>
-                                                                    </ul>
-                                                                </li>
-                                                                <li class="footer"><a href="#">View all</a></li>
-                                                            </ul>
-                                                        </li>-->
-                            <!-- User Account: style can be found in dropdown.less -->
+                            <li class="dropdown notifications-menu">
+                                <a href="#" class="dropdown-toggle" onclick="dropdown(event)">
+                                    <i class="fa fa-bell-o"></i>
+                                    <span class="label label-warning">10</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="header">You have 10 notifications</li>
+                                    <li>
+                                        <!-- inner menu: contains the actual data -->
+                                        <ul class="menu">
+                                            <li>
+                                                <a href="#">
+                                                    <i class="fa fa-users text-aqua"></i> 5 new members joined today
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <i class="fa fa-warning text-yellow"></i> Very long description here that may not fit into the
+                                                    page and may cause design problems
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <i class="fa fa-users text-red"></i> 5 new members joined
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <i class="fa fa-shopping-cart text-green"></i> 25 sales made
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <i class="fa fa-user text-red"></i> You changed your username
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="footer"><a href="#">View all</a></li>
+                                </ul>
+                            </li>
                             <li class="dropdown user user-menu">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <a href="#" class="dropdown-toggle" onclick="dropdown(event)">
                                     <img src="{{ asset('dist/img/user-160x160.jpg')}}" class="user-image" alt="User Image">
                                     <span class="hidden-xs">{{Auth::user()->nombres." ".Auth::user()->apellidos}}</span>
                                 </a>
@@ -283,13 +282,16 @@
         <!-- start: Javascript -->
         <!--        <script src="{{ asset('js/jquery.min.js')}}"></script>-->
         <script src="{{ asset('js/jquery.ui.min.js')}}"></script>
+        <script src="{{asset('bower_components/datatables.net/js/dataTables.responsive.min.js')}}"></script>
         <script src="{{ asset('js/bootstrap.min.js')}}"></script>
         <script src="{{ asset('plugins/pnotify/dist/pnotify.js')}}"></script>
         <script src="{{ asset('plugins/pnotify/dist/pnotify.buttons.js')}}"></script>
         <script src="{{ asset('plugins/pnotify/dist/pnotify.nonblock.js')}}"></script>
         <script src="{{ asset('plugins/ckeditor/ckeditor.js')}}"></script>
+        <script src="{{asset('js/app.js')}}"></script>
         <script type="text/javascript">
                             var url = "<?php echo config('app.url'); ?>public/";
+
                             $(document).ready(function () {
                                 $('.sidebar-menu').tree();
                             });
@@ -301,6 +303,18 @@
                                     type: type,
                                     styling: 'bootstrap3'
                                 });
+                            }
+                            function dropdown(event){
+                                event.preventDefault();
+                                const ul = event.target.parentElement.querySelector('.dropdown-menu');
+                                console.log(ul);
+                                ul.classList.toggle('dropdown-active');
+                                if(ul.classList.contains('dropdown-active')){
+                                    ul.style.display = 'block';
+                                }else{
+                                    ul.style.display = 'none';
+                                }
+
                             }
         </script>
         @yield('script')

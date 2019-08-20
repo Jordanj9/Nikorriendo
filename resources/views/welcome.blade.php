@@ -9,20 +9,20 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('css/plugins/font-awesome-4.7.0/css/font-awesome.min.css')}}"/>
         <link rel="stylesheet" type="text/css" href="{{ asset('css/plugins/animate.min.css')}}"/>
         <link rel="stylesheet" type="text/css" href="{{asset('css/style2.css')}}">
-        <link rel="shortcut icon" href="{{asset('images/logomio.png')}}">
+        <link rel="shortcut icon" href="{{asset('images/logo.png')}}">
     </head>
     <body>
         <div class="content">
             <div class="container wow fadeInUp delay-03s">
                 <div class="row">
                     <div class="logo text-center">
-                        <img src="{{asset('images/logomio.png')}}" alt="logo" width="250">
+                        <img src="{{asset('images/logo.png')}}" alt="logo" width="200" height="250">
                         <h2 style="color: #cc0000">Bienvenido!</h2>
                         <h3 style="color: #cc0000">Sistema de Alquiler - Nikorriendo Valledupar</h3>
                     </div>
                 </div>
             </div>
-            <section style="padding-top: 20px;">
+            <section style="padding-top: 20px;margin-top: 20px;">
                 <div class="container">
                     <div class="row bort text-center">
                         <div class="social">

@@ -22,10 +22,20 @@ class ServicioController extends Controller
      */
     public function index()
     {
-        $servicios = Servicio::all()->sortBy('estado');
+
+        $u = Auth::user();
+        $persona = Persona::where('identificacion', $u->identificacion)->first();
+
+        if($persona !=  null){
+            $servicios = Servicio::where('sucursal_id',$persona->sucursal_id)->get()->sortBy('estado');
+        }else{
+            $servicios = Servicio::all()->sortBy('estado');
+        }
+
         return view('servicio.servicios.list')
             ->with('location', 'servicio')
             ->with('servicios', $servicios);
+
     }
 
     /**
@@ -70,11 +80,12 @@ class ServicioController extends Controller
      */
     public function store(Request $request)
     {
+        $u = Auth::user();
+        $persona = Persona::where('identificacion', $u->identificacion)->first();
         $result_cliente = true;
         $existe = Cliente::where('telefono',$request->telefono_cliente)->first();
 
         if ($existe == null) {
-            dd($existe);
             $cliente = new Cliente();
             $cliente->telefono = $request->telefono_cliente;
             $cliente->barrio = $request->barrio_cliente;
@@ -95,6 +106,7 @@ class ServicioController extends Controller
         if ($result_cliente) {
 
             $servicio = new Servicio();
+            $servicio->sucursal_id = $persona->sucursal_id;
             $servicio->num_lavadoras = $request->num_lavadoras;
             $servicio->estado = 'PENDIENTE';
             $servicio->dias = $request->dias;
@@ -255,6 +267,28 @@ class ServicioController extends Controller
             $returnArray[] = $newRow[$key];
         }
         return $returnArray;
+    }
+
+    public function getServiciosPendientes(){
+
+        $u = Auth::user();
+        $persona = Persona::where('identificacion', $u->identificacion)->first();
+
+        if($persona !=  null){
+            $servicios = Servicio::where([
+                ['sucursal_id',$persona->sucursal_id],
+                ['estado','PENDIENTE']
+            ])->get()->sortBy('estado');
+        }else{
+            $servicios = Servicio::where([
+                ['estado','PENDIENTE']
+            ])->get()->sortBy('estado');
+        }
+
+        return view('servicio.servicios.pendientes')
+            ->with('location', 'servicio')
+            ->with('servicios', $servicios);
+
     }
 
 }
