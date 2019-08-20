@@ -46,6 +46,8 @@
                         <th>FECHA FIN</th>
                         <th>FECHA RECOGIDA</th>
                         <th>ESTADO</th>
+                        <th>CREACIÓN</th>
+                        <th>ACTUALIZADO</th>
                         <th>ACCIONES</th>
                     </tr>
                 </thead>
@@ -71,6 +73,8 @@
                             <label class="label label-success">{{$servicio->estado}}</label>
                             @endif
                         </td>
+                        <td>{{$servicio->created_at}}</td>
+                        <td>{{$servicio->updated_at}}</td>
                         <td style="text-align: center;">
                             <a href="{{route('servicio.show',$servicio->id)}}" data-toggle="tooltip" data-placement="top" title="Detalle del Servicio" style="color: deepskyblue; margin-left: 10px;"><i class="fa fa-eye"></i></a>
                             <a href="#" onclick="eliminar(event,{{$servicio->id}})"  data-toggle="tooltip" data-placement="top" title="Cancelar Servicio" style="color: red; margin-left: 10px;"><i class="fa  fa-calendar-times-o"></i></a>
@@ -88,7 +92,9 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script type="text/javascript">
                                 $(function () {
-                                $('#example1').DataTable();
+                                $('#example1').DataTable({
+                                    responsive: true
+                                });
                                 });
                                 function ir(id) {
                                 $("#id").val(id);

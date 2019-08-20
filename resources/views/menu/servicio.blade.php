@@ -32,7 +32,7 @@
             </a>
             @endif
             @if(session()->exists('PAG_SERVICIO-SOLICITUD-SERVICIO'))
-            <a href="{{route('repuesto.index')}}" class="btn bg-red-gradient margin">
+            <a href="{{route('servicio.getServiciosPendientes')}}" class="btn bg-red-gradient margin">
                 <div>
                     <span style="color: white">SOLICITUDES DE SERVICIO</span>
                     <span class="ink animated"></span>
@@ -40,7 +40,7 @@
             </a>
             @endif
             @if(session()->exists('PAG_SERVICIO-CAMBIOS'))
-            <a href="{{route('bodega.index')}}" class="btn bg-red-gradient margin">
+            <a href="{{route('servicio.getServiciosPendientes')}}" class="btn bg-red-gradient margin">
                 <div>
                     <span style="color: white">SOLICITUDES DE CAMBIOS</span>
                     <span class="ink animated"></span>

@@ -26,8 +26,10 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
         <!-- Styles -->
-        <link rel="shortcut icon" href="{{asset('images/logomio.png')}}">
+        <link rel="shortcut icon" href="{{asset('images/nikorriendo-blanco.ico')}}">
         <!--<link href="{{ asset('css/app.css') }}" rel="stylesheet">-->
+
+        @yield('style')
     </head>
     <body class="hold-transition login-page" style="background-image: url('{{asset('images/banner01.jpg')}}'); background-position: center center; background-size: cover; background-repeat: no-repeat; background-attachment: fixed;">
         <div id="app">
