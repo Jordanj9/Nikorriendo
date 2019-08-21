@@ -5,7 +5,7 @@
         <small>Sr(a). {{Auth::user()->nombres}}</small>
     </h1>
     <ol class="breadcrumb">
-        <li class="active"><a href="{{route('home')}}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+        <li class="active"><a href="{{route('inicio')}}"><i class="fa fa-home"></i> Inicio</a></li>
     </ol>
 @endsection
 @section('content')
@@ -29,7 +29,7 @@
                         <span class="info-box-icon bg-green-gradient"><i class="fa fa-home"></i></span>
                         <div class="info-box-content">
                             <span class="info-box-text">Inicio</span>
-                            <a href="{{route('home')}}" class="info-box-number">Inicio</a>
+                            <a href="{{route('inicio')}}" class="info-box-number">Inicio</a>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -52,10 +52,10 @@
             @if(session()->exists('MOD_ESTRUCTURA'))
                 <div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box">
-                        <span class="info-box-icon bg-yellow-gradient"><i class="fa fa-th-list"></i></span>
+                        <span class="info-box-icon bg-yellow-gradient"><i class="fa fa-gear"></i></span>
                         <div class="info-box-content">
                             <span class="info-box-text">Gestión De</span>
-                            <a href="{{route('admin.estructura')}}" class="info-box-number">Estructura</a>
+                            <a href="{{route('admin.estructura')}}" class="info-box-number">General</a>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -65,7 +65,7 @@
             @if(session()->exists('MOD_SERVICIO'))
                 <div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box">
-                        <span class="info-box-icon bg-red-gradient"><i class="fa   fa-indent"></i></span>
+                        <span class="info-box-icon bg-red-gradient"><i class="fa fa-indent"></i></span>
                         <div class="info-box-content">
                             <span class="info-box-text">Gestión De</span>
                             <a href="{{route('admin.servicio')}}" class="info-box-number">Servicios</a>
@@ -78,7 +78,7 @@
             @if(session()->exists('MOD_MANTENIMIENTO'))
                 <div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box">
-                        <span class="info-box-icon bg-purple-gradient"><i class="fa  fa-gears"></i></span>
+                        <span class="info-box-icon bg-purple-gradient"><i class="fa fa-wrench"></i></span>
                         <div class="info-box-content">
                             <span class="info-box-text">Gestión De</span>
                             <a href="{{route('admin.mantenimiento')}}" class="info-box-number">Mantenimientos</a>

@@ -72,9 +72,9 @@
     <small>Solicitudes de Servicios</small>
 </h1>
 <ol class="breadcrumb">
-    <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
-    <li><a href="{{route('admin.servicio')}}"><i class="fa fa-users"></i> Servicio</a></li>
-    <li><a href="{{route('servicio.index')}}"><i class="fa fa-users"></i> Solicitudes</a></li>
+    <li><a href="{{route('inicio')}}"><i class="fa fa-home"></i> Inicio</a></li>
+    <li><a href="{{route('admin.servicio')}}"><i class="fa fa-indent"></i> Servicios</a></li>
+    <li><a href="{{route('servicio.index')}}"><i class="fa fa-pencil-square-o"></i> Solicitudes</a></li>
     <li class="active"><a> Crear</a></li>
 </ol>
 @endsection

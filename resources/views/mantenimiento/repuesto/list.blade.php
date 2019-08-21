@@ -2,12 +2,12 @@
 @section('breadcrumb')
     <h1>
         Mantenimiento
-        <small>Gestion de los Mantenimientos</small>
+        <small>Repuestos</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
-        <li><a href="{{route('admin.mantenimiento')}}"><i class="fa fa-home"></i> Mantenimiento</a></li>
-        <li class="active"><a><i class="fa fa-users"></i> Repuestos</a></li>
+        <li><a href="{{route('inicio')}}"><i class="fa fa-home"></i> Inicio</a></li>
+        <li><a href="{{route('admin.mantenimiento')}}"><i class="fa fa-wrench"></i> Mantenimiento</a></li>
+        <li class="active"><a><i class="fa fa-cogs"></i> Repuestos</a></li>
     </ol>
 @endsection
 @section('content')

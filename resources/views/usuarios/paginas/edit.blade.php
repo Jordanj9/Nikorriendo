@@ -2,12 +2,12 @@
 @section('breadcrumb')
 <h1>
     Usuarios
-    <small>Creación y gestion de noticias</small>
+    <small>Páginas del Sistema </small>
 </h1>
 <ol class="breadcrumb">
-    <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
+    <li><a href="{{route('inicio')}}"><i class="fa fa-home"></i> Inicio</a></li>
     <li><a href="{{route('admin.usuarios')}}"><i class="fa fa-users"></i> Usuarios</a></li>
-    <li><a href="{{route('pagina.index')}}"><i class="fa fa-users"></i> Páginas</a></li>
+    <li><a href="{{route('pagina.index')}}"><i class="fa fa-file-powerpoint-o"></i> Páginas</a></li>
     <li class="active"><a> Editar</a></li>
 </ol>
 @endsection

@@ -5,9 +5,9 @@
     <small>Editar/Eliminar Usuario</small>
 </h1>
 <ol class="breadcrumb">
-    <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
+    <li><a href="{{route('inicio')}}"><i class="fa fa-home"></i> Inicio</a></li>
     <li><a href="{{route('admin.usuarios')}}"><i class="fa fa-users"></i> Usuarios</a></li>
-    <li><a href="{{route('usuario.index')}}"><i class="fa fa-users"></i> Listar Usuarios</a></li>
+    <li><a href="{{route('usuario.index')}}"><i class="fa fa-list-ul"></i> Listar Usuarios</a></li>
     <li class="active"><a> Editar/Eliminar Usuario</a></li>
 </ol>
 @endsection

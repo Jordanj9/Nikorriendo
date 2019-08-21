@@ -1,12 +1,12 @@
 @extends('layouts.admin')
 @section('breadcrumb')
 <h1>
-    Estructura
+    General
     <small>Empleados de la empresa</small>
 </h1>
 <ol class="breadcrumb">
-    <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
-    <li><a href="{{route('admin.estructura')}}"><i class="fa fa-users"></i> Estructura</a></li>
+    <li><a href="{{route('inicio')}}"><i class="fa fa-home"></i> Inicio</a></li>
+    <li><a href="{{route('admin.estructura')}}"><i class="fa fa-gear"></i> General</a></li>
     <li><a href="{{route('persona.index')}}"><i class="fa fa-users"></i> Empleados</a></li>
     <li class="active"><a> Editar</a></li>
 </ol>
