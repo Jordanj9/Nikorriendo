@@ -4,55 +4,99 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{{ asset('bower_components/font-awesome/css/font-awesome.min.css')}}">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="{{ asset('bower_components/Ionicons/css/ionicons.min.css')}}">
+
+    <link rel="stylesheet" href="{{ asset('select2/dist/css/select2.min.css')}}">
     <title>Canvas</title>
     <style>
-        @import url('https://fonts.googleapis.com/css?family=Beth+Ellen&display=swap');
-
         canvas {
             width: 300px;
             height: 200px;
-            background-color:white;
+            margin: 0 auto;
+            background-color: white;
             border-radius: 10px;
             border: 1px solid rgb(178, 178, 178);
         }
-
-        .title_firma {
-            font-family: 'Beth Ellen', cursive;
-        }
-
     </style>
 </head>
 <body>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Entregar Servicio</a>
+        </div>
+    </div>
+</nav>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Servicio
+            <small>Menú de Servicio</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
+            <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Servicios</a></li>
+            <li class="active"><a><i class="fa fa-users"></i> Entrega </a></li>
+        </ol>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        @include('flash::message')
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
 
 <div class="container">
     <div class="row">
-        <div class="firma_box col-md-4 col-xs-12 col-sm-6">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Seleccione las lavadoras que pretende entregar en el servicio</label>
+                <select class="form-control show-tick select2" name="lavadoras[]" required="" multiple="">
+                    <option value="" selected>--selecione una aqui--</option>
+                    @foreach($lavadoras as $key=>$value)
+                        <option value="{{$key}}">{{$value}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="col-md-12">
             <h3 class="title_firma">Firma Cliente</h3>
             <canvas id="firma_cliente"></canvas>
             <div class="opciones">
                 <form method='post' action='#' ENCTYPE='multipart/form-data'>
-                    <button type="submit" id="btn-guardar" class="btn btn-success pull-right" style="margin-left: 5px" onclick="guardar_firma(event)">Guardar</button>
-                    <button id="btn-limpiar" class="btn btn-info pull-right" value="Limpiar">Limpiar</button>
-                    <input type="hidden" name="firma" id="firma">
-                </form>
-            </div>
-        </div>
-        <div class="firma_box col-md-4 col-xs-12 col-sm-6">
-            <h3 class="title_firma">Firma Empleado</h3>
-            <canvas id="firma_empleado"></canvas>
-            <div class="opciones">
-                <form method='post' action='#' ENCTYPE='multipart/form-data'>
-                    <button type="submit" id="btn-guardar" class="btn btn-success pull-right" style="margin-left: 5px" onclick="guardar_firma(event)">Guardar</button>
-                    <button id="btn-limpiar" class="btn btn-info pull-right" value="Limpiar">Limpiar</button>
-                    <input type="hidden" name="firma" id="firma">
+                    <button id="btn-limpiar" class="btn btn-info pull-right" value="Limpiar"><i
+                            class="fa fa-sticky-note-o"></i></button>
                 </form>
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <div class="col-md-12" style="margin-top: 20px !important">
+                    <button class="btn btn-success icon-btn pull-right" type="submit" style="margin-left: 5px;"><i class="fa fa-fw fa-lg fa-save"></i>Guardar</button>
+                    <a class="btn btn-danger icon-btn pull-right" href="{{route('servicio.getServiciosPorEntregar')}}"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancelar</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<script >
+
+
+
+
+<!-- Select2 -->
+<script src="{{ asset('bower_components/jquery/dist/jquery.min.js')}}"></script>
+<script src="{{ asset('select2/dist/js/select2.full.min.js')}}"></script>
+<script>
     //======================================================================
     // VARIABLES
     //======================================================================
@@ -61,7 +105,7 @@
     let correccionX = 0;
     let correccionY = 0;
     let pintarLinea = false;
-    let btn_limpiar =  document.querySelector('#btn-limpiar');
+    let btn_limpiar = document.querySelector('#btn-limpiar');
 
     let posicion = firma_cliente.getBoundingClientRect();
     correccionX = posicion.x;
@@ -77,7 +121,7 @@
     /**
      * Funcion que empieza a dibujar la linea
      */
-    function empezarDibujo () {
+    function empezarDibujo() {
         pintarLinea = true;
         lineas.push([]);
     };
@@ -85,7 +129,7 @@
     /**
      * Funcion dibuja la linea
      */
-    function dibujarLinea (event) {
+    function dibujarLinea(event) {
         event.preventDefault();
         if (pintarLinea) {
             let ctx = firma_cliente.getContext('2d');
@@ -129,7 +173,7 @@
     /**
      * Funcion que deja de dibujar la linea
      */
-    function pararDibujar () {
+    function pararDibujar() {
         pintarLinea = false;
     }
 
@@ -148,27 +192,31 @@
 
 
     //Evento para limpiar el canvas
-    btn_limpiar.addEventListener('click',function(event){
+    btn_limpiar.addEventListener('click', function (event) {
         event.preventDefault();
         clear();
     });
 
     //funcion para limpiar el lienzo
-    function clear(){
+    function clear() {
         let ctx = firma_cliente.getContext('2d');
         ctx.clearRect(0, 0, firma_cliente.width, firma_cliente.height);
-        lineas=[];
+        lineas = [];
     }
 
-    function guardar_firma(event){
+    function guardar_firma(event) {
         event.preventDefault();
-        let imagen  = firma_cliente.toDataURL('image/png');
-        let inputImagen  = document.getElementById('firma');
+        let imagen = firma_cliente.toDataURL('image/png');
+        let inputImagen = document.getElementById('firma');
         inputImagen.value = imagen;
         console.log(imagen);
     }
 
+    $(function () {
+        $('.select2').select2();
+    });
 
 </script>
+</div>
 </body>
 </html>

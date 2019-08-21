@@ -29404,31 +29404,20 @@ __webpack_require__.r(__webpack_exports__);
  */
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); //window.Vue = require('vue');
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
-// const files = require.context('./', true, /\.vue$/i);
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
-//Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
 
 
 push_js__WEBPACK_IMPORTED_MODULE_0___default.a.Permission.request(onGranted, onDenied);
 window.Echo.channel('new-service').listen('NewService', function (data) {
   var notifications = document.querySelector('.notifications-menu .dropdown-menu .header');
-  notifications.innerText = data.direccion;
-  console.log(data.servicio.direccion);
-  push_js__WEBPACK_IMPORTED_MODULE_0___default.a.create('Hello World!');
+  notifications.innerText = data.servicio.direccion;
+  push_js__WEBPACK_IMPORTED_MODULE_0___default.a.create("nuevo servicio!", {
+    body: "Direcci\xF3n: ".concat(data.servicio.direccion, " - #Lavadoras: ").concat(data.servicio.num_lavadoras),
+    timeout: 2000,
+    onClick: function onClick() {
+      window.focus();
+      this.close();
+    }
+  });
 });
 
 function onGranted() {}

@@ -66,7 +66,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'estructura'], function() {
     Route::post('lavadora_persona/asignadas', 'LavadoraPersonaController@setAsignadas')->name('lavadora_persona.guardar');
     //BARRIOS
     Route::resource('barrio', 'BarrioController');
-    
 });
 
 //GRUPO DE RUTAS PARA LA GESTION DE LOS SERVICIOS
@@ -74,7 +73,11 @@ Route::group(['middleware' => 'auth', 'prefix' => 'servicio'], function() {
     //SERVICIOS
     Route::resource('servicio', 'ServicioController');
     Route::get('servicio/{telefono}/getcliente', 'ServicioController@getClientes')->name('servicio.getclientes');
-    Route::get('getServiciosPendientes', 'ServicioController@getServiciosPendientes')->name('servicio.getServiciosPendientes');
+    Route::get('getServiciosPendientes','ServicioController@getServiciosPendientes')->name('servicio.getServiciosPendientes');
+    Route::get('aceptar_servicio/{id}','ServicioController@aceptarServicio')->name('servicio.aceptarServicio');
+    Route::get('getServiciosPorEntregar','ServicioController@getServiciosPorEntregar')->name('servicio.getServiciosPorEntregar');
+    Route::get('entregarServicio/{id}','ServicioController@entregarServicio')->name('servicio.entregarServicio');
+
 });
 
 
