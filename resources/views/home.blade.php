@@ -52,10 +52,10 @@
             @if(session()->exists('MOD_ESTRUCTURA'))
                 <div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box">
-                        <span class="info-box-icon bg-yellow-gradient"><i class="fa fa-th-list"></i></span>
+                        <span class="info-box-icon bg-yellow-gradient"><i class="fa fa-gear"></i></span>
                         <div class="info-box-content">
                             <span class="info-box-text">Gestión De</span>
-                            <a href="{{route('admin.estructura')}}" class="info-box-number">Estructura</a>
+                            <a href="{{route('admin.estructura')}}" class="info-box-number">General</a>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -65,7 +65,7 @@
             @if(session()->exists('MOD_SERVICIO'))
                 <div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box">
-                        <span class="info-box-icon bg-red-gradient"><i class="fa   fa-indent"></i></span>
+                        <span class="info-box-icon bg-red-gradient"><i class="fa fa-indent"></i></span>
                         <div class="info-box-content">
                             <span class="info-box-text">Gestión De</span>
                             <a href="{{route('admin.servicio')}}" class="info-box-number">Servicios</a>
@@ -78,7 +78,7 @@
             @if(session()->exists('MOD_MANTENIMIENTO'))
                 <div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box">
-                        <span class="info-box-icon bg-purple-gradient"><i class="fa  fa-gears"></i></span>
+                        <span class="info-box-icon bg-purple-gradient"><i class="fa fa-wrench"></i></span>
                         <div class="info-box-content">
                             <span class="info-box-text">Gestión De</span>
                             <a href="{{route('admin.mantenimiento')}}" class="info-box-number">Mantenimientos</a>

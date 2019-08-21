@@ -5,8 +5,8 @@
         <small>Facturar</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
-        <li><a href="{{route('admin.mantenimiento')}}"><i class="fa fa-users"></i> Mantenimiento</a></li>
+        <li><a href="{{route('inicio')}}"><i class="fa fa-home"></i> Inicio</a></li>
+        <li><a href="{{route('admin.mantenimiento')}}"><i class="fa fa-wrench"></i> Mantenimiento</a></li>
         <li class="active"><a> Crear</a></li>
     </ol>
 @endsection
@@ -14,7 +14,7 @@
     <div class="row clearfix">
         <div class="col-md-12">
             <div class="alert alert-warning">
-                <p class="h4"><strong>Agregue nuevos Repuestos,</strong> gestiona la información de cada una de los reuestos de las lavadoras de la empresa.
+                <p class="h4"><strong>Agregue nuevos Repuestos,</strong> gestiona la información de cada una de los repuestos de las lavadoras de la empresa.
                 </p>
             </div>
         </div>

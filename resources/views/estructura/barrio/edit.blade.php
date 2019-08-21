@@ -1,13 +1,13 @@
 @extends('layouts.admin')
 @section('breadcrumb')
 <h1>
-    Estructura
+    General
     <small>Barrio</small>
 </h1>
 <ol class="breadcrumb">
-    <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
-    <li><a href="{{route('admin.estructura')}}"><i class="fa fa-users"></i> Estructura</a></li>
-    <li><a href="{{route('barrio.index')}}"><i class="fa fa-users"></i> Barrio</a></li>
+    <li><a href="{{route('inicio')}}"><i class="fa fa-home"></i> Inicio</a></li>
+    <li><a href="{{route('admin.estructura')}}"><i class="fa fa-users"></i> General</a></li>
+    <li><a href="{{route('barrio.index')}}"><i class="fa fa-map-marker"></i> Barrio</a></li>
     <li class="active"><a> Editar</a></li>
 </ol>
 @endsection
@@ -15,7 +15,7 @@
 <div class="row clearfix">
     <div class="col-md-12">
         <div class="alert alert-warning">
-            <p class="h4"><strong>Nota: </strong> gestiona la información de cada una de las bodegas de la empresa.
+            <p class="h4"><strong>Nota: </strong> gestiona la información de los barrios.
             </p>
         </div>
     </div>

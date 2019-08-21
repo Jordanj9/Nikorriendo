@@ -2,13 +2,13 @@
 @section('breadcrumb')
 <h1>
     Usuarios
-    <small>Grupos de Usuarios o Roles</small>
+    <small>Grupos de Usuarios ó Roles</small>
 </h1>
 <ol class="breadcrumb">
-    <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
+    <li><a href="{{route('inicio')}}"><i class="fa fa-home"></i> Inicio</a></li>
     <li><a href="{{route('admin.usuarios')}}"><i class="fa fa-users"></i> Usuarios</a></li>
-    <li><a href="{{route('grupousuario.index')}}"><i class="fa fa-users"></i> Grupos de Usuarios</a></li>
-    <li class="active"><a><i class="fa fa-users"></i> Ver</a></li>
+    <li><a href="{{route('grupousuario.index')}}"><i class="fa fa-user"></i> Grupos de Usuarios</a></li>
+    <li class="active"><a>Ver</a></li>
 </ol>
 @endsection
 @section('content')

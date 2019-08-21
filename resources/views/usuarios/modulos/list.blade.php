@@ -2,12 +2,12 @@
 @section('breadcrumb')
 <h1>
     Usuarios
-    <small>Modulos del Sistema</small>
+    <small>Módulos del Sistema</small>
 </h1>
 <ol class="breadcrumb">
-    <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
-    <li><a href="{{route('admin.usuarios')}}"><i class="fa fa-home"></i> Usuarios</a></li>
-    <li class="active"><a><i class="fa fa-users"></i> Modulos</a></li>
+    <li><a href="{{route('inicio')}}"><i class="fa fa-home"></i> Inicio</a></li>
+    <li><a href="{{route('admin.usuarios')}}"><i class="fa fa-users"></i> Usuarios</a></li>
+    <li class="active"><a><i class="fa fa-cubes"></i> Modulos</a></li>
 </ol>
 @endsection
 @section('content')

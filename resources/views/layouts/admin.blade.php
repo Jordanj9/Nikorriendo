@@ -56,7 +56,7 @@
 
             <header class="main-header">
                 <!-- Logo -->
-                <a href="{{route('home')}}" class="logo">
+                <a href="{{route('inicio')}}" class="logo">
                     <!-- mini logo for sidebar mini 50x50 pixels -->
                     <span class="logo-mini">N<b>i</b>k<b>o</b></span>
                     <!-- logo for regular state and mobile devices -->
@@ -188,28 +188,28 @@
                         @endif
                         @if(session()->exists('MOD_ESTRUCTURA'))
                         @if($location=='estructura')
-                        <li class="active"><a href="{{route('admin.estructura')}}"><i class="fa fa-th-list"></i> <span>Estructura</span></a>
+                        <li class="active"><a href="{{route('admin.estructura')}}"><i class="fa fa-gear"></i> <span>General</span></a>
                         </li>
                         @else
-                        <li><a href="{{route('admin.estructura')}}"><i class="fa fa-th-list"></i>
-                                <span>Estructura</span></a></li>
+                        <li><a href="{{route('admin.estructura')}}"><i class="fa fa-gear"></i>
+                                <span>General</span></a></li>
                         @endif
                         @endif
                         @if(session()->exists('MOD_SERVICIO'))
                         @if($location=='servicio')
-                        <li class="active"><a href="{{route('admin.servicio')}}"><i class="fa  fa-indent"></i> <span>Servicio</span></a>
+                        <li class="active"><a href="{{route('admin.servicio')}}"><i class="fa fa-indent"></i> <span>Servicios</span></a>
                         </li>
                         @else
-                        <li><a href="{{route('admin.servicio')}}"><i class="fa  fa-indent"></i>
-                                <span>Servicio</span></a></li>
+                        <li><a href="{{route('admin.servicio')}}"><i class="fa fa-indent"></i>
+                                <span>Servicios</span></a></li>
                         @endif
                         @endif
                         @if(session()->exists('MOD_MANTENIMIENTO'))
                         @if($location=='mantenimiento')
-                        <li class="active"><a href="{{route('admin.mantenimiento')}}"><i class="fa fa-gear"></i> <span>Mantenimiento</span></a>
+                        <li class="active"><a href="{{route('admin.mantenimiento')}}"><i class="fa fa-wrench"></i> <span>Mantenimiento</span></a>
                         </li>
                         @else
-                        <li><a href="{{route('admin.mantenimiento')}}"><i class="fa fa-gear"></i>
+                        <li><a href="{{route('admin.mantenimiento')}}"><i class="fa fa-wrench"></i>
                                 <span>Mantenimiento</span></a></li>
                         @endif
                         @endif
@@ -248,7 +248,7 @@
                 <div class="pull-right hidden-xs">
                     <b>Version</b> 1.0.0
                 </div>
-                <strong> &copy;2019 <a href="#">Jordan Cuadro</a></strong>
+                <strong> &copy;2019 <a href="#">Alberto Rojas G.</a></strong>
             </footer>
         </div>
         <!-- ./wrapper -->

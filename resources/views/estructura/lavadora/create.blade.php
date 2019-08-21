@@ -1,13 +1,13 @@
 @extends('layouts.admin')
 @section('breadcrumb')
 <h1>
-    Estructura
-    <small>Lavadoras del Sistema</small>
+    General
+    <small>Lavadoras </small>
 </h1>
 <ol class="breadcrumb">
-    <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
-    <li><a href="{{route('admin.estructura')}}"><i class="fa fa-users"></i> Estructura</a></li>
-    <li><a href="{{route('bodega.index')}}"><i class="fa fa-users"></i> Lavadoras</a></li>
+    <li><a href="{{route('inicio')}}"><i class="fa fa-home"></i> Inicio</a></li>
+    <li><a href="{{route('admin.estructura')}}"><i class="fa fa-gear"></i> General</a></li>
+    <li><a href="{{route('bodega.index')}}"><i class="fa fa-camera-retro"></i> Lavadoras</a></li>
     <li class="active"><a> Crear</a></li>
 </ol>
 @endsection
