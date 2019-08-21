@@ -5,7 +5,7 @@
         <small>Sr(a). {{Auth::user()->nombres}}</small>
     </h1>
     <ol class="breadcrumb">
-        <li class="active"><a href="{{route('home')}}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+        <li class="active"><a href="{{route('inicio')}}"><i class="fa fa-dashboard"></i> Inicio</a></li>
     </ol>
 @endsection
 @section('content')
@@ -29,7 +29,7 @@
                         <span class="info-box-icon bg-green-gradient"><i class="fa fa-home"></i></span>
                         <div class="info-box-content">
                             <span class="info-box-text">Inicio</span>
-                            <a href="{{route('home')}}" class="info-box-number">Inicio</a>
+                            <a href="{{route('inicio')}}" class="info-box-number">Inicio</a>
                         </div>
                         <!-- /.info-box-content -->
                     </div>

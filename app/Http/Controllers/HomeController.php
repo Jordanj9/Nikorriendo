@@ -88,7 +88,7 @@ class HomeController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function inicio() {
-        $user = Auth::user();
+        //$user = Auth::user();
         /*$not = Notificacion::where([['user_id', $user->id], ['estado', 'SIN LEER']])->get();
         $notificaciones = null;
         $total = 0;

@@ -124,10 +124,8 @@
                                     <!-- User image -->
                                     <li class="user-header">
                                         <img src="{{ asset('dist/img/user-160x160.jpg')}}" class="img-circle" alt="User Image">
-
                                         <p>
                                             {{Auth::user()->nombres." ".Auth::user()->apellidos}}
-                                            <small>{{Auth::user()->rol}}</small>
                                         </p>
                                     </li>
                                     <!-- Menu Footer-->
@@ -165,7 +163,7 @@
                         </div>
                         <div class="pull-left info">
                             <p>{{Auth::user()->nombres}}</p>
-                            <a href="#"><i class="fa fa-circle text-success"></i> Conectado </a>
+                            <a href="#"><i class="fa fa-user"></i> {{session('ROL')}}</a>
                         </div>
                     </div>
                     <!-- sidebar menu: : style can be found in sidebar.less -->
@@ -173,10 +171,10 @@
                         <li class="header"><h4>MENÚ PRINCIPAL</h4></li>
                         @if(session()->exists('MOD_INICIO'))
                         @if($location=='inicio')
-                        <li class="active"><a href="{{route('home')}}"><i class="fa fa-home"></i>
+                        <li class="active"><a href="{{route('inicio')}}"><i class="fa fa-home"></i>
                                 <span>Inicio</span></a></li>
                         @else
-                        <li><a href="{{route('home')}}"><i class="fa fa-home"></i> <span>Inicio</span></a></li>
+                        <li><a href="{{route('inicio')}}"><i class="fa fa-home"></i> <span>Inicio</span></a></li>
                         @endif
                         @endif
                         @if(session()->exists('MOD_USUARIOS'))
@@ -304,14 +302,14 @@
                                     styling: 'bootstrap3'
                                 });
                             }
-                            function dropdown(event){
+                            function dropdown(event) {
                                 event.preventDefault();
                                 const ul = event.target.parentElement.querySelector('.dropdown-menu');
                                 console.log(ul);
                                 ul.classList.toggle('dropdown-active');
-                                if(ul.classList.contains('dropdown-active')){
+                                if (ul.classList.contains('dropdown-active')) {
                                     ul.style.display = 'block';
-                                }else{
+                                } else {
                                     ul.style.display = 'none';
                                 }
 

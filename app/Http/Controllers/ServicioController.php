@@ -8,33 +8,28 @@ use App\Persona;
 use App\Cliente;
 use App\Auditoriaservicio;
 use App\Bodega;
+use App\Barrio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ServicioController extends Controller
-{
+class ServicioController extends Controller {
 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-
+    public function index() {
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
-
         if ($persona != null) {
             $servicios = Servicio::where('sucursal_id', $persona->sucursal_id)->get()->sortBy('estado');
         } else {
             $servicios = Servicio::all()->sortBy('estado');
         }
-
         return view('servicio.servicios.list')
-            ->with('location', 'servicio')
-            ->with('servicios', $servicios);
-
+                        ->with('location', 'servicio')
+                        ->with('servicios', $servicios);
     }
 
     /**
@@ -42,8 +37,8 @@ class ServicioController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
+        $barrios = Barrio::all()->pluck('nombre', 'id');
         $u = Auth::user();
         $persona = Persona::where([['identificacion', $u->identificacion], ['tipo', 'CENTRAL']])->first();
         $existe = false;
@@ -63,8 +58,9 @@ class ServicioController extends Controller
                 $mensaje = "Atencion!. No hay lavadoras disponibles en el momento";
             }
             return view('servicio.servicios.create')
-                ->with('location', 'servicio')
-                ->with('mensaje', $mensaje);
+                            ->with('location', 'servicio')
+                            ->with('barrios', $barrios)
+                            ->with('mensaje', $mensaje);
         } else {
             flash("Usted no posee permisos para acceder a esta funcionalidad.")->warning();
             return redirect()->route('servicio.index');
@@ -77,8 +73,7 @@ class ServicioController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
         $result_cliente = true;
@@ -86,7 +81,7 @@ class ServicioController extends Controller
         if ($existe == null) {
             $cliente = new Cliente();
             $cliente->telefono = $request->telefono_cliente;
-            $cliente->barrio = $request->barrio_cliente;
+            $cliente->barrio_id = $request->barrio_id_cliente;
             $cliente->nombre = $request->nombre;
             $cliente->direccion = $request->direccion;
             $cliente->latitud = $request->latitud_servicio;
@@ -104,7 +99,7 @@ class ServicioController extends Controller
             $servicio->num_lavadoras = $request->num_lavadoras;
             $servicio->estado = 'PENDIENTE';
             $servicio->dias = $request->dias;
-            $servicio->barrio = $request->barrio_servicio;
+            $servicio->barrio_id = $request->barrio_id_servicio;
             $servicio->direccion = $request->direccion_servicio;
             $servicio->latitud = $request->latitud_servicio;
             $servicio->longitud = $request->longitud_servicio;
@@ -152,8 +147,7 @@ class ServicioController extends Controller
      * @param \App\Servicio $servicio
      * @return \Illuminate\Http\Response
      */
-    public function show(Servicio $servicio)
-    {
+    public function show(Servicio $servicio) {
         //
     }
 
@@ -163,8 +157,7 @@ class ServicioController extends Controller
      * @param \App\Servicio $servicio
      * @return \Illuminate\Http\Response
      */
-    public function edit(Servicio $servicio)
-    {
+    public function edit(Servicio $servicio) {
         //
     }
 
@@ -175,8 +168,7 @@ class ServicioController extends Controller
      * @param \App\Servicio $servicio
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Servicio $servicio)
-    {
+    public function update(Request $request, Servicio $servicio) {
         //
     }
 
@@ -186,8 +178,7 @@ class ServicioController extends Controller
      * @param \App\Servicio $servicio
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Servicio $servicio)
-    {
+    public function destroy(Servicio $servicio) {
         $result = false;
 
         if ($servicio->estado == 'PENDIENTE' || $servicio->estado == 'ASIGNADO') {
@@ -208,19 +199,18 @@ class ServicioController extends Controller
             $aud->save();
 
             return response()->json([
-                'status' => 'ok',
-                'message' => "EL servicio para la direccion " . $servicio->direccion . " fue cancelado(a) de forma exitosa!"
+                        'status' => 'ok',
+                        'message' => "EL servicio para la direccion " . $servicio->direccion . " fue cancelado(a) de forma exitosa!"
             ]);
         } else {
             return response()->json([
-                'status' => 'error',
-                'message' => "El servicio para la direccion " . $servicio->direccion . " no pudo ser cancelado(a). Error:"
+                        'status' => 'error',
+                        'message' => "El servicio para la direccion " . $servicio->direccion . " no pudo ser cancelado(a). Error:"
             ]);
         }
     }
 
-    public function getClientes($id)
-    {
+    public function getClientes($id) {
         $cli = Cliente::where('telefono', $id)->first();
         if ($cli !== null) {
             $obj["id"] = $cli->id;
@@ -229,15 +219,14 @@ class ServicioController extends Controller
             $obj["lon"] = $cli->longitud;
             $obj["tel"] = $cli->telefono;
             $obj["dir"] = $cli->direccion;
-            $obj["bar"] = $cli->barrio;
+            $obj["bar"] = $cli->barrio_id;
             return json_encode($obj);
         } else {
             return "null";
         }
     }
 
-    function orderMultiDimensionalArray($toOrderArray, $field, $inverse = false)
-    {
+    function orderMultiDimensionalArray($toOrderArray, $field, $inverse = false) {
         $position = array();
         $newRow = array();
         foreach ($toOrderArray as $key => $row) {
@@ -256,38 +245,35 @@ class ServicioController extends Controller
         return $returnArray;
     }
 
-    public function getServiciosPendientes()
-    {
+    public function getServiciosPendientes() {
 
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
 
         if ($persona != null) {
             $servicios = Servicio::where([
-                ['sucursal_id', $persona->sucursal_id],
-                ['estado', 'PENDIENTE']
-            ])->get()->sortBy('estado');
+                        ['sucursal_id', $persona->sucursal_id],
+                        ['estado', 'PENDIENTE']
+                    ])->get()->sortBy('estado');
         } else {
             $servicios = Servicio::where([
-                ['estado', 'PENDIENTE']
-            ])->get()->sortBy('estado');
+                        ['estado', 'PENDIENTE']
+                    ])->get()->sortBy('estado');
         }
 
         return view('servicio.solicitudes_de_servicio.pendientes')
-            ->with('location', 'servicio')
-            ->with('servicios', $servicios);
-
+                        ->with('location', 'servicio')
+                        ->with('servicios', $servicios);
     }
 
-    public function aceptarServicio($id)
-    {
+    public function aceptarServicio($id) {
 
         $u = Auth::user();
         $servicio = Servicio::find($id);
         $persona = Persona::where([
-            ['identificacion', $u->identificacion],
-            ['tipo', 'MENSAJERO']
-        ])->first();
+                    ['identificacion', $u->identificacion],
+                    ['tipo', 'MENSAJERO']
+                ])->first();
 
         if ($persona != null) {
             $servicio->estado = 'ASIGNADO';
@@ -316,35 +302,30 @@ class ServicioController extends Controller
             flash("El servico para la dirección <strong>" . $servicio->direccion . "</strong> no pudo ser asignado. Error: no tiene los privilegios suficientes para realizar esta acción ")->error();
             return back();
         }
-
     }
 
-    public function getServiciosPorEntregar()
-    {
+    public function getServiciosPorEntregar() {
 
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
 
         if ($persona != null) {
             $servicios = Servicio::where([
-                ['persona_id', $persona->id],
-                ['estado', 'ASIGNADO']
-            ])->get()->sortBy('estado');
+                        ['persona_id', $persona->id],
+                        ['estado', 'ASIGNADO']
+                    ])->get()->sortBy('estado');
         } else {
             $servicios = Servicio::where([
-                ['estado', 'ASIGNADO']
-            ])->get()->sortBy('estado');
+                        ['estado', 'ASIGNADO']
+                    ])->get()->sortBy('estado');
         }
 
         return view('servicio.servicios_por_entregar.aceptados')
-            ->with('location', 'servicio')
-            ->with('servicios', $servicios);
-
-
+                        ->with('location', 'servicio')
+                        ->with('servicios', $servicios);
     }
 
-    public function entregarServicio($id)
-    {
+    public function entregarServicio($id) {
 
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
@@ -362,9 +343,9 @@ class ServicioController extends Controller
         $lavadoras = collect($lavadoras);
 
         return view('servicio.servicios_por_entregar.entregar')
-            ->with('location', 'servicio')
-            ->with('lavadoras', $lavadoras)
-            ->with('servicio_id', $id);
+                        ->with('location', 'servicio')
+                        ->with('lavadoras', $lavadoras)
+                        ->with('servicio_id', $id);
     }
 
 }
