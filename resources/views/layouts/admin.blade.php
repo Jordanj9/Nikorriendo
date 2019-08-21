@@ -288,6 +288,8 @@
         <script src="{{ asset('plugins/pnotify/dist/pnotify.buttons.js')}}"></script>
         <script src="{{ asset('plugins/pnotify/dist/pnotify.nonblock.js')}}"></script>
         <script src="{{ asset('plugins/ckeditor/ckeditor.js')}}"></script>
+        <script src="{{ asset('js/axios.min.js')}}"></script>
+        <!-- start: Javascript -->
         <script src="{{asset('js/app.js')}}"></script>
         <script type="text/javascript">
                             var url = "<?php echo config('app.url'); ?>public/";

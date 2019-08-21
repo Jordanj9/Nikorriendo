@@ -47,7 +47,7 @@
         <ol class="breadcrumb">
             <li><a href="{{route('inicio')}}"><i class="fa fa-home"></i> Inicio</a></li>
             <li><a href="{{route('servicio.index')}}"><i class="fa fa-home"></i> Servicios</a></li>
-            <li class="active"><a><i class="fa fa-users"></i> Entrega </a></li>
+            <li class="active"><a><i class="fa fa-users"></i> Recoger </a></li>
         </ol>
     </section>
     <!-- Main content -->
@@ -62,27 +62,17 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
-
 <div class="container">
     <form action="">
         <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label>Seleccione las lavadoras que pretende entregar en el servicio</label>
-                    <select class="form-control show-tick select2" name="lavadoras[]"  id="lavadoras" required="" multiple="">
-                        @foreach($lavadoras as $key=>$value)
-                            <option value="{{$key}}">{{$value}}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
             <div class="col-md-12">
                 <h3 class="title_firma">Firma Cliente</h3>
                 <canvas id="firma_cliente"></canvas>
                 <div class="opciones">
                     <form method='post' action='#' ENCTYPE='multipart/form-data'>
                         <button id="btn-limpiar" class="btn btn-info pull-right" value="Limpiar"><i
-                                class="fa fa-sticky-note-o"></i></button>
+                                class="fa fa-sticky-note-o"></i>
+                        </button>
                     </form>
                 </div>
             </div>
@@ -92,7 +82,7 @@
                 <div class="form-group">
                     <div class="col-md-12" style="margin-top: 20px !important">
                         <button class="btn btn-success icon-btn pull-right" type="submit" onclick="guardar(event)" style="margin-left: 5px;"><i class="fa fa-fw fa-lg fa-save"></i>Guardar</button>
-                        <a class="btn btn-danger icon-btn pull-right" href="{{route('servicio.getServiciosPorEntregar')}}"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancelar</a>
+                        <a class="btn btn-danger icon-btn pull-right" href="{{route('servicio.getServiciosPorRecoger')}}"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancelar</a>
                     </div>
                 </div>
             </div>
@@ -114,19 +104,13 @@
     function guardar(event) {
         event.preventDefault();
         let imagen = firma_cliente.toDataURL('image/png');
-        const lavadoras = $('#lavadoras').val();
 
-        if(lavadoras.length == 0){
-           writeMessage('Error: Debe seleccionar las lavadoras que se van a entregar, si no tiene disponible por favor libere el servicio');
-           return;
-        }
         if (lineas.length == 0) {
             writeMessage('Error: firma requerida');
             return;
         }
-        axios.post('/servicio/guardarEntrega', {
+        axios.post('/servicio/guardarRecogida', {
             base_64: imagen,
-            lavadoras:lavadoras,
             servicio_id:'{{$servicio_id}}'
         }).then(function (response) {
             const data = response.data;

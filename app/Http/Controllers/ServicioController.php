@@ -14,11 +14,6 @@ use Illuminate\Support\Facades\Auth;
 class ServicioController extends Controller
 {
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
 
@@ -37,11 +32,6 @@ class ServicioController extends Controller
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $u = Auth::user();
@@ -71,12 +61,6 @@ class ServicioController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $u = Auth::user();
@@ -146,46 +130,11 @@ class ServicioController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param \App\Servicio $servicio
-     * @return \Illuminate\Http\Response
-     */
     public function show(Servicio $servicio)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \App\Servicio $servicio
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Servicio $servicio)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Servicio $servicio
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Servicio $servicio)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param \App\Servicio $servicio
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Servicio $servicio)
     {
         $result = false;
@@ -345,26 +294,251 @@ class ServicioController extends Controller
 
     public function entregarServicio($id)
     {
+        $u = Auth::user();
+        $persona = Persona::where('identificacion', $u->identificacion)->first();
+
+        if ($persona != null) {
+            $lavadoras_aux = $persona->lavadoras;
+
+            $lavadoras = [];
+
+            if (count($lavadoras_aux) > 0) {
+                foreach ($lavadoras_aux as $l) {
+                    if ($l->estado_lavadora == 'DISPONIBLE') {
+                        $lavadoras[$l->id] = $l->serial . ' - ' . $l->marca;
+                    }
+                }
+            }
+
+            $lavadoras = collect($lavadoras);
+
+            return view('servicio.servicios_por_entregar.entregar')
+                ->with('location', 'servicio')
+                ->with('lavadoras', $lavadoras)
+                ->with('servicio_id', $id);
+        } else {
+            flash("Error : esta opción solo es valida para los <strong>" . 'mensajeros' . "</strong> ")->error();
+            return back();
+        }
+    }
+
+    public function guardarEntrega(Request $request)
+    {
+
+        $servicio = Servicio::find($request->servicio_id);
+        $m = new Servicio($servicio->attributesToArray());
+
+        if ($servicio->num_lavadoras == count($request->lavadoras)) {
+            $servicio->estado = 'ENTREGADO';
+            $hoy = getdate();
+            $servicio->fechaentrega = $hoy['year'] . '-' . $hoy['mon'] . '-' . $hoy['mday'] . ' ' . $hoy['hours'] . ':' . $hoy['minutes'] . ':' . $hoy['seconds'];
+            $string = "+" . $servicio->dias . " day";
+            $fecha = strtotime($servicio->fechaentrega);
+            $fin = strtotime($string, $fecha);
+            $servicio->fechafin = date("Y-m-d H:i:s", $fin);
+            // Imagen base64 enviada desde javascript en el formulario
+            // En este caso, con PHP plano podriamos obtenerla usando :
+            // $baseFromJavascript = $_POST['base64'];
+            $baseFromJavascript = $request->base_64;
+
+            // Nuestro base64 contiene un esquema Data URI (data:image/png;base64,)
+            // que necesitamos remover para poder guardar nuestra imagen
+            // Usa explode para dividir la cadena de texto en la , (coma)
+            $base_to_php = explode(',', $baseFromJavascript);
+            // El segundo item del array base_to_php contiene la información que necesitamos (base64 plano)
+            // y usar base64_decode para obtener la información binaria de la imagen
+            $data = base64_decode($base_to_php[1]);// BBBFBfj42Pj4....
+
+            $nombre_file = 'firma_entrega_' . $hoy['year'] . '-' . $hoy['mon'] . '-' . $hoy['mday'] . ' ' . $hoy['hours'] . ':' . $hoy['minutes'] . ':' . $hoy['seconds'] . '.png';
+            // Proporciona una locación a la nueva imagen (con el nombre y formato especifico)
+            $filepath = public_path() . '/docs/firma_entregas/' . $nombre_file; // or image.jpg
+
+            // Finalmente guarda la imágen en el directorio especificado y con la informacion dada
+            file_put_contents($filepath, $data);
+            $servicio->firma_recibido_cliente = $nombre_file;
+            $result = $servicio->save();
+
+
+            if ($result) {
+
+                $servicio->lavadoras()->sync($request->lavadoras);
+
+                foreach ($request->lavadoras as $item) {
+                    $lavadora = Lavadora::find($item);
+                    $lavadora->estado_lavadora = 'SERVICIO';
+                    $lavadora->estado_bodega = 'NO';
+                    $lavadora->save();
+                }
+
+                $aud = new Auditoriaservicio();
+                $u = Auth::user();
+                $aud->usuario = "ID: " . $u->identificacion . ",  USUARIO: " . $u->nombres . " " . $u->apellidos;
+                $aud->operacion = "ENTREGA";
+                $str = "ENTREGA DEL SERVICIO. DATOS NUEVOS: ";
+                $str2 = " DATOS ANTIGUOS: ";
+                foreach ($m->attributesToArray() as $key => $value) {
+                    $str2 = $str2 . ", " . $key . ": " . $value;
+                }
+                foreach ($servicio->attributesToArray() as $key => $value) {
+                    $str = $str . ", " . $key . ": " . $value;
+                }
+                $aud->detalles = $str . " - " . $str2;
+                $aud->save();
+
+                return response()->json([
+                    'status' => 'ok',
+                    'message' => "Success : el servicio para la dirección " . $servicio->direccion . " no fue entregado correctamente",
+                ]);
+
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => "Error : el servicio para la dirección " . $servicio->direccion . " no pudo ser entregado correctamente",
+                ]);
+            }
+
+        } else {
+
+            return response()->json([
+                'status' => 'error',
+                'message' => "Error : tenga en cuenta que debe selecionar el mismo numero de lavadoras solicitadas por el cliente"
+            ]);
+
+        }
+    }
+
+    public function getServiciosPorRecoger()
+    {
+        $u = Auth::user();
+        $persona = Persona::where('identificacion', $u->identificacion)->first();
+
+        $hoy = getdate();
+        $fecha = $hoy['year'] . '-' . $hoy['mon'] . '-' . $hoy['mday'] . ' ' . $hoy['hours'] . ':' . $hoy['minutes'] . ':' . $hoy['seconds'];
+        $fecha = strtotime($fecha);
+
+
+        if ($persona != null && session('ROL') != 'ADMINISTRADOR') {
+            $servicios = Servicio::where([
+                ['persona_id', $persona->id],
+                ['estado', 'ENTREGADO']
+            ])->orWhere('estado', 'RECOGER')->get()->sortBy('estado');
+        } else {
+            $servicios = Servicio::where([
+                ['estado', 'ENTREGADO']
+            ])->orWhere('estado', 'RECOGER')->get()->sortBy('estado');
+        }
+
+        $servicios_por_recoger = collect([]);
+
+        if (count($servicios) > 0) {
+
+            foreach ($servicios as $item) {
+                $fecha_servicio = strtotime($item->fechafin);
+                if ($fecha >= $fecha_servicio) {
+                    if ($item->estado == 'ENTREGADO') {
+                        $item->estado = "RECOGER";
+                        $item->save();
+                    }
+                    $horas = abs(($fecha-strtotime($item->fechafin))/3600);
+                    $minutos = '0.'.explode(".",$horas)[1];
+                    $horas=floor($horas);
+                    $minutos =floor($minutos*60);
+
+                    $item->tiempo = $horas.' horas y '.$minutos.' minutos';
+
+                    $servicios_por_recoger[] = $item;
+                }
+            }
+
+        }
+
+        return view('servicio.servicios_por_recoger.entregados')
+            ->with('location', 'servicio')
+            ->with('servicios', $servicios_por_recoger);
+
+    }
+
+    public function recogerServicio($id){
 
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
 
-        $lavadoras_aux = $persona->lavadoras;
-
-        if (count($lavadoras_aux) > 0) {
-            foreach ($lavadoras_aux as $l) {
-                if ($l->estado_lavadora == 'DISPONIBLE') {
-                    $lavadoras[$l->id] = $l->serial . ' - ' . $l->marca;
-                }
-            }
+        if (session('ROL') == 'ADMINISTRADOR' || session('ROL') == 'MENSAJERO') {
+            return view('servicio.servicios_por_recoger.recoger')
+                ->with('location', 'servicio')
+                ->with('servicio_id', $id);
+        } else {
+            flash("Error : esta opción solo es valida para los <strong>" . 'mensajeros' . "</strong> ")->error();
+            return back();
         }
+    }
 
-        $lavadoras = collect($lavadoras);
+    public function guardarRecogida(Request $request)
+    {
+        $servicio = Servicio::find($request->servicio_id);
+        $m = new Servicio($servicio->attributesToArray());
+        $servicio->estado = 'FINALIZADO';
+        $hoy = getdate();
+        $servicio->fecharecogido = $hoy['year'] . '-' . $hoy['mon'] . '-' . $hoy['mday'] . ' ' . $hoy['hours'] . ':' . $hoy['minutes'] . ':' . $hoy['seconds'];
 
-        return view('servicio.servicios_por_entregar.entregar')
-            ->with('location', 'servicio')
-            ->with('lavadoras', $lavadoras)
-            ->with('servicio_id', $id);
+        // Imagen base64 enviada desde javascript en el formulario
+        // En este caso, con PHP plano podriamos obtenerla usando :
+        // $baseFromJavascript = $_POST['base64'];
+        $baseFromJavascript = $request->base_64;
+
+        // Nuestro base64 contiene un esquema Data URI (data:image/png;base64,)
+        // que necesitamos remover para poder guardar nuestra imagen
+        // Usa explode para dividir la cadena de texto en la , (coma)
+        $base_to_php = explode(',', $baseFromJavascript);
+        // El segundo item del array base_to_php contiene la información que necesitamos (base64 plano)
+        // y usar base64_decode para obtener la información binaria de la imagen
+        $data = base64_decode($base_to_php[1]);// BBBFBfj42Pj4....
+
+        $nombre_file = 'firma_recogida_' . $hoy['year'] . '-' . $hoy['mon'] . '-' . $hoy['mday'] . ' ' . $hoy['hours'] . ':' . $hoy['minutes'] . ':' . $hoy['seconds'] . '.png';
+        // Proporciona una locación a la nueva imagen (con el nombre y formato especifico)
+        $filepath = public_path() . '/docs/firma_recogidas/' . $nombre_file; // or image.jpg
+
+        // Finalmente guarda la imágen en el directorio especificado y con la informacion dada
+        file_put_contents($filepath, $data);
+        $servicio->firma_entrega_cliente = $nombre_file;
+        $result = $servicio->save();
+
+        if ($result) {
+
+           $lavadoras =  $servicio->lavadoras;
+
+            foreach ($lavadoras as $item) {
+                $item->estado_lavadora = 'DISPONIBLE';
+                $item->save();
+            }
+
+            $aud = new Auditoriaservicio();
+            $u = Auth::user();
+            $aud->usuario = "ID: " . $u->identificacion . ",  USUARIO: " . $u->nombres . " " . $u->apellidos;
+            $aud->operacion = "RECOGIDA";
+            $str = "RECOGIDA DEL SERVICIO. DATOS NUEVOS: ";
+            $str2 = " DATOS ANTIGUOS: ";
+            foreach ($m->attributesToArray() as $key => $value) {
+                $str2 = $str2 . ", " . $key . ": " . $value;
+            }
+            foreach ($servicio->attributesToArray() as $key => $value) {
+                $str = $str . ", " . $key . ": " . $value;
+            }
+            $aud->detalles = $str . " - " . $str2;
+            $aud->save();
+
+            return response()->json([
+                'status' => 'ok',
+                'message' => "Success : el servicio para la dirección " . $servicio->direccion . " fue recogido correctamente",
+            ]);
+
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => "Error : el servicio para la dirección " . $servicio->direccion . " no pudo ser recogido correctamente",
+            ]);
+        }
     }
 
 }
+
