@@ -20,16 +20,13 @@ class ServicioController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
-
         if ($persona != null) {
             $servicios = Servicio::where('sucursal_id', $persona->sucursal_id)->get()->sortBy('estado');
         } else {
             $servicios = Servicio::all()->sortBy('estado');
         }
-
         return view('servicio.servicios.list')
                         ->with('location', 'servicio')
                         ->with('servicios', $servicios);
