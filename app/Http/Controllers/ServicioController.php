@@ -305,10 +305,8 @@ class ServicioController extends Controller {
     }
 
     public function getServiciosPorEntregar() {
-
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
-
         if ($persona != null) {
             $servicios = Servicio::where([
                         ['persona_id', $persona->id],
@@ -319,19 +317,15 @@ class ServicioController extends Controller {
                         ['estado', 'ASIGNADO']
                     ])->get()->sortBy('estado');
         }
-
         return view('servicio.servicios_por_entregar.aceptados')
                         ->with('location', 'servicio')
                         ->with('servicios', $servicios);
     }
 
     public function entregarServicio($id) {
-
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
-
         $lavadoras_aux = $persona->lavadoras;
-
         if (count($lavadoras_aux) > 0) {
             foreach ($lavadoras_aux as $l) {
                 if ($l->estado_lavadora == 'DISPONIBLE') {
@@ -339,9 +333,7 @@ class ServicioController extends Controller {
                 }
             }
         }
-
         $lavadoras = collect($lavadoras);
-
         return view('servicio.servicios_por_entregar.entregar')
                         ->with('location', 'servicio')
                         ->with('lavadoras', $lavadoras)
