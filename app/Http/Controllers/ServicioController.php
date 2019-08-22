@@ -43,6 +43,7 @@ class ServicioController extends Controller {
     public function create() {
         $u = Auth::user();
         $persona = Persona::where([['identificacion', $u->identificacion], ['tipo', 'CENTRAL']])->first();
+        $barrios = Barrio::all()->pluck('nombre', 'id');
         $existe = false;
         if ($persona != null) {
             $bodegas = Bodega::where('sucursal_id', $persona->sucursal_id)->get();
