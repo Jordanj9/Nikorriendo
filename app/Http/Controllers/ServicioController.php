@@ -484,6 +484,7 @@ class ServicioController extends Controller {
     public function recogerServicio($id) {
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
+
         $lavadoras_aux = $persona->lavadoras;
         if (count($lavadoras_aux) > 0) {
             foreach ($lavadoras_aux as $l) {
@@ -504,6 +505,7 @@ class ServicioController extends Controller {
     }
 
     public function guardarRecogida(Request $request) {
+
         $servicio = Servicio::find($request->servicio_id);
         $m = new Servicio($servicio->attributesToArray());
         $servicio->estado = 'FINALIZADO';
