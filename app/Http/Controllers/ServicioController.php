@@ -388,7 +388,6 @@ class ServicioController extends Controller {
             $servicio->firma_recibido_cliente = $nombre_file;
             $result = $servicio->save();
 
-
             if ($result) {
 
                 $servicio->lavadoras()->sync($request->lavadoras);
@@ -501,7 +500,6 @@ class ServicioController extends Controller {
                 flash("Error : esta opción solo es valida para los <strong>" . 'mensajeros' . "</strong> ")->error();
                 return back();
             }
-            $lavadoras = collect($lavadoras);
         }
     }
 
