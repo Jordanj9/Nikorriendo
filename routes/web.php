@@ -81,7 +81,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'servicio'], function() {
 });
 
 
-
 //GRUPO DE RUTAS PARA LA GESTION DE LOS MANTENIMIENTOS DE LAS LAVADORAS DE LA EMPRESA
 Route::group(['middleware' => 'auth', 'prefix' => 'mantenimiento'], function() {
     //REPUESTOS
