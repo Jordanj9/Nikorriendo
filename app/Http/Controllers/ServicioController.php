@@ -380,7 +380,7 @@ class ServicioController extends Controller {
             // y usar base64_decode para obtener la información binaria de la imagen
             $data = base64_decode($base_to_php[1]); // BBBFBfj42Pj4....
 
-            $nombre_file = 'firma_entrega_' . $hoy['year'] . '-' . $hoy['mon'] . '-' . $hoy['mday'] . ' ' . $hoy['hours'] . ':' . $hoy['minutes'] . ':' . $hoy['seconds'] . '.png';
+            $nombre_file = 'firma_entrega_' . $hoy['year'] . $hoy['mon']. $hoy['mday'] . $hoy['hours'] . $hoy['minutes'] . $hoy['seconds'] . '.png';;
             // Proporciona una locación a la nueva imagen (con el nombre y formato especifico)
             $filepath = public_path() . '/docs/firma_entregas/' . $nombre_file; // or image.jpg
             // Finalmente guarda la imágen en el directorio especificado y con la informacion dada
@@ -525,7 +525,7 @@ class ServicioController extends Controller {
         // y usar base64_decode para obtener la información binaria de la imagen
         $data = base64_decode($base_to_php[1]); // BBBFBfj42Pj4....
 
-        $nombre_file = 'firma_recogida_' . $hoy['year'] . '-' . $hoy['mon'] . '-' . $hoy['mday'] . ' ' . $hoy['hours'] . ':' . $hoy['minutes'] . ':' . $hoy['seconds'] . '.png';
+        $nombre_file = 'firma_recogida_' . $hoy['year'] . $hoy['mon']. $hoy['mday'] . $hoy['hours'] . $hoy['minutes'] . $hoy['seconds'] . '.png';
         // Proporciona una locación a la nueva imagen (con el nombre y formato especifico)
         $filepath = public_path() . '/docs/firma_recogidas/' . $nombre_file; // or image.jpg
         // Finalmente guarda la imágen en el directorio especificado y con la informacion dada
