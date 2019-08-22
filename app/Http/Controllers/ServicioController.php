@@ -44,6 +44,7 @@ class ServicioController extends Controller {
         $u = Auth::user();
         $persona = Persona::where([['identificacion', $u->identificacion], ['tipo', 'CENTRAL']])->first();
         $existe = false;
+        $barrios = Barrio::all()->pluck('nombre','id');
         if ($persona != null) {
             $bodegas = Bodega::where('sucursal_id', $persona->sucursal_id)->get();
             if (count($bodegas) > 0) {
