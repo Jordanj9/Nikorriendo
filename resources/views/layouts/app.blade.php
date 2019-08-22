@@ -33,7 +33,6 @@
     </head>
     <body class="hold-transition login-page" style="background-image: url('{{asset('images/banner01.jpg')}}'); background-position: center center; background-size: cover; background-repeat: no-repeat; background-attachment: fixed;">
         <div id="app">
-
             <div class="col-md-12">
                 @yield('content')
             </div>
@@ -48,7 +47,7 @@
         <script src="{{ asset('dist/js/ripples.min.js')}}"></script>
         @yield('script')
         <script>
-          $.material.init();
+$.material.init();
         </script>
     </body>
 </html>

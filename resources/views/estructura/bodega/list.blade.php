@@ -1,13 +1,13 @@
 @extends('layouts.admin')
 @section('breadcrumb')
 <h1>
-    Estructura
-    <small>Bodegas del Sistema</small>
+    General
+    <small>Bodegas </small>
 </h1>
 <ol class="breadcrumb">
-    <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
-    <li><a href="{{route('admin.estructura')}}"><i class="fa fa-home"></i> Estructura</a></li>
-    <li class="active"><a><i class="fa fa-users"></i> Bodegas</a></li>
+    <li><a href="{{route('inicio')}}"><i class="fa fa-home"></i> Inicio</a></li>
+    <li><a href="{{route('admin.estructura')}}"><i class="fa fa-gear"></i> General</a></li>
+    <li class="active"><a><i class="fa fa-archive"></i> Bodegas</a></li>
 </ol>
 @endsection
 @section('content')

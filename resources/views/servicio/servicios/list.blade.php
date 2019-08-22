@@ -1,13 +1,13 @@
 @extends('layouts.admin')
 @section('breadcrumb')
 <h1>
-    Servicio
+    Servicios
     <small>Solicitudes de Servicios</small>
 </h1>
 <ol class="breadcrumb">
-    <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
-    <li><a href="{{route('admin.servicio')}}"><i class="fa fa-home"></i> Servicios</a></li>
-    <li class="active"><a><i class="fa fa-users"></i> Solicitudes</a></li>
+    <li><a href="{{route('inicio')}}"><i class="fa fa-home"></i> Inicio</a></li>
+    <li><a href="{{route('admin.servicio')}}"><i class="fa fa-indent"></i> Servicios</a></li>
+    <li class="active"><a><i class="fa fa-pencil-square-o"></i> Solicitudes</a></li>
 </ol>
 @endsection
 @section('content')

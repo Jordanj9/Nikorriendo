@@ -2,12 +2,12 @@
 @section('breadcrumb')
 <h1>
     Usuarios
-    <small>Grupos de Usuarios o Roles</small>
+    <small>Grupos de Usuarios ó Roles </small>
 </h1>
 <ol class="breadcrumb">
-    <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
+    <li><a href="{{route('inicio')}}"><i class="fa fa-home"></i> Inicio</a></li>
     <li><a href="{{route('admin.usuarios')}}"><i class="fa fa-users"></i> Usuarios</a></li>
-    <li><a href="{{route('grupousuario.index')}}"><i class="fa fa-users"></i> Grupos de Usuarios</a></li>
+    <li><a href="{{route('grupousuario.index')}}"><i class="fa fa-user"></i> Grupos de Usuarios</a></li>
     <li class="active"><a> Editar</a></li>
 </ol>
 @endsection
@@ -15,14 +15,14 @@
 <div class="row clearfix">
     <div class="col-md-12">
         <div class="alert alert-warning">
-            <p class="h4"><strong>Edite los datos de los grupos,</strong> Los grupos de usuarios son los roles o agrupaciones de usuarios que permite asignarle privilegios a todo un conglomerado de usuarios que comparte funciones. Ejemplo de grupos de usuarios: ADMINISTRADOR, FELIGRES, ESCUELA SABATICA, MAYORDOMIA, MINISTERIO JUVENIL, ETC.
+            <p class="h4"><strong>Edite los datos de los grupos, </strong> Los grupos de usuarios son los roles o agrupaciones de usuarios que permite asignarle privilegios a todo un conglomerado de usuarios que comparte funciones. Ejemplo de grupos de usuarios: ADMINISTRADOR, TÉCNICO, CENTRAL, MENSAJERO, ETC.
             </p>
         </div>
     </div>
 </div>
 <div class="box">
     <div class="box-header with-border">
-        <h3 class="box-title">Editar Grupo de Usuario o Rol</h3>
+        <h3 class="box-title">Editar Grupo de Usuario ó Rol</h3>
         <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
                     title="Minimizar">

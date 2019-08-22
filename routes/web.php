@@ -64,6 +64,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'estructura'], function() {
     Route::resource('lavadora_persona', 'LavadoraPersonaController');
     Route::get('lavadora_persona/{id}/asignadas', 'LavadoraPersonaController@getAsignadas');
     Route::post('lavadora_persona/asignadas', 'LavadoraPersonaController@setAsignadas')->name('lavadora_persona.guardar');
+    //BARRIOS
+    Route::resource('barrio', 'BarrioController');
 });
 
 //GRUPO DE RUTAS PARA LA GESTION DE LOS SERVICIOS

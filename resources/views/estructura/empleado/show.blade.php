@@ -1,12 +1,12 @@
 @extends('layouts.admin')
 @section('breadcrumb')
     <h1>
-        Estructura
+        General
         <small>Empleados de la empresa</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
-        <li><a href="{{route('admin.estructura')}}"><i class="fa fa-users"></i> Estructura</a></li>
+        <li><a href="{{route('inicio')}}"><i class="fa fa-home"></i> Inicio</a></li>
+        <li><a href="{{route('admin.estructura')}}"><i class="fa fa-gear"></i> general</a></li>
         <li><a href="{{route('persona.index')}}"><i class="fa fa-users"></i> Empleados</a></li>
         <li class="active"><a> Ver</a></li>
     </ol>
@@ -15,7 +15,7 @@
     <div class="row clearfix">
         <div class="col-md-12">
             <div class="alert alert-warning">
-                <p class="h4"><strong>los datos del empleado,</strong> gestiona la información de cada una de los empleados de la empresa.
+                <p class="h4"><strong>Datos del empleado, </strong> gestiona la información de cada una de los empleados de la empresa.
                 </p>
             </div>
         </div>

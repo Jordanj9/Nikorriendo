@@ -2,10 +2,10 @@
 @section('breadcrumb')
 <h1>
     Usuarios
-    <small>Editar/Eliminar Usuario</small>
+    <small>Usuario Manual </small>
 </h1>
 <ol class="breadcrumb">
-    <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
+    <li><a href="{{route('inicio')}}"><i class="fa fa-home"></i> Inicio</a></li>
     <li><a href="{{route('admin.usuarios')}}"><i class="fa fa-users"></i> Usuarios</a></li>
     <li class="active"><a> Crear Usuario</a></li>
 </ol>
@@ -14,7 +14,7 @@
 <div class="row clearfix">
     <div class="col-md-12">
         <div class="alert alert-warning">
-            <p class="h4"><strong>Agregue un usuario al sistema y registre su/sus roles de acceso</strong>. Puede crear un usuario llenando todos los campos.
+            <p class="h4"><strong>Agregue un usuario al sistema y registre su/sus roles de acceso, </strong>. Puede crear un usuario llenando todos los campos requeridos.
             </p>
         </div>
     </div>

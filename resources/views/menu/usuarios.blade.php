@@ -5,7 +5,7 @@
     <small>Menu de Usuarios</small>
 </h1>
 <ol class="breadcrumb">
-    <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
+    <li><a href="{{route('inicio')}}"><i class="fa fa-home"></i> Inicio</a></li>
     <li class="active"><a><i class="fa fa-users"></i> Usuarios</a></li>
 </ol>
 @endsection

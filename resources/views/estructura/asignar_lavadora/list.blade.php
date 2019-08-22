@@ -1,21 +1,21 @@
 @extends('layouts.admin')
 @section('breadcrumb')
 <h1>
-    Estructura
-    <small>Lavadoras asignadas</small>
+    General
+    <small>Asignar lavadoras a empleado</small>
 </h1>
 <ol class="breadcrumb">
-    <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
-    <li><a href="{{route('admin.estructura')}}"><i class="fa fa-home"></i> Estructura</a></li>
-    <li class="active"><a><i class="fa fa-users"></i> Asignar Lavadora</a></li>
+    <li><a href="{{route('inicio')}}"><i class="fa fa-home"></i> Inicio</a></li>
+    <li><a href="{{route('admin.estructura')}}"><i class="fa fa-gear"></i> General</a></li>
+    <li class="active"><a><i class="fa fa-exchange"></i> Asignar Lavadora</a></li>
 </ol>
 @endsection
 @section('content')
 <div class="row clearfix">
     <div class="col-md-12">
         <div class="alert alert-warning">
-            <p class="h4"><strong>Detalles: </strong>Los privilegios a páginas son los permisos que se deben asignar a los grupos de usuarios o roles para acceder a las funciones específicas de los módulos, es decir, sus páginas. En este sentido, si añade páginas a un grupo de usuario usted le estaría concediendo permisos al grupo para actuar sobre dichas páginas.<br/>
-                <strong>Modo de Operar:</strong> Seleccione un grupo de usuario y agregue permisos de izquierda a derecha o elimine privilegios del grupo pasando de derecha a izquierda.
+            <p class="h4"><strong>Detalles: </strong>Este módulo permite asignar lavadoras a un empleado específico, el cual responderá por las lavadoras asignadas.<br/>
+                <strong>Modo de Operar: </strong> Seleccione un mensajero y agregue las lavadoras de izquierda a derecha o elimine las lavadoras del mensajero pasando de derecha a izquierda.
             </p>
         </div>
     </div>

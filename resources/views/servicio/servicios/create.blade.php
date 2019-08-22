@@ -1,69 +1,69 @@
 @extends('layouts.admin')
 
 @section('style')
-    <style>
-        @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
-        #map {
-            height: 400px;
-            width: 100%;
-            margin:0 auto;
-            border-radius: 20px;
-        }
-        html, body {
-            font-family: 'Roboto', sans-serif;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+    #map {
+        height: 400px;
+        width: 100%;
+        margin:0 auto;
+        border-radius: 20px;
+    }
+    html, body {
+        font-family: 'Roboto', sans-serif;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
 
-        .row{
-            position: relative;
-        }
+    .row{
+        position: relative;
+    }
 
+    .input{
+        position: absolute;
+        top: 5.2px;
+        left: 220px;
+    }
+
+    .input input[type=text]{
+        width: 350px;
+        position: relative;
+        border-radius: 20px;
+        background-color: rgb(240, 242, 245);
+        border: none;
+        outline: none;
+        padding: 14px;
+    }
+
+    .input input[type=text]:focus{
+        border: 1px solid rgb(0, 170, 193);
+        box-shadow: 0 0 8px dodgerblue;
+    }
+
+    .btn-search{
+        position: absolute;
+        top:0;
+        left: 90%;
+        font-size: 20px;
+        color: rgb(178, 178, 178);
+        line-height: 48px;
+    }
+
+    .btn-search:hover{
+        color:rgb(69, 56, 234);
+    }
+
+    @media(max-width: 480px){
         .input{
-            position: absolute;
-            top: 5.2px;
-            left: 220px;
+            top: 55px;
+            left: 20px;
         }
-
         .input input[type=text]{
-            width: 350px;
-            position: relative;
-            border-radius: 20px;
-            background-color: rgb(240, 242, 245);
-            border: none;
-            outline: none;
-            padding: 14px;
+            width: 250px;
         }
-
-        .input input[type=text]:focus{
-            border: 1px solid rgb(0, 170, 193);
-            box-shadow: 0 0 8px dodgerblue;
-        }
-
-        .btn-search{
-            position: absolute;
-            top:0;
-            left: 90%;
-            font-size: 20px;
-            color: rgb(178, 178, 178);
-            line-height: 48px;
-        }
-
-        .btn-search:hover{
-            color:rgb(69, 56, 234);
-        }
-
-        @media(max-width: 480px){
-            .input{
-                top: 55px;
-                left: 20px;
-            }
-            .input input[type=text]{
-                width: 250px;
-            }
-        }
-    </style>
+    }
+</style>
 @endsection
 
 @section('breadcrumb')
@@ -72,9 +72,9 @@
     <small>Solicitudes de Servicios</small>
 </h1>
 <ol class="breadcrumb">
-    <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
-    <li><a href="{{route('admin.servicio')}}"><i class="fa fa-users"></i> Servicio</a></li>
-    <li><a href="{{route('servicio.index')}}"><i class="fa fa-users"></i> Solicitudes</a></li>
+    <li><a href="{{route('inicio')}}"><i class="fa fa-home"></i> Inicio</a></li>
+    <li><a href="{{route('admin.servicio')}}"><i class="fa fa-indent"></i> Servicios</a></li>
+    <li><a href="{{route('servicio.index')}}"><i class="fa fa-pencil-square-o"></i> Solicitudes</a></li>
     <li class="active"><a> Crear</a></li>
 </ol>
 @endsection
@@ -144,7 +144,7 @@
                 </div>
                 <div class="col-md-4">
                     <label>Barrio</label>
-                    <input type="text" class="form-control" placeholder="Barrio del cliente" name="barrio_cliente" id="barrio_cliente"/>
+                    {!! Form::select('barrio_id_cliente',$barrios,null,['class'=>'form-control','placeholder'=>'-- Seleccione una opción --','required','id'=>'barrio_cliente']) !!}          
                 </div>
             </div>
             <div class="col-md-12"><h4 class="head" style="color: #2c3e50"><b>Datos del Servicio</b></h4></div>
@@ -159,12 +159,11 @@
             </div>
             <div class="col-md-4">
                 <label>Barrio</label>
-                <input type="text" class="form-control" placeholder="Barrio del servicio" name="barrio_servicio" id="barrio_servicio"/>
+                {!! Form::select('barrio_id_servicio',$barrios,null,['class'=>'form-control','placeholder'=>'-- Seleccione una opción --','required','id'=>'barrio_servicio']) !!}
             </div>
-
-               <div class="col-md-12">
-                    <label class="control-label">Ubicación del servicio (Ingrese la dirección o arrastre el marcador <i style="color:red; font-size: 20px" class="fa fa-map-marker"></i> si la dirección no concuerda con el punto pintado en el mapa)</label>
-                </div>
+            <div class="col-md-12">
+                <label class="control-label">Ubicación del servicio (Ingrese la dirección o arrastre el marcador <i style="color:red; font-size: 20px" class="fa fa-map-marker"></i> si la dirección no concuerda con el punto pintado en el mapa)</label>
+            </div>
             <div class="form-group">
                 <div class="col-sm-12">
                     <div class="row">
@@ -196,35 +195,28 @@
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACMXJBl7W2A6fYConiB7bfeCkKuNusyyo&callback=initMap&libraries=places"></script>
 <script type="text/javascript">
 
-    //  class para gecodifcar las direcciones en latitudes y en longitudes
-    class Geocoding {
-
-        constructor(key) {
-            this.key = key;
-        }
-
-        async getLatLng(location){
-
-            const url = `https://maps.googleapis.com/maps/api/geocode/json`;
-
-            let result = await axios.get('https://maps.googleapis.com/maps/api/geocode/json',{
-                params : {
-                    address:location,
-                    key:this.key
-                }
-            });
-
-            return result.data;
-        }
-
-    }
-
-    var marker;          //variable del marcador
-    var coords = {};    //coordenadas obtenidas con la geolocalización
-    var map;
-    var geo = new Geocoding('AIzaSyACMXJBl7W2A6fYConiB7bfeCkKuNusyyo');
-    let btn_search = document.querySelector('.btn-search');
-    var marcadores = [];
+                        //  class para gecodifcar las direcciones en latitudes y en longitudes
+                        class Geocoding {
+                            constructor(key) {
+                                this.key = key;
+                            }
+                            async getLatLng(location) {
+                                const url = `https://maps.googleapis.com/maps/api/geocode/json`;
+                                let result = await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
+                                    params: {
+                                        address: location,
+                                        key: this.key
+                                    }
+                                });
+                                return result.data;
+                            }
+                        }
+                        var marker;          //variable del marcador
+                        var coords = {};    //coordenadas obtenidas con la geolocalización
+                        var map;
+                        var geo = new Geocoding('AIzaSyACMXJBl7W2A6fYConiB7bfeCkKuNusyyo');
+                        let btn_search = document.querySelector('.btn-search');
+                        var marcadores = [];
                         $(function () {
                             $('#example1').DataTable();
                         });
@@ -232,6 +224,8 @@
                             $("#nombre").html("");
                             $("#telefono_cliente").html("");
                             $("#direccion_servicio").html("");
+                            $("#barrio_cliente").val();
+                            $("#barrio_servicio").val();
                             $("#direccion_cliente").html("");
                             $("#latitud_cliente").html("");
                             $("#longitud_cliente").html("");
@@ -243,6 +237,7 @@
                             $("#nombre").attr('disabled', true);
                             $("#telefono_cliente").attr('disabled', true);
                             $("#direccion_cliente").attr('disabled', true);
+                            $("#barrio_cliente").attr('disabled', true);
                         }
                         function ir() {
                             var id = $("#telefono_cliente").val();
@@ -270,7 +265,6 @@
                                         $("#latitud_servicio").val(m.lat);
                                         $("#longitud_servicio").val(m.lon);
                                         $("#tel").val(m.tel);
-
                                         //Creamos el marcador en el mapa con sus propiedades
                                         //para nuestro obetivo tenemos que poner el atributo draggable en true
                                         //position pondremos las mismas coordenas que obtuvimos en la geolocalización
@@ -281,28 +275,23 @@
                                             position: new google.maps.LatLng(m.lat, m.lon),
 
                                         });
-
                                         nuevo.addListener('dragend', function (event)
                                         {
                                             //escribimos las coordenadas de la posicion actual del marcador dentro del input #coord'
-                                            document.getElementById('latitud_servicio').value=this.getPosition().lat();
-                                            document.getElementById('longitud_servicio').value=this.getPosition().lng();
-
+                                            document.getElementById('latitud_servicio').value = this.getPosition().lat();
+                                            document.getElementById('longitud_servicio').value = this.getPosition().lng();
                                         });
-
-                                        if(marcadores.length > 1){
+                                        if (marcadores.length > 1) {
                                             marcadores[1].setMap(null);
                                             marcadores.pop();
                                             marcadores.push(nuevo);
-                                        }else{
+                                        } else {
                                             marcadores.push(nuevo);
                                         }
-
                                         bounds = new google.maps.LatLngBounds();
-                                        bounds.extend(new google.maps.LatLng(m.lat,m.lon));
+                                        bounds.extend(new google.maps.LatLng(m.lat, m.lon));
                                         bounds.extend(new google.maps.LatLng(10.4780176, -73.2561265));
                                         map.fitBounds(bounds);
-
                                         inhabilitar();
                                     } else {
                                         notify('Atención', 'No se encontro registro con ese telefono. Debe llenar el formulario.', 'error');
@@ -316,30 +305,28 @@
                         function initMap() {
                             //usamos la API para geolocalizar el usuario
                             navigator.geolocation.getCurrentPosition(
-                                function (position) {
-                                    coords = {
-                                        lng: position.coords.longitude,
-                                        lat: position.coords.latitude
-                                    };
-                                    setMapa(coords, 'map');  //pasamos las coordenadas al metodo para crear el mapa
-                                }, function (error) {
-                                    console.log(error);
-                                });
+                                    function (position) {
+                                        coords = {
+                                            lng: position.coords.longitude,
+                                            lat: position.coords.latitude
+                                        };
+                                        setMapa(coords, 'map');  //pasamos las coordenadas al metodo para crear el mapa
+                                    }, function (error) {
+                                console.log(error);
+                            });
                         }
 
                         function setMapa(coords, mapa) {
                             //Se crea una nueva instancia del objeto mapa
                             map = new google.maps.Map(document.getElementById(mapa),
-                                {
-                                    zoom: 15,
-                                    center: new google.maps.LatLng(10.4780265,-73.2561265),
-                                });
-
+                                    {
+                                        zoom: 15,
+                                        center: new google.maps.LatLng(10.4780265, -73.2561265),
+                                    });
                             //agregamos la funcionalidad de autocompletar las direcciones al input
-                            const autocomplete =  document.querySelector('.input input');
-                            const search =  new google.maps.places.Autocomplete(autocomplete);
-                            search.bindTo("bounds",map);
-
+                            const autocomplete = document.querySelector('.input input');
+                            const search = new google.maps.places.Autocomplete(autocomplete);
+                            search.bindTo("bounds", map);
                             //Creamos el marcador en el mapa con sus propiedades
                             //para nuestro obetivo tenemos que poner el atributo draggable en true
                             //position pondremos las mismas coordenas que obtuvimos en la geolocalización
@@ -350,18 +337,15 @@
                                 position: new google.maps.LatLng(10.4780176, -73.2555785),
 
                             });
-
                             marcadores.push(marker);
-
                             //agregamos un evento al marcador junto con la funcion callback al igual que el evento dragend que indica
                             //cuando el usuario a soltado el marcador
                             marker.addListener('click', toggleBounce);
                             marker.addListener('dragend', function (event)
                             {
                                 //escribimos las coordenadas de la posicion actual del marcador dentro del input #coord'
-                                document.getElementById('latitud_servicio').value=this.getPosition().lat();
-                                document.getElementById('longitud_servicio').value=this.getPosition().lng();
-
+                                document.getElementById('latitud_servicio').value = this.getPosition().lat();
+                                document.getElementById('longitud_servicio').value = this.getPosition().lng();
                             });
                         }
 
@@ -373,45 +357,37 @@
                                 marker.setAnimation(google.maps.Animation.BOUNCE);
                             }
                         }
-
-                        document.addEventListener('DOMContentLoaded',function(){
+                        document.addEventListener('DOMContentLoaded', function () {
                             //se convierte la direccion en coordenadas para luego mostrarlas en el mapa con el api de geocoding de google
-                            btn_search.addEventListener('click',event => {
+                            btn_search.addEventListener('click', event => {
                                 event.preventDefault();
-                                const input =  document.querySelector('.input input');
-
+                                const input = document.querySelector('.input input');
                                 geo.getLatLng(input.value)
-                                    .then(response => {
-                                        const location = response.results[0].geometry.location;
-                                        $('#longitud_servicio').val(location.lng);
-                                        $('#latitud_servicio').val(location.lat);
-                                        $('#direccion_servicio').val(input.value);
-                                        nuevo = new google.maps.Marker({
-                                            map: map,
-                                            draggable: true,
-                                            animation: google.maps.Animation.DROP,
-                                            position: new google.maps.LatLng(location.lat, location.lng)
+                                        .then(response => {
+                                            const location = response.results[0].geometry.location;
+                                            $('#longitud_servicio').val(location.lng);
+                                            $('#latitud_servicio').val(location.lat);
+                                            $('#direccion_servicio').val(input.value);
+                                            nuevo = new google.maps.Marker({
+                                                map: map,
+                                                draggable: true,
+                                                animation: google.maps.Animation.DROP,
+                                                position: new google.maps.LatLng(location.lat, location.lng)
+
+                                            });
+                                            if (marcadores.length > 1) {
+                                                marcadores[1].setMap(null);
+                                                marcadores.pop();
+                                                marcadores.push(nuevo);
+                                            } else {
+                                                marcadores.push(nuevo);
+                                            }
+                                            bounds = new google.maps.LatLngBounds();
+                                            bounds.extend(new google.maps.LatLng(location.lat, location.lng));
+                                            bounds.extend(new google.maps.LatLng(10.4780176, -73.2555785));
+                                            map.fitBounds(bounds);
 
                                         });
-
-                                        if(marcadores.length > 1){
-                                            marcadores[1].setMap(null);
-                                            marcadores.pop();
-                                            marcadores.push(nuevo);
-                                        }else{
-                                            marcadores.push(nuevo);
-                                        }
-
-                                        console.log(marcadores);
-
-                                        bounds = new google.maps.LatLngBounds();
-                                        bounds.extend(new google.maps.LatLng(location.lat, location.lng));
-                                        bounds.extend(new google.maps.LatLng(10.4780176, -73.2555785));
-                                        map.fitBounds(bounds);
-
-                                        console.log(marker);
-
-                                    });
                             });
 
 
