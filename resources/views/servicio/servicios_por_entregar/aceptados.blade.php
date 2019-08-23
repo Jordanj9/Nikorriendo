@@ -76,7 +76,13 @@
                             <td>{{$servicio->created_at}}</td>
                             <td>{{$servicio->updated_at}}</td>
                             <td style="text-align: center;">
-                                <a href="{{route('servicio.aceptarServicio',$servicio->id)}}" data-toggle="tooltip"
+                                <a href="{{route('servicio.show',$servicio->id)}}" data-toggle="tooltip"
+                                   data-placement="top" title="Detalle del Servicio"
+                                   style="color: deepskyblue; margin-left: 10px;"><i class="fa fa-eye"></i></a>
+                                <a href="{{route('servicio.show',$servicio->id)}}" data-toggle="tooltip"
+                                   data-placement="top" title="Ubicación del Servicio"
+                                   style="color: deepskyblue; margin-left: 10px;"><i class="fa  fa-map-marker"></i></a>
+                                <a href="{{route('servicio.liberarServicio',$servicio->id)}}" data-toggle="tooltip"
                                    data-placement="top" title="Liberar Servicio"
                                    style="color: orangered; margin-left: 10px;"><i class="fa  fa-times-circle"></i></a>
                                 <a href="{{route('servicio.entregarServicio',$servicio->id)}}" data-toggle="tooltip"

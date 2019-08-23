@@ -63,6 +63,7 @@
             width: 250px;
         }
     }
+
 </style>
 @endsection
 
@@ -144,7 +145,7 @@
                 </div>
                 <div class="col-md-4">
                     <label>Barrio</label>
-                    {!! Form::select('barrio_id_cliente',$barrios,null,['class'=>'form-control','placeholder'=>'-- Seleccione una opción --','required','id'=>'barrio_cliente']) !!}          
+                    {!! Form::select('barrio_id_cliente',$barrios,null,['class'=>'form-control','placeholder'=>'-- Seleccione una opción --','required','id'=>'barrio_cliente']) !!}
                 </div>
             </div>
             <div class="col-md-12"><h4 class="head" style="color: #2c3e50"><b>Datos del Servicio</b></h4></div>
@@ -191,7 +192,7 @@
 </div>
 @endsection
 @section('script')
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="js/axios.min.js"></script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACMXJBl7W2A6fYConiB7bfeCkKuNusyyo&callback=initMap&libraries=places"></script>
 <script type="text/javascript">
 

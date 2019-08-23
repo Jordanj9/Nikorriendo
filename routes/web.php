@@ -81,6 +81,10 @@ Route::group(['middleware' => 'auth', 'prefix' => 'servicio'], function() {
     Route::post('guardarRecogida','ServicioController@guardarRecogida')->name('servicio.guardarRecogida');
     Route::post('guardarEntrega','ServicioController@guardarEntrega')->name('servicio.guardarEntrega');
     Route::get('recogerServicio/{id}','ServicioController@recogerServicio')->name('servicio.recogerServicio');
+    Route::get('liberar_servicio/{id}','ServicioController@liberarServicio')->name('servicio.liberarServicio');
+
+    //geolocalización
+    Route::get('show_mapa', 'ServicioController@showSeriviciosEnMapa')->name('servicio.showSeriviciosEnMapa');
 
 });
 
