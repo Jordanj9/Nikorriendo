@@ -38,7 +38,6 @@
         </div>
         <div class="col-md-12">
             {!! Form::open(['route'=>'barrio.store','method'=>'POST','role'=>'form'])!!}
-
             <div class="col-md-12">
                 <div class="form-group">
                     <label>Nombre</label>

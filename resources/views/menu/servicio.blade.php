@@ -40,7 +40,7 @@
             </a>
             @endif
             @if(session()->exists('PAG_SERVICIO-CAMBIOS'))
-            <a href="{{route('servicio.getServiciosPendientes')}}" class="btn bg-red-gradient margin">
+            <a href="{{route('solicitud.index')}}" class="btn bg-red-gradient margin">
                 <div>
                     <span style="color: white">SOLICITUDES DE CAMBIOS</span>
                     <span class="ink animated"></span>
@@ -56,7 +56,7 @@
             </a>
             @endif
             @if(session()->exists('PAG_SERVICIO-RECOGER'))
-            <a href="{{route('mantenimiento.create')}}" class="btn bg-red-gradient margin">
+            <a href="{{route('servicio.getServiciosPorRecoger')}}" class="btn bg-red-gradient margin">
                 <div>
                     <span style="color: white">SERVICIOS POR RECOGER</span>
                     <span class="ink animated"></span>

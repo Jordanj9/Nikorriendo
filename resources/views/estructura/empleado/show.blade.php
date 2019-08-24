@@ -123,7 +123,9 @@
         @section('script')
             <script type="text/javascript">
                 $(function () {
-                    $('#example1').DataTable();
+                    $('#example1').DataTable({
+                        responsive:true
+                    });
                 });
             </script>
 @endsection

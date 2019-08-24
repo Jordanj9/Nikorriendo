@@ -10,9 +10,7 @@
     <link rel="stylesheet" href="{{ asset('bower_components/font-awesome/css/font-awesome.min.css')}}">
     <!-- Ionicons -->
     <link rel="stylesheet" href="{{ asset('bower_components/Ionicons/css/ionicons.min.css')}}">
-
     <link rel="stylesheet" href="{{ asset('select2/dist/css/select2.min.css')}}">
-
     <link rel="shortcut icon" href="{{asset('images/nikorriendo-blanco.ico')}}">
 
     <title>Canvas</title>
@@ -46,7 +44,7 @@
         <ol class="breadcrumb">
             <li><a href="{{route('inicio')}}"><i class="fa fa-home"></i> Inicio</a></li>
             <li><a href="{{route('inicio')}}"><i class="fa fa-indent"></i> Servicios</a></li>
-            <li class="active"><a><i class="fa fa-users"></i> Entrega </a></li>
+            <li class="active"><a><i class="fa fa-users"></i> Recoger </a></li>
         </ol>
     </section>
     <!-- Main content -->
@@ -64,17 +62,6 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-12">
-            <div class="form-group">
-                <label>Seleccione las lavadoras que pretende entregar en el servicio</label>
-                <select class="form-control show-tick select2" name="lavadoras[]" id="lavadoras" required="" multiple="">
-                    <option value="" selected>--selecione una aqui--</option>
-                    @foreach($lavadoras as $key=>$value)
-                        <option value="{{$key}}">{{$value}}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
         <div class="col-md-12">
             <h3 class="title_firma">Firma Cliente</h3>
             <canvas id="firma_cliente"></canvas>
@@ -99,6 +86,7 @@
 </div>
 
 <!-- Select2 -->
+<!-- Select2 -->
 <script src="{{ asset('js/axios.min.js')}}"></script>
 <script src="{{ asset('bower_components/jquery/dist/jquery.min.js')}}"></script>
 <script src="{{ asset('select2/dist/js/select2.full.min.js')}}"></script>
@@ -108,19 +96,13 @@
     function guardar(event) {
         event.preventDefault();
         let imagen = firma_cliente.toDataURL('image/png');
-        const lavadoras = $('#lavadoras').val();
 
-        if(lavadoras.length == 0){
-            writeMessage('Error: Debe seleccionar las lavadoras que se van a entregar, si no tiene disponible por favor libere el servicio');
-            return;
-        }
         if (lineas.length == 0) {
             writeMessage('Error: firma requerida');
             return;
         }
-        axios.post('{{url('/servicio/guardarEntrega')}}', {
+        axios.post('{{url('/servicio/guardarRecogida')}}', {
             base_64: imagen,
-            lavadoras:lavadoras,
             servicio_id:'{{$servicio_id}}'
         }).then(function (response) {
             const data = response.data;
@@ -148,7 +130,6 @@
         setTimeout(function () {
             div_message.style.display = 'none';
         },4500);
-
     }
 
     $(function () {

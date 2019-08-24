@@ -312,7 +312,6 @@
                                 } else {
                                     ul.style.display = 'none';
                                 }
-
                             }
         </script>
         @yield('script')

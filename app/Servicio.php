@@ -33,14 +33,15 @@ class Servicio extends Model {
     }
 
     public function lavadoras() {
-        return $this->belongsToMany('App\Lavadora');
+        return $this->belongsToMany('App\Lavadora', 'servicio_lavadora');
     }
 
     public function barrio() {
         return $this->belongsTo(Barrio::class);
     }
-    
-    
-    
+
+    public function solicitudcambios() {
+        return $this->hasMany('App\Solicitudcambio');
+    }
 
 }

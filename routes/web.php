@@ -73,11 +73,21 @@ Route::group(['middleware' => 'auth', 'prefix' => 'servicio'], function() {
     //SERVICIOS
     Route::resource('servicio', 'ServicioController');
     Route::get('servicio/{telefono}/getcliente', 'ServicioController@getClientes')->name('servicio.getclientes');
-    Route::get('getServiciosPendientes','ServicioController@getServiciosPendientes')->name('servicio.getServiciosPendientes');
-    Route::get('aceptar_servicio/{id}','ServicioController@aceptarServicio')->name('servicio.aceptarServicio');
-    Route::get('getServiciosPorEntregar','ServicioController@getServiciosPorEntregar')->name('servicio.getServiciosPorEntregar');
-    Route::get('entregarServicio/{id}','ServicioController@entregarServicio')->name('servicio.entregarServicio');
+    Route::get('getServiciosPendientes', 'ServicioController@getServiciosPendientes')->name('servicio.getServiciosPendientes');
+    Route::get('aceptar_servicio/{id}', 'ServicioController@aceptarServicio')->name('servicio.aceptarServicio');
+    Route::get('getServiciosPorEntregar', 'ServicioController@getServiciosPorEntregar')->name('servicio.getServiciosPorEntregar');
+    Route::get('entregarServicio/{id}', 'ServicioController@entregarServicio')->name('servicio.entregarServicio');
+    Route::get('getServiciosPorRecoger', 'ServicioController@getServiciosPorRecoger')->name('servicio.getServiciosPorRecoger');
+    Route::post('guardarRecogida', 'ServicioController@guardarRecogida')->name('servicio.guardarRecogida');
+    Route::post('guardarEntrega', 'ServicioController@guardarEntrega')->name('servicio.guardarEntrega');
+    Route::get('recogerServicio/{id}', 'ServicioController@recogerServicio')->name('servicio.recogerServicio');
+    Route::get('liberar_servicio/{id}', 'ServicioController@liberarServicio')->name('servicio.liberarServicio');
+    //SOLICITUD CAMBIOS
+    Route::resource('solicitud', 'SolicitudcambioController');
+    Route::get('solicitud/cambio/{id}', 'SolicitudcambioController@solicitudCambio')->name('solicitud.solicitudcambio');
 
+    //geolocalización
+    Route::get('show_mapa', 'ServicioController@showSeriviciosEnMapa')->name('servicio.showSeriviciosEnMapa');
 });
 
 

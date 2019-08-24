@@ -44,4 +44,8 @@ class Persona extends Model {
         return $this->hasMany('App\Servicio');
     }
 
+    public function cambios() {
+        return $this->hasMany('App\Cambios');
+    }
+
 }

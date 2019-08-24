@@ -37,7 +37,11 @@ class Lavadora extends Model {
     }
 
     public function servicios() {
-        return $this->belongsToMany('App\Servicio');
+        return $this->belongsToMany('App\Servicio', 'servicio_lavadora');
+    }
+
+    public function cambios() {
+        return $this->hasMany('App\Cambios');
     }
 
 }

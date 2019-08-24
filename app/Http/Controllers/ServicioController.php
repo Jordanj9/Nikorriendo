@@ -32,16 +32,11 @@ class ServicioController extends Controller {
                         ->with('servicios', $servicios);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create() {
         $u = Auth::user();
         $persona = Persona::where([['identificacion', $u->identificacion], ['tipo', 'CENTRAL']])->first();
         $existe = false;
-        $barrios = Barrio::all()->pluck('nombre','id');
+        $barrios = Barrio::all()->pluck('nombre', 'id');
         if ($persona != null) {
             $bodegas = Bodega::where('sucursal_id', $persona->sucursal_id)->get();
             if (count($bodegas) > 0) {
@@ -67,12 +62,6 @@ class ServicioController extends Controller {
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request) {
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
@@ -141,51 +130,33 @@ class ServicioController extends Controller {
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param \App\Servicio $servicio
-     * @return \Illuminate\Http\Response
-     */
     public function show(Servicio $servicio) {
-        //
+
+        return view('servicio.servicios.show')
+                        ->with('location', 'servicio')
+                        ->with('servicio', $servicio);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \App\Servicio $servicio
-     * @return \Illuminate\Http\Response
-     */
+    public function showSeriviciosEnMapa(Servicio $servicio) {
+        return view('servicio.servicios.showMapa')
+                        ->with('location', 'servicio')
+                        ->with('servicio', $servicio);
+    }
+
     public function edit(Servicio $servicio) {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Servicio $servicio
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Servicio $servicio) {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param \App\Servicio $servicio
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Servicio $servicio) {
         $result = false;
-
         if ($servicio->estado == 'PENDIENTE' || $servicio->estado == 'ASIGNADO') {
             $servicio->estado = 'CANCELADO';
             $result = $servicio->save();
         }
-
         if ($result) {
             $u = Auth::user();
             $aud = new Auditoriaservicio();
@@ -197,7 +168,6 @@ class ServicioController extends Controller {
             }
             $aud->detalles = $str;
             $aud->save();
-
             return response()->json([
                         'status' => 'ok',
                         'message' => "EL servicio para la direccion " . $servicio->direccion . " fue cancelado(a) de forma exitosa!"
@@ -251,10 +221,17 @@ class ServicioController extends Controller {
         $persona = Persona::where('identificacion', $u->identificacion)->first();
 
         if ($persona != null) {
-            $servicios = Servicio::where([
-                        ['sucursal_id', $persona->sucursal_id],
-                        ['estado', 'PENDIENTE']
-                    ])->get()->sortBy('estado');
+
+            if (session('ROL') == 'CENTRAL') {
+                $servicios = Servicio::where([
+                            ['estado', 'PENDIENTE']
+                        ])->get()->sortBy('estado');
+            } else {
+                $servicios = Servicio::where([
+                            ['sucursal_id', $persona->sucursal_id],
+                            ['estado', 'PENDIENTE']
+                        ])->get()->sortBy('estado');
+            }
         } else {
             $servicios = Servicio::where([
                         ['estado', 'PENDIENTE']
@@ -293,7 +270,7 @@ class ServicioController extends Controller {
 
             if ($result) {
                 flash("El servicio para la dirección  <strong>" . $servicio->direccion . "</strong> le fue asignado correctamente!")->success();
-                return redirect()->route('servicio.index');
+                return redirect()->route('servicio.getServiciosPorEntregar');
             } else {
                 flash("El servico para la dirección <strong>" . $servicio->direccion . "</strong> no pudo ser asignado. Error: " . $result)->error();
                 return back();
@@ -304,14 +281,59 @@ class ServicioController extends Controller {
         }
     }
 
+    public function liberarServicio($id) {
+        $u = Auth::user();
+        $servicio = Servicio::find($id);
+        $persona = Persona::where([
+                    ['identificacion', $u->identificacion],
+                    ['tipo', 'MENSAJERO']
+                ])->first();
+
+        if ($persona != null) {
+            $servicio->estado = 'PENDIENTE';
+            $servicio->persona_id = $persona->id;
+            $result = $servicio->save();
+            $u = Auth::user();
+            $aud = new Auditoriaservicio();
+            $aud->usuario = "ID: " . $u->identificacion . ",  USUARIO: " . $u->nombres . " " . $u->apellidos;
+            $aud->operacion = "LIBERACION";
+            $str = "LIBERACION DEL SERVICIO. DATOS: ";
+            foreach ($servicio->attributesToArray() as $key => $value) {
+                $str = $str . ", " . $key . ": " . $value;
+            }
+            $aud->detalles = $str;
+            $aud->save();
+
+            if ($result) {
+                flash("El servicio para la dirección  <strong>" . $servicio->direccion . "</strong> fue liberado correctamente!")->success();
+                return redirect()->route('servicio.getServiciosPorEntregar');
+            } else {
+                flash("El servico para la dirección <strong>" . $servicio->direccion . "</strong> no pudo ser liberado. Error: " . $result)->error();
+                return back();
+            }
+        } else {
+            flash("El servico para la dirección <strong>" . $servicio->direccion . "</strong> no pudo ser liberado. Error: no tiene los privilegios suficientes para realizar esta acción ")->error();
+            return back();
+        }
+    }
+
     public function getServiciosPorEntregar() {
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
         if ($persona != null) {
-            $servicios = Servicio::where([
-                        ['persona_id', $persona->id],
-                        ['estado', 'ASIGNADO']
-                    ])->get()->sortBy('estado');
+
+            if (session('ROL') == 'CENTRAL') {
+
+                $servicios = Servicio::where([
+                            ['estado', 'ASIGNADO']
+                        ])->get()->sortBy('estado');
+            } else {
+
+                $servicios = Servicio::where([
+                            ['persona_id', $persona->id],
+                            ['estado', 'ASIGNADO']
+                        ])->get()->sortBy('estado');
+            }
         } else {
             $servicios = Servicio::where([
                         ['estado', 'ASIGNADO']
@@ -377,7 +399,8 @@ class ServicioController extends Controller {
             // y usar base64_decode para obtener la información binaria de la imagen
             $data = base64_decode($base_to_php[1]); // BBBFBfj42Pj4....
 
-            $nombre_file = 'firma_entrega_' . $hoy['year'] . $hoy['mon']. $hoy['mday'] . $hoy['hours'] . $hoy['minutes'] . $hoy['seconds'] . '.png';;
+            $nombre_file = 'firma_entrega_' . $hoy['year'] . $hoy['mon'] . $hoy['mday'] . $hoy['hours'] . $hoy['minutes'] . $hoy['seconds'] . '.png';
+            ;
             // Proporciona una locación a la nueva imagen (con el nombre y formato especifico)
             $filepath = public_path() . '/docs/firma_entregas/' . $nombre_file; // or image.jpg
             // Finalmente guarda la imágen en el directorio especificado y con la informacion dada
@@ -433,17 +456,21 @@ class ServicioController extends Controller {
     public function getServiciosPorRecoger() {
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
-
         $hoy = getdate();
         $fecha = $hoy['year'] . '-' . $hoy['mon'] . '-' . $hoy['mday'] . ' ' . $hoy['hours'] . ':' . $hoy['minutes'] . ':' . $hoy['seconds'];
         $fecha = strtotime($fecha);
-
-
         if ($persona != null && session('ROL') != 'ADMINISTRADOR') {
-            $servicios = Servicio::where([
-                        ['persona_id', $persona->id],
-                        ['estado', 'ENTREGADO']
-                    ])->orWhere('estado', 'RECOGER')->get()->sortBy('estado');
+
+            if (session('ROL') == 'CENTRAL') {
+                $servicios = Servicio::where([
+                            ['estado', 'ENTREGADO']
+                        ])->orWhere('estado', 'RECOGER')->get()->sortBy('estado');
+            } else {
+                $servicios = Servicio::where([
+                            ['persona_id', $persona->id],
+                            ['estado', 'ENTREGADO']
+                        ])->orWhere('estado', 'RECOGER')->get()->sortBy('estado');
+            }
         } else {
             $servicios = Servicio::where([
                         ['estado', 'ENTREGADO']
@@ -481,6 +508,7 @@ class ServicioController extends Controller {
     public function recogerServicio($id) {
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
+
         $lavadoras_aux = $persona->lavadoras;
         if (count($lavadoras_aux) > 0) {
             foreach ($lavadoras_aux as $l) {
@@ -501,6 +529,7 @@ class ServicioController extends Controller {
     }
 
     public function guardarRecogida(Request $request) {
+
         $servicio = Servicio::find($request->servicio_id);
         $m = new Servicio($servicio->attributesToArray());
         $servicio->estado = 'FINALIZADO';
@@ -520,7 +549,7 @@ class ServicioController extends Controller {
         // y usar base64_decode para obtener la información binaria de la imagen
         $data = base64_decode($base_to_php[1]); // BBBFBfj42Pj4....
 
-        $nombre_file = 'firma_recogida_' . $hoy['year'] . $hoy['mon']. $hoy['mday'] . $hoy['hours'] . $hoy['minutes'] . $hoy['seconds'] . '.png';
+        $nombre_file = 'firma_recogida_' . $hoy['year'] . $hoy['mon'] . $hoy['mday'] . $hoy['hours'] . $hoy['minutes'] . $hoy['seconds'] . '.png';
         // Proporciona una locación a la nueva imagen (con el nombre y formato especifico)
         $filepath = public_path() . '/docs/firma_recogidas/' . $nombre_file; // or image.jpg
         // Finalmente guarda la imágen en el directorio especificado y con la informacion dada
