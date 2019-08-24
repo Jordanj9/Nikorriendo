@@ -84,7 +84,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'servicio'], function() {
     Route::get('liberar_servicio/{id}','ServicioController@liberarServicio')->name('servicio.liberarServicio');
 
     //geolocalización
-    Route::get('show_mapa', 'ServicioController@showSeriviciosEnMapa')->name('servicio.showSeriviciosEnMapa');
+    Route::get('show_mapa/{id}', 'ServicioController@showSeriviciosEnMapa')->name('servicio.showSeriviciosEnMapa');
+    Route::get('getServiciosPorRecogerJSON','ServicioController@getServiciosPorRecogerJSON')->name('servicio.getServiciosPorRecogerJSON');
 
 });
 
