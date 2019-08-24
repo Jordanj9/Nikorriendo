@@ -620,7 +620,6 @@ class ServicioController extends Controller
                     $minutos = floor($minutos * 60);
 
                     $item->tiempo = $horas . ' horas y ' . $minutos . ' minutos';
-
                     $servicios_por_recoger[] = $item;
                 }
             }
