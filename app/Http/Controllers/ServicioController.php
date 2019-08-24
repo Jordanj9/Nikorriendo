@@ -137,7 +137,10 @@ class ServicioController extends Controller {
                         ->with('servicio', $servicio);
     }
 
-    public function showSeriviciosEnMapa(Servicio $servicio) {
+    public function showSeriviciosEnMapa($id)
+    {
+        $servicio = Servicio::find($id);
+
         return view('servicio.servicios.showMapa')
                         ->with('location', 'servicio')
                         ->with('servicio', $servicio);
@@ -456,9 +459,8 @@ class ServicioController extends Controller {
     public function getServiciosPorRecoger() {
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
-        $hoy = getdate();
-        $fecha = $hoy['year'] . '-' . $hoy['mon'] . '-' . $hoy['mday'] . ' ' . $hoy['hours'] . ':' . $hoy['minutes'] . ':' . $hoy['seconds'];
-        $fecha = strtotime($fecha);
+
+
         if ($persona != null && session('ROL') != 'ADMINISTRADOR') {
 
             if (session('ROL') == 'CENTRAL') {
@@ -477,32 +479,11 @@ class ServicioController extends Controller {
                     ])->orWhere('estado', 'RECOGER')->get()->sortBy('estado');
         }
 
-        $servicios_por_recoger = collect([]);
-
-        if (count($servicios) > 0) {
-
-            foreach ($servicios as $item) {
-                $fecha_servicio = strtotime($item->fechafin);
-                if ($fecha >= $fecha_servicio) {
-                    if ($item->estado == 'ENTREGADO') {
-                        $item->estado = "RECOGER";
-                        $item->save();
-                    }
-                    $horas = abs(($fecha - strtotime($item->fechafin)) / 3600);
-                    $minutos = '0.' . explode(".", $horas)[1];
-                    $horas = floor($horas);
-                    $minutos = floor($minutos * 60);
-
-                    $item->tiempo = $horas . ' horas y ' . $minutos . ' minutos';
-
-                    $servicios_por_recoger[] = $item;
-                }
-            }
-        }
+        $servicios = $this->cambioEstado($servicios);
 
         return view('servicio.servicios_por_recoger.entregados')
-                        ->with('location', 'servicio')
-                        ->with('servicios', $servicios_por_recoger);
+            ->with('location', 'servicio')
+            ->with('servicios', $servicios);
     }
 
     public function recogerServicio($id) {
@@ -592,5 +573,67 @@ class ServicioController extends Controller {
             ]);
         }
     }
+
+    //recorre uno a uno los servicios y aquellos que la fecha fin sea menor que la fecha actual seran colocados en estado por recorrer
+    public function cambioEstado($servicios){
+
+        $hoy = getdate();
+        $fecha = $hoy['year'] . '-' . $hoy['mon'] . '-' . $hoy['mday'] . ' ' . $hoy['hours'] . ':' . $hoy['minutes'] . ':' . $hoy['seconds'];
+        $fecha = strtotime($fecha);
+
+        $servicios_por_recoger = collect([]);
+
+        if (count($servicios) > 0) {
+
+            foreach ($servicios as $item) {
+                $fecha_servicio = strtotime($item->fechafin);
+                if ($fecha >= $fecha_servicio) {
+                    if ($item->estado == 'ENTREGADO') {
+                        $item->estado = "RECOGER";
+                        $item->save();
+                    }
+                    $horas = abs(($fecha - strtotime($item->fechafin)) / 3600);
+                    $minutos = '0.' . explode(".", $horas)[1];
+                    $horas = floor($horas);
+                    $minutos = floor($minutos * 60);
+
+                    $item->tiempo = $horas . ' horas y ' . $minutos . ' minutos';
+                    $servicios_por_recoger[] = $item;
+                }
+            }
+        }
+
+        return $servicios_por_recoger;
+    }
+
+    public function getServiciosPorRecogerJSON(){
+
+        $u = Auth::user();
+        $persona = Persona::where('identificacion', $u->identificacion)->first();
+
+        if ($persona != null && session('ROL') != 'ADMINISTRADOR') {
+
+            if (session('ROL') == 'CENTRAL') {
+                $servicios = Servicio::where([
+                    ['estado', 'ENTREGADO']
+                ])->orWhere('estado', 'RECOGER')->get();
+            } else {
+                $servicios = Servicio::where([
+                    ['persona_id', $persona->id],
+                    ['estado', 'ENTREGADO']
+                ])->orWhere('estado', 'RECOGER')->get();
+            }
+
+        } else {
+            $servicios = Servicio::where([
+                ['estado', 'ENTREGADO']
+            ])->orWhere('estado', 'RECOGER')->get()->sortBy('estado');
+        }
+
+        $servicios = $this->cambioEstado($servicios);
+
+        return json_encode($servicios);
+    }
+
 
 }

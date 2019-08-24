@@ -192,7 +192,7 @@
 </div>
 @endsection
 @section('script')
-<script src="js/axios.min.js"></script>
+<script src="{{asset('js/axios.min.js')}}"></script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACMXJBl7W2A6fYConiB7bfeCkKuNusyyo&callback=initMap&libraries=places"></script>
 <script type="text/javascript">
 

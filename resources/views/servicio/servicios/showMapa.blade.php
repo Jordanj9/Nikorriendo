@@ -71,6 +71,58 @@
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACMXJBl7W2A6fYConiB7bfeCkKuNusyyo&callback=initMap"></script>
     <script type="text/javascript">
 
+        $(function () {
+
+            axios.get('{{url('servicio/getServiciosPorRecogerJSON')}}').then(resonse => {
+              const data  = resonse.data;
+              data.forEach(item => {
+
+                  //Creamos el marcador en el mapa con sus propiedades
+                  //para nuestro obetivo tenemos que poner el atributo draggable en true
+                  //position pondremos las mismas coordenas que obtuvimos en la geolocalización
+                  marker = new google.maps.Marker({
+                      map: map,
+                      icon:  '{{url('/images/icon-maps/pin4.png')}}',
+                      title:item.direccion,
+                      draggable: true,
+                      animation: google.maps.Animation.DROP,
+                      position: new google.maps.LatLng(item.latitud, item.longitud),
+                  });
+
+                  marcadores.push(marker);
+
+              });
+
+              //pintamos el marker del servicio
+              servicio = {
+                 latitud : '{{$servicio->latitud}}',
+                 longitud : '{{$servicio->longitud}}',
+                 direccion : '{{$servicio->direccion}}'
+              };
+
+                marker = new google.maps.Marker({
+                    map: map,
+                    icon:  '{{url('/images/icon-maps/pin10.png')}}',
+                    title:servicio.direccion,
+                    draggable: true,
+                    animation: google.maps.Animation.DROP,
+                    position: new google.maps.LatLng(servicio.latitud, servicio.longitud),
+                });
+
+                marcadores.push(marker);
+
+                var bounds = new google.maps.LatLngBounds();
+
+                marcadores.forEach(item => {
+                    bounds.extend(new google.maps.LatLng(item.position.lat(), item.position.lng()));
+                });
+
+                map.fitBounds(bounds);
+
+            });
+
+        });
+
         var map;
         var marcadores = [];
         var marker;
@@ -108,10 +160,11 @@
                 draggable: true,
                 animation: google.maps.Animation.DROP,
                 position: new google.maps.LatLng(coords.lat, coords.lng),
-
+                icon:  '{{url('/images/icon-maps/pin1.png')}}',
             });
 
             marcadores.push(marker);
+
 
             //agregamos un evento al marcador junto con la funcion callback al igual que el evento dragend que indica
             //cuando el usuario a soltado el marcador
