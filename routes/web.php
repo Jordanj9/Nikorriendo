@@ -94,6 +94,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'servicio'], function() {
     Route::get('show_mapa', 'ServicioController@showSeriviciosEnMapa')->name('servicio.showSeriviciosEnMapa');
     Route::get('show_mapa/{id}', 'ServicioController@showSeriviciosEnMapa')->name('servicio.showSeriviciosEnMapa');
     Route::get('getServiciosPorRecogerJSON', 'ServicioController@getServiciosPorRecogerJSON')->name('servicio.getServiciosPorRecogerJSON');
+    Route::get('getServiciosPorEntregarJSON', 'ServicioController@getServiciosPorEntregarJSON')->name('servicio.getServiciosPorEntregarJSON');
+    Route::get('show_servicios', 'ServicioController@showServicios')->name('servicio.showServicios');
 });
 
 //GRUPO DE RUTAS PARA LA GESTION DE LOS MANTENIMIENTOS DE LAS LAVADORAS DE LA EMPRESA

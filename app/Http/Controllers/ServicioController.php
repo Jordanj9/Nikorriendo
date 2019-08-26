@@ -12,57 +12,84 @@ use App\Barrio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ServicioController extends Controller {
+class ServicioController extends Controller
+{
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index() {
+    public function index()
+    {
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
         if ($persona != null) {
-            $servicios = Servicio::where('sucursal_id', $persona->sucursal_id)->get()->sortBy('estado');
+            if (session('ROL') == 'CENTRAL') {
+                $servicios = Servicio::where('sucursal_id', $persona->sucursal_id)->get()->sortBy('estado');
+            } else {
+                $servicios = Servicio::where([
+                    ['sucursal_id', $persona->sucursal_id],
+                    ['persona_id', $persona->id]
+                ])->get()->sortBy('estado');
+            }
         } else {
             $servicios = Servicio::all()->sortBy('estado');
         }
         return view('servicio.servicios.list')
-                        ->with('location', 'servicio')
-                        ->with('servicios', $servicios);
+            ->with('location', 'servicio')
+            ->with('servicios', $servicios);
     }
 
-    public function create() {
+    public function create()
+    {
         $u = Auth::user();
         $persona = Persona::where([['identificacion', $u->identificacion], ['tipo', 'CENTRAL']])->first();
         $existe = false;
         $barrios = Barrio::all()->pluck('nombre', 'id');
-        if ($persona != null) {
-            $bodegas = Bodega::where('sucursal_id', $persona->sucursal_id)->get();
-            if (count($bodegas) > 0) {
-                foreach ($bodegas as $i) {
-                    $disponible = Lavadora::where([['estado_lavadora', 'DISPONIBLE'], ['bodega_id', $i->id]])->get();
-                    if (count($disponible) > 0) {
-                        $existe = true;
+        if ($persona != null ||session('ROL') == 'ADMINISTRADOR' ) {
+            if(session('ROL') == 'ADMINISTRADOR'){
+                $bodegas = Bodega::all();
+                if (count($bodegas) > 0) {
+                    foreach ($bodegas as $i) {
+                        $disponible = Lavadora::where([['estado_lavadora', 'DISPONIBLE'], ['bodega_id', $i->id]])->get();
+                        if (count($disponible) > 0) {
+                            $existe = true;
+                        }
                     }
                 }
+                if ($existe) {
+                    $mensaje = "SI";
+                } else {
+                    $mensaje = "Atencion!. No hay lavadoras disponibles en el momento";
+                }
+
+            }else {
+
+                $bodegas = Bodega::where('sucursal_id', $persona->sucursal_id)->get();
+                if (count($bodegas) > 0) {
+                    foreach ($bodegas as $i) {
+                        $disponible = Lavadora::where([['estado_lavadora', 'DISPONIBLE'], ['bodega_id', $i->id]])->get();
+                        if (count($disponible) > 0) {
+                            $existe = true;
+                        }
+                    }
+                }
+                if ($existe) {
+                    $mensaje = "SI";
+                } else {
+                    $mensaje = "Atencion!. No hay lavadoras disponibles en el momento";
+                }
+
             }
-            if ($existe) {
-                $mensaje = "SI";
-            } else {
-                $mensaje = "Atencion!. No hay lavadoras disponibles en el momento";
-            }
+
             return view('servicio.servicios.create')
-                            ->with('location', 'servicio')
-                            ->with('barrios', $barrios)
-                            ->with('mensaje', $mensaje);
+                ->with('location', 'servicio')
+                ->with('barrios', $barrios)
+                ->with('mensaje', $mensaje);
+
         } else {
             flash("Usted no posee permisos para acceder a esta funcionalidad.")->warning();
             return redirect()->route('servicio.index');
         }
     }
 
-    public function store(Request $request) {
+    public function store(Request $request){
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
         $result_cliente = true;
@@ -130,28 +157,38 @@ class ServicioController extends Controller {
         }
     }
 
-    public function show(Servicio $servicio) {
+    public function show(Servicio $servicio)
+    {
+
         return view('servicio.servicios.show')
-                        ->with('location', 'servicio')
-                        ->with('servicio', $servicio);
+            ->with('location', 'servicio')
+            ->with('servicio', $servicio);
     }
 
     public function showSeriviciosEnMapa($id) {
         $servicio = Servicio::find($id);
         return view('servicio.servicios.showMapa')
-                        ->with('location', 'servicio')
-                        ->with('servicio', $servicio);
+            ->with('location', 'servicio')
+            ->with('servicio', $servicio);
     }
 
-    public function edit(Servicio $servicio) {
+    public function showServicios(){
+
+        return view('servicio.geolocalizacion.list')
+            ->with('location', 'servicio');
+
+    }
+
+    public function edit(Servicio $servicio){
         //
     }
 
-    public function update(Request $request, Servicio $servicio) {
+    public function update(Request $request, Servicio $servicio){
         //
     }
 
-    public function destroy(Servicio $servicio) {
+    public function destroy(Servicio $servicio)
+    {
         $result = false;
         if ($servicio->estado == 'PENDIENTE' || $servicio->estado == 'ASIGNADO') {
             $servicio->estado = 'CANCELADO';
@@ -169,18 +206,18 @@ class ServicioController extends Controller {
             $aud->detalles = $str;
             $aud->save();
             return response()->json([
-                        'status' => 'ok',
-                        'message' => "EL servicio para la direccion " . $servicio->direccion . " fue cancelado(a) de forma exitosa!"
+                'status' => 'ok',
+                'message' => "EL servicio para la direccion " . $servicio->direccion . " fue cancelado(a) de forma exitosa!"
             ]);
         } else {
             return response()->json([
-                        'status' => 'error',
-                        'message' => "El servicio para la direccion " . $servicio->direccion . " no pudo ser cancelado(a). Error:"
+                'status' => 'error',
+                'message' => "El servicio para la direccion " . $servicio->direccion . " no pudo ser cancelado(a). Error:"
             ]);
         }
     }
 
-    public function getClientes($id) {
+    public function getClientes($id){
         $cli = Cliente::where('telefono', $id)->first();
         if ($cli !== null) {
             $obj["id"] = $cli->id;
@@ -196,7 +233,7 @@ class ServicioController extends Controller {
         }
     }
 
-    function orderMultiDimensionalArray($toOrderArray, $field, $inverse = false) {
+    function orderMultiDimensionalArray($toOrderArray, $field, $inverse = false){
         $position = array();
         $newRow = array();
         foreach ($toOrderArray as $key => $row) {
@@ -215,7 +252,9 @@ class ServicioController extends Controller {
         return $returnArray;
     }
 
-    public function getServiciosPendientes() {
+    public function getServiciosPendientes()
+    {
+
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
         if ($persona != null) {
@@ -228,11 +267,13 @@ class ServicioController extends Controller {
             $servicios = Servicio::where([['estado', 'PENDIENTE']])->get()->sortBy('estado');
         }
         return view('servicio.solicitudes_de_servicio.pendientes')
-                        ->with('location', 'servicio')
-                        ->with('servicios', $servicios);
+            ->with('location', 'servicio')
+            ->with('servicios', $servicios);
     }
 
-    public function aceptarServicio($id) {
+    public function aceptarServicio($id)
+    {
+
         $u = Auth::user();
         $servicio = Servicio::find($id);
         $persona = Persona::where([['identificacion', $u->identificacion], ['tipo', 'MENSAJERO']])->first();
@@ -263,7 +304,8 @@ class ServicioController extends Controller {
         }
     }
 
-    public function liberarServicio($id) {
+    public function liberarServicio($id)
+    {
         $u = Auth::user();
         $servicio = Servicio::find($id);
         $persona = Persona::where([
@@ -297,31 +339,33 @@ class ServicioController extends Controller {
         }
     }
 
-    public function getServiciosPorEntregar() {
+    public function getServiciosPorEntregar()
+    {
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
         if ($persona != null) {
             if (session('ROL') == 'CENTRAL') {
                 $servicios = Servicio::where([
-                            ['estado', 'ASIGNADO']
-                        ])->get()->sortBy('estado');
+                    ['estado', 'ASIGNADO']
+                ])->get()->sortBy('estado');
             } else {
                 $servicios = Servicio::where([
-                            ['persona_id', $persona->id],
-                            ['estado', 'ASIGNADO']
-                        ])->get()->sortBy('estado');
+                    ['persona_id', $persona->id],
+                    ['estado', 'ASIGNADO']
+                ])->get()->sortBy('estado');
             }
         } else {
             $servicios = Servicio::where([
-                        ['estado', 'ASIGNADO']
-                    ])->get()->sortBy('estado');
+                ['estado', 'ASIGNADO']
+            ])->get()->sortBy('estado');
         }
         return view('servicio.servicios_por_entregar.aceptados')
-                        ->with('location', 'servicio')
-                        ->with('servicios', $servicios);
+            ->with('location', 'servicio')
+            ->with('servicios', $servicios);
     }
 
-    public function entregarServicio($id) {
+    public function entregarServicio($id)
+    {
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
         if ($persona != null) {
@@ -336,51 +380,89 @@ class ServicioController extends Controller {
             }
             $lavadoras = collect($lavadoras);
             return view('servicio.servicios_por_entregar.entregar')
-                            ->with('location', 'servicio')
-                            ->with('lavadoras', $lavadoras)
-                            ->with('servicio_id', $id);
+                ->with('location', 'servicio')
+                ->with('lavadoras', $lavadoras)
+                ->with('servicio_id', $id);
         } else {
             flash("Error : esta opción solo es valida para los <strong>" . 'mensajeros' . "</strong> ")->error();
             return back();
         }
     }
 
-    public function guardarEntrega(Request $request) {
+    public function guardarEntrega(Request $request)
+    {
+
+        $u = Auth::user();
+        $persona = Persona::where('identificacion', $u->identificacion)->first();
+
         $servicio = Servicio::find($request->servicio_id);
         $m = new Servicio($servicio->attributesToArray());
-        if ($servicio->num_lavadoras == count($request->lavadoras)) {
-            $servicio->estado = 'ENTREGADO';
-            $hoy = getdate();
-            $servicio->fechaentrega = $hoy['year'] . '-' . $hoy['mon'] . '-' . $hoy['mday'] . ' ' . $hoy['hours'] . ':' . $hoy['minutes'] . ':' . $hoy['seconds'];
-            $string = "+" . $servicio->dias . " day";
-            $fecha = strtotime($servicio->fechaentrega);
-            $fin = strtotime($string, $fecha);
-            $servicio->fechafin = date("Y-m-d H:i:s", $fin);
-            // Imagen base64 enviada desde javascript en el formulario
-            // En este caso, con PHP plano podriamos obtenerla usando :
-            // $baseFromJavascript = $_POST['base64'];
-            $baseFromJavascript = $request->base_64;
-            // Nuestro base64 contiene un esquema Data URI (data:image/png;base64,)
-            // que necesitamos remover para poder guardar nuestra imagen
-            // Usa explode para dividir la cadena de texto en la , (coma)
-            $base_to_php = explode(',', $baseFromJavascript);
-            // El segundo item del array base_to_php contiene la información que necesitamos (base64 plano)
-            // y usar base64_decode para obtener la información binaria de la imagen
-            $data = base64_decode($base_to_php[1]); // BBBFBfj42Pj4....
-            $nombre_file = 'firma_entrega_' . $hoy['year'] . $hoy['mon'] . $hoy['mday'] . $hoy['hours'] . $hoy['minutes'] . $hoy['seconds'] . '.png';
-            // Proporciona una locación a la nueva imagen (con el nombre y formato especifico)
-            $filepath = public_path() . '/docs/firma_entregas/' . $nombre_file; // or image.jpg
-            // Finalmente guarda la imágen en el directorio especificado y con la informacion dada
-            file_put_contents($filepath, $data);
-            $servicio->firma_recibido_cliente = $nombre_file;
-            $result = $servicio->save();
-            if ($result) {
-                $servicio->lavadoras()->sync($request->lavadoras);
-                foreach ($request->lavadoras as $item) {
-                    $lavadora = Lavadora::find($item);
-                    $lavadora->estado_lavadora = 'SERVICIO';
-                    $lavadora->estado_bodega = 'NO';
-                    $lavadora->save();
+
+        if ($persona != null) {
+            if ($servicio->num_lavadoras == count($request->lavadoras)) {
+                $servicio->estado = 'ENTREGADO';
+                $servicio->persona_id = $persona->id;
+                $hoy = getdate();
+                $servicio->fechaentrega = $hoy['year'] . '-' . $hoy['mon'] . '-' . $hoy['mday'] . ' ' . $hoy['hours'] . ':' . $hoy['minutes'] . ':' . $hoy['seconds'];
+                $string = "+" . $servicio->dias . " day";
+                $fecha = strtotime($servicio->fechaentrega);
+                $fin = strtotime($string, $fecha);
+                $servicio->fechafin = date("Y-m-d H:i:s", $fin);
+                // Imagen base64 enviada desde javascript en el formulario
+                // En este caso, con PHP plano podriamos obtenerla usando :
+                // $baseFromJavascript = $_POST['base64'];
+                $baseFromJavascript = $request->base_64;
+
+                // Nuestro base64 contiene un esquema Data URI (data:image/png;base64,)
+                // que necesitamos remover para poder guardar nuestra imagen
+                // Usa explode para dividir la cadena de texto en la , (coma)
+                $base_to_php = explode(',', $baseFromJavascript);
+                // El segundo item del array base_to_php contiene la información que necesitamos (base64 plano)
+                // y usar base64_decode para obtener la información binaria de la imagen
+                $data = base64_decode($base_to_php[1]); // BBBFBfj42Pj4....
+
+                $nombre_file = 'firma_entrega_' . $hoy['year'] . $hoy['mon'] . $hoy['mday'] . $hoy['hours'] . $hoy['minutes'] . $hoy['seconds'] . '.png';;
+                // Proporciona una locación a la nueva imagen (con el nombre y formato especifico)
+                $filepath = public_path() . '/docs/firma_entregas/' . $nombre_file; // or image.jpg
+                // Finalmente guarda la imágen en el directorio especificado y con la informacion dada
+                file_put_contents($filepath, $data);
+                $servicio->firma_recibido_cliente = $nombre_file;
+                $result = $servicio->save();
+
+                if ($result) {
+
+                    $servicio->lavadoras()->sync($request->lavadoras);
+
+                    foreach ($request->lavadoras as $item) {
+                        $lavadora = Lavadora::find($item);
+                        $lavadora->estado_lavadora = 'SERVICIO';
+                        $lavadora->estado_bodega = 'NO';
+                        $lavadora->save();
+                    }
+
+                    $aud = new Auditoriaservicio();
+                    $aud->usuario = "ID: " . $u->identificacion . ",  USUARIO: " . $u->nombres . " " . $u->apellidos;
+                    $aud->operacion = "ENTREGA";
+                    $str = "ENTREGA DEL SERVICIO. DATOS NUEVOS: ";
+                    $str2 = " DATOS ANTIGUOS: ";
+                    foreach ($m->attributesToArray() as $key => $value) {
+                        $str2 = $str2 . ", " . $key . ": " . $value;
+                    }
+                    foreach ($servicio->attributesToArray() as $key => $value) {
+                        $str = $str . ", " . $key . ": " . $value;
+                    }
+                    $aud->detalles = $str . " - " . $str2;
+                    $aud->save();
+
+                    return response()->json([
+                        'status' => 'ok',
+                        'message' => "Success : el servicio para la dirección " . $servicio->direccion . " fue entregado correctamente",
+                    ]);
+                } else {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => "Error : el servicio para la dirección " . $servicio->direccion . " no pudo ser entregado correctamente",
+                    ]);
                 }
                 $aud = new Auditoriaservicio();
                 $u = Auth::user();
@@ -401,37 +483,41 @@ class ServicioController extends Controller {
                             'message' => "Success : el servicio para la dirección " . $servicio->direccion . " fue entregado correctamente",
                 ]);
             } else {
+
                 return response()->json([
-                            'status' => 'error',
-                            'message' => "Error : el servicio para la dirección " . $servicio->direccion . " no pudo ser entregado correctamente",
+                    'status' => 'error',
+                    'message' => "Error : tenga en cuenta que debe selecionar el mismo numero de lavadoras solicitadas por el cliente"
                 ]);
             }
         } else {
             return response()->json([
-                        'status' => 'error',
-                        'message' => "Error : tenga en cuenta que debe selecionar el mismo numero de lavadoras solicitadas por el cliente"
+                'status' => 'error',
+                'message' => "Error : no tiene los privilegios suficientes para realizar esta acción"
             ]);
         }
+
+
     }
 
-    public function getServiciosPorRecoger() {
+    public function getServiciosPorRecoger()
+    {
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
         if ($persona != null && session('ROL') != 'ADMINISTRADOR') {
             if (session('ROL') == 'CENTRAL') {
                 $servicios = Servicio::where([
-                            ['estado', 'ENTREGADO']
-                        ])->orWhere('estado', 'RECOGER')->get()->sortBy('estado');
+                    ['estado', 'ENTREGADO']
+                ])->orWhere('estado', 'RECOGER')->get()->sortBy('estado');
             } else {
                 $servicios = Servicio::where([
-                            ['persona_id', $persona->id],
-                            ['estado', 'ENTREGADO']
-                        ])->orWhere('estado', 'RECOGER')->get()->sortBy('estado');
+                    ['persona_id', $persona->id],
+                    ['estado', 'ENTREGADO']
+                ])->orWhere('estado', 'RECOGER')->get()->sortBy('estado');
             }
         } else {
             $servicios = Servicio::where([
-                        ['estado', 'ENTREGADO']
-                    ])->orWhere('estado', 'RECOGER')->get()->sortBy('estado');
+                ['estado', 'ENTREGADO']
+            ])->orWhere('estado', 'RECOGER')->get()->sortBy('estado');
         }
         $servicios = $this->cambioEstado($servicios);
         $per = Persona::all()->sortBy('primer_nombre');
@@ -449,28 +535,25 @@ class ServicioController extends Controller {
                         ->with('servicios', $servicios);
     }
 
-    public function recogerServicio($id) {
-        $u = Auth::user();
-        $persona = Persona::where('identificacion', $u->identificacion)->first();
-        $lavadoras_aux = $persona->lavadoras;
-        if (count($lavadoras_aux) > 0) {
-            foreach ($lavadoras_aux as $l) {
-                if ($l->estado_lavadora == 'DISPONIBLE') {
-                    $lavadoras[$l->id] = $l->serial . ' - ' . $l->marca;
-                }
-            }
-            if (session('ROL') == 'ADMINISTRADOR' || session('ROL') == 'MENSAJERO') {
-                return view('servicio.servicios_por_recoger.recoger')
-                                ->with('location', 'servicio')
-                                ->with('servicio_id', $id);
-            } else {
-                flash("Error : esta opción solo es valida para los <strong>" . 'mensajeros' . "</strong> ")->error();
-                return back();
-            }
+    public function recogerServicio($id)
+    {
+
+        $servicio = Servicio::find($id);
+
+        if (session('ROL') == 'ADMINISTRADOR' || session('ROL') == 'MENSAJERO') {
+            return view('servicio.servicios_por_recoger.recoger')
+                ->with('location', 'servicio')
+                ->with('servicio', $servicio);
+        } else {
+            flash("Error : esta opción solo es valida para los <strong>" . 'mensajeros' . "</strong> ")->error();
+            return back();
         }
+
     }
 
-    public function guardarRecogida(Request $request) {
+    public function guardarRecogida(Request $request)
+    {
+
         $servicio = Servicio::find($request->servicio_id);
         $m = new Servicio($servicio->attributesToArray());
         $servicio->estado = 'FINALIZADO';
@@ -515,13 +598,13 @@ class ServicioController extends Controller {
             $aud->detalles = $str . " - " . $str2;
             $aud->save();
             return response()->json([
-                        'status' => 'ok',
-                        'message' => "Success : el servicio para la dirección " . $servicio->direccion . " fue recogido correctamente",
+                'status' => 'ok',
+                'message' => "Success : el servicio para la dirección " . $servicio->direccion . " fue recogido correctamente",
             ]);
         } else {
             return response()->json([
-                        'status' => 'error',
-                        'message' => "Error : el servicio para la dirección " . $servicio->direccion . " no pudo ser recogido correctamente",
+                'status' => 'error',
+                'message' => "Error : el servicio para la dirección " . $servicio->direccion . " no pudo ser recogido correctamente",
             ]);
         }
     }
@@ -558,7 +641,9 @@ class ServicioController extends Controller {
         return $servicios_por_recoger;
     }
 
-    public function getServiciosPorRecogerJSON() {
+    public function getServiciosPorRecogerJSON()
+    {
+
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
         if ($persona != null && session('ROL') != 'ADMINISTRADOR') {
@@ -578,6 +663,49 @@ class ServicioController extends Controller {
                     ])->orWhere('estado', 'RECOGER')->get()->sortBy('estado');
         }
         $servicios = $this->cambioEstado($servicios);
+
+        foreach ($servicios as $item) {
+            $item->barrio = $item->barrio->nombre;
+            $item->cliente_nombre = $item->cliente->nombre;
+            $item->cliente_telefono = $item->cliente->telefono;
+        }
+
+        return json_encode($servicios);
+    }
+
+    public function getServiciosPorEntregarJSON()
+    {
+
+        $u = Auth::user();
+        $persona = Persona::where('identificacion', $u->identificacion)->first();
+        if ($persona != null) {
+
+            if (session('ROL') == 'CENTRAL') {
+
+                $servicios = Servicio::where([
+                    ['estado', 'ASIGNADO']
+                ])->get()->sortBy('estado');
+
+            } else {
+
+                $servicios = Servicio::where([
+                    ['persona_id', $persona->id],
+                    ['estado', 'ASIGNADO']
+                ])->get()->sortBy('estado');
+            }
+
+        } else {
+            $servicios = Servicio::where([
+                ['estado', 'ASIGNADO']
+            ])->orWhere('estado', 'PENDIENTE')->get();
+        }
+
+        foreach ($servicios as $item) {
+            $item->barrio = $item->barrio->nombre;
+            $item->cliente_nombre = $item->cliente->nombre;
+            $item->cliente_telefono = $item->cliente->telefono;
+        }
+
         return json_encode($servicios);
     }
 

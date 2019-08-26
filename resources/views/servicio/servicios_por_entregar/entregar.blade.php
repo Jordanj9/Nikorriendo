@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="{{ asset('bower_components/bootstrap/dist/css/bootstrap.min.css')}}">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('bower_components/font-awesome/css/font-awesome.min.css')}}">
     <!-- Ionicons -->
@@ -46,7 +46,7 @@
         <ol class="breadcrumb">
             <li><a href="{{route('inicio')}}"><i class="fa fa-home"></i> Inicio</a></li>
             <li><a href="{{route('inicio')}}"><i class="fa fa-indent"></i> Servicios</a></li>
-            <li class="active"><a><i class="fa fa-users"></i> Entrega </a></li>
+            <li class="active"><a><i class="fa fa-caret-square-o-down"></i> Entrega </a></li>
         </ol>
     </section>
     <!-- Main content -->
@@ -68,7 +68,6 @@
             <div class="form-group">
                 <label>Seleccione las lavadoras que pretende entregar en el servicio</label>
                 <select class="form-control show-tick select2" name="lavadoras[]" id="lavadoras" required="" multiple="">
-                    <option value="" selected>--selecione una aqui--</option>
                     @foreach($lavadoras as $key=>$value)
                         <option value="{{$key}}">{{$value}}</option>
                     @endforeach
@@ -156,6 +155,5 @@
     });
 
 </script>
-</div>
 </body>
 </html>

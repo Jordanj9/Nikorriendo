@@ -1,15 +1,15 @@
 @extends('layouts.admin')
 
 @section('breadcrumb')
-<h1>
-    Servicio
-    <small>Solicitudes de Servicios</small>
-</h1>
-<ol class="breadcrumb">
-    <li><a href="{{route('inicio')}}"><i class="fa fa-home"></i> Inicio</a></li>
-    <li><a href="{{route('admin.servicio')}}"><i class="fa fa-indent"></i> Servicios</a></li>
-    <li class="active"><a><i class="fa fa-users"></i> Entregados</a></li>
-</ol>
+    <h1>
+        Servicio
+        <small>Solicitudes de Servicios</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{{route('inicio')}}"><i class="fa fa-home"></i> Inicio</a></li>
+        <li><a href="{{route('admin.servicio')}}"><i class="fa fa-indent"></i> Servicios</a></li>
+        <li class="active"><a><i class="fa fa-caret-square-o-down"></i> Entregados</a></li>
+    </ol>
 @endsection
 @section('content')
 <div class="row clearfix">

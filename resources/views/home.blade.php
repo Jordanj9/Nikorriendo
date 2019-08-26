@@ -5,7 +5,7 @@
         <small>Sr(a). {{Auth::user()->nombres}}</small>
     </h1>
     <ol class="breadcrumb">
-        <li class="active"><a href="{{route('inicio')}}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+        <li class="active"><a href="{{route('inicio')}}"><i class="fa fa-home"></i> Inicio</a></li>
     </ol>
 @endsection
 @section('content')
