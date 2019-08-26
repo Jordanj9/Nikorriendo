@@ -8,7 +8,7 @@
     <ol class="breadcrumb">
         <li><a href="{{route('inicio')}}"><i class="fa fa-home"></i> Inicio</a></li>
         <li><a href="{{route('admin.servicio')}}"><i class="fa fa-indent"></i> Servicios</a></li>
-        <li class="active"><a><i class="fa fa-users"></i> Aceptados</a></li>
+        <li class="active"><a><i class="fa fa-caret-square-o-up"></i> Aceptados</a></li>
     </ol>
 @endsection
 @section('content')

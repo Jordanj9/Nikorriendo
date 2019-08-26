@@ -46,7 +46,7 @@
         <ol class="breadcrumb">
             <li><a href="{{route('inicio')}}"><i class="fa fa-home"></i> Inicio</a></li>
             <li><a href="{{route('inicio')}}"><i class="fa fa-indent"></i> Servicios</a></li>
-            <li class="active"><a><i class="fa fa-users"></i> Entrega </a></li>
+            <li class="active"><a><i class="fa fa-caret-square-o-down"></i> Entrega </a></li>
         </ol>
     </section>
     <!-- Main content -->
