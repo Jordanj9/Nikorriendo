@@ -91,10 +91,11 @@ class SolicitudcambioController extends Controller {
         $segundos = $pendientes - $minutos;
         $segundos = floor($segundos * 60);
         $solicitud->tiempopendiente = $horas . ":" . $minutos . ":" . $segundos;
-        $final = strtotime("+1 day", $fin);
-        $servicio->fechafin = date("Y-m-d H:i:s", $final);
         $result = $solicitud->save();
         if ($result) {
+            $final = strtotime("+1 day", $fin);
+            $servicio->fechafin = date("Y-m-d H:i:s", $final);
+            $servicio->save();
             $u = Auth::user();
             $aud = new Auditoriaservicio();
             $aud->usuario = "ID: " . $u->identificacion . ",  USUARIO: " . $u->nombres . " " . $u->apellidos;
