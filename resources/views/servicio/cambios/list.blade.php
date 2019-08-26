@@ -72,18 +72,21 @@
                         <td>{{$s->created_at}}</td>
                         <td>{{$s->updated_at}}</td>
                         <td style="text-align: center;">
-                            <a href="{{route('servicio.show',$s->id)}}" data-toggle="tooltip"
+                            <a href="{{route('servicio.show',$s->servicio_id)}}" data-toggle="tooltip"
                                data-placement="top" title="Detalle del Servicio"
                                style="color: deepskyblue; margin-left: 10px;"><i class="fa fa-eye"></i></a>
-                            <a href="{{route('servicio.show',$s->id)}}" data-toggle="tooltip"
+                            <a href="{{route('servicio.show',$s->servicio_id)}}" data-toggle="tooltip"
                                data-placement="top" title="Ubicación del Servicio"
                                style="color: deepskyblue; margin-left: 10px;"><i class="fa  fa-map-marker"></i></a>
-                            <a href="{{route('servicio.liberarServicio',$s->id)}}" data-toggle="tooltip"
-                               data-placement="top" title="Liberar Servicio"
-                               style="color: orangered; margin-left: 10px;"><i class="fa  fa-times-circle"></i></a>
-                            <a href="{{route('servicio.entregarServicio',$s->id)}}" data-toggle="tooltip"
-                               data-placement="top" title="Entregar Servicio"
+                            @if($s->esatdo == 'PENDIENTE')
+                            <a href="{{route('solicitud.entregarCambio',$s->id)}}" data-toggle="tooltip"
+                               data-placement="top" title="Entregar Cambio"
                                style="color: deepskyblue; margin-left: 10px;"><i class="fa  fa-dropbox"></i></a>
+                            @endif
+                            @if(session('ROL') == 'ADMINISTRADOR')
+                            <a data-toggle="tooltip" data-placement="top" title="Dar Permiso" onclick="cambio(event,'{{$s->id}}')"
+                               style="color: deeppink; margin-left: 10px;"><i class="fa fa-eye"></i></a>
+                            @endif
                         </td>
                     </tr>
                     @endforeach
@@ -92,64 +95,98 @@
         </div>
     </div>
 </div>
+<!-- modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Generar Permiso</h4>
+            </div>
+            <div class="modal-body">
+                <div class="outer_div">
+                    {!! Form::open(['route'=>'permiso.store','method'=>'POST','role'=>'form','class'=>''])!!}
+                    <input type="hidden" name="servicio_id" id="servicio_id" />
+                    <input type="hidden" name="tipo" id="tipo" value="SERVICIO" />
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Seleccione Mensajero</label>
+                            {!! Form::select('persona_id',$personas,null,['class'=>'form-control','placeholder'=>'Seleccione el Empleado','id'=>'persona_id']) !!}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12" style="margin-top: 20px !important">
+                            <button class="btn btn-success icon-btn pull-right" type="submit"><i class="fa fa-fw fa-lg fa-save"></i>Guardar</button>
+                            <button class="btn btn-info icon-btn pull-right" type="reset"><i class="fa fa-fw fa-lg fa-trash-o"></i>Limpiar</button>
+                            <a class="btn btn-danger icon-btn pull-right" data-dismiss="modal"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancelar</a>
+                        </div>
+                    </div>
+                    {!! Form::close() !!}
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @section('script')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script type="text/javascript">
-$(function () {
-    $('#example1').DataTable({
-        responsive: true
-    });
-});
-function ir(id) {
-    $("#id").val(id);
-}
-function eliminar(event, id) {
-    event.preventDefault();
-    Swal.fire({
-        title: 'Estas seguro(a)?',
-        text: "no podras revertilo!",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Si, eliminarlo!',
-        cancelButtonText: 'cancelar'
-    }).then((result) => {
-        if (result.value) {
-            let url = 'barrio/' + id;
-            axios.delete(url).then(result => {
-                let data = result.data;
-                if (data.status == 'ok') {
-                    Swal.fire(
-                            'Eliminado!',
-                            data.message,
-                            'success'
-                            ).then(result => {
-                        location.reload();
-                    });
-                } else if (data.status == 'warning') {
-                    Swal.fire(
-                            'Atención',
-                            data.message,
-                            'warning'
-                            ).then(result => {
-                        location.reload();
-                    });
-                } else {
-                    Swal.fire(
-                            'error',
-                            data.message,
-                            'danger'
-                            ).then(result => {
-                        location.reload();
-                    });
-                }
-            });
-        }
-    })
+                                $(function () {
+                                $('#example1').DataTable({
+                                responsive: true
+                                });
+                                });
+                                function ir(id) {
+                                $("#id").val(id);
+                                }
+                                function eliminar(event, id) {
+                                event.preventDefault();
+                                Swal.fire({
+                                title: 'Estas seguro(a)?',
+                                        text: "no podras revertilo!",
+                                        type: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#3085d6',
+                                        cancelButtonColor: '#d33',
+                                        confirmButtonText: 'Si, eliminarlo!',
+                                        cancelButtonText: 'cancelar'
+                                }).then((result) => {
+                                if (result.value) {
+                                let url = 'barrio/' + id;
+                                axios.delete(url).then(result => {
+                                let data = result.data;
+                                if (data.status == 'ok') {
+                                Swal.fire(
+                                        'Eliminado!',
+                                        data.message,
+                                        'success'
+                                        ).then(result => {
+                                location.reload();
+                                });
+                                } else if (data.status == 'warning') {
+                                Swal.fire(
+                                        'Atención',
+                                        data.message,
+                                        'warning'
+                                        ).then(result => {
+                                location.reload();
+                                });
+                                } else {
+                                Swal.fire(
+                                        'error',
+                                        data.message,
+                                        'danger'
+                                        ).then(result => {
+                                location.reload();
+                                });
+                                }
+                                });
+                                }
+                                })
 
-}
+                                }
 </script>
 @endsection

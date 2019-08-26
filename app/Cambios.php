@@ -12,7 +12,7 @@ class Cambios extends Model {
      * @var array
      */
     protected $fillable = [
-        'id', 'firma_cliente', 'lavadora_vieja', 'lavadora_id', 'solicitudcambio_id', 'persona_id', 'created_at', 'updated_at'
+        'id', 'lavadora_vieja', 'lavadora_id', 'solicitudcambio_id', 'created_at', 'updated_at'
     ];
 
     /**

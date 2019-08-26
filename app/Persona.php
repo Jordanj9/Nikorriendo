@@ -48,4 +48,12 @@ class Persona extends Model {
         return $this->hasMany('App\Cambios');
     }
 
+    public function permisos() {
+        return $this->hasMany('App\Permiso');
+    }
+
+    public function solicitud() {
+        return $this->hasMany('App\Solicitudcambio');
+    }
+
 }

@@ -82,10 +82,15 @@ Route::group(['middleware' => 'auth', 'prefix' => 'servicio'], function() {
     Route::post('guardarEntrega', 'ServicioController@guardarEntrega')->name('servicio.guardarEntrega');
     Route::get('recogerServicio/{id}', 'ServicioController@recogerServicio')->name('servicio.recogerServicio');
     Route::get('liberar_servicio/{id}', 'ServicioController@liberarServicio')->name('servicio.liberarServicio');
+    Route::post('permiso', 'ServicioController@permiso')->name('servicio.permiso');
     //SOLICITUD CAMBIOS
     Route::resource('solicitud', 'SolicitudcambioController');
     Route::get('solicitud/cambio/{id}', 'SolicitudcambioController@solicitudCambio')->name('solicitud.solicitudcambio');
-    //geolocalización
+    Route::get('solicitud/cambio/{id}/entregar', 'SolicitudcambioController@entregarCambio')->name('solicitud.entregarCambio');
+    Route::post('solicitud/guardarCambio', 'SolicitudcambioController@guardarCambio')->name('solicitud.guardarcambio');
+    //PERMISO
+    Route::resource('permiso', 'PermisoController');
+    //GEOLOCALIZACION
     Route::get('show_mapa', 'ServicioController@showSeriviciosEnMapa')->name('servicio.showSeriviciosEnMapa');
     Route::get('show_mapa/{id}', 'ServicioController@showSeriviciosEnMapa')->name('servicio.showSeriviciosEnMapa');
     Route::get('getServiciosPorRecogerJSON', 'ServicioController@getServiciosPorRecogerJSON')->name('servicio.getServiciosPorRecogerJSON');

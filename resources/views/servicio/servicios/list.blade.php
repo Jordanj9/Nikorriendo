@@ -82,8 +82,10 @@
                             <a href="{{route('servicio.show',$servicio->id)}}" data-toggle="tooltip"
                                data-placement="top" title="Detalle del Servicio"
                                style="color: deepskyblue; margin-left: 10px;"><i class="fa fa-eye"></i></a>
+                               @if($servicio->estado == 'ENTREGADO')
                             <a data-toggle="tooltip" data-placement="top" title="Solicitud de Cambio" onclick="cambio(event,'{{$servicio->id}}')"
                                style="color: deeppink; margin-left: 10px;"><i class="fa fa-eye"></i></a>
+                            @endif
                             <a href="#" onclick="eliminar(event,'{{$servicio->id}}')" data-toggle="tooltip"
                                data-placement="top" title="Cancelar Servicio"
                                style="color: red; margin-left: 10px;"><i class="fa  fa-calendar-times-o"></i></a>

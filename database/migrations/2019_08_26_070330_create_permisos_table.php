@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSolicitudcambiosTable extends Migration {
+class CreatePermisosTable extends Migration {
 
     /**
      * Run the migrations.
@@ -12,17 +12,15 @@ class CreateSolicitudcambiosTable extends Migration {
      * @return void
      */
     public function up() {
-        Schema::create('solicitudcambios', function (Blueprint $table) {
+        Schema::create('permisos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('observacion');
-            $table->string('estado', 20)->default('PENDIENTE');
-            $table->integer('num_lavadora');
-            $table->time('tiempopendiente');
-            $table->string('firma_cliente', 200)->nullable();
-            $table->bigInteger('servicio_id')->unsigned();
-            $table->foreign('servicio_id')->references('id')->on('servicios')->onDelete('cascade');
+            $table->string('tipo', 15);
             $table->bigInteger('persona_id')->unsigned();
             $table->foreign('persona_id')->references('id')->on('personas')->onDelete('cascade');
+            $table->bigInteger('servicio_id')->unsigned()->nullable();
+            $table->foreign('servicio_id')->references('id')->on('servicios')->onDelete('cascade');
+            $table->bigInteger('solicitudcambio_id')->unsigned()->nullable();
+            $table->foreign('solicitudcambio_id')->references('id')->on('solicitudcambios')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -33,7 +31,7 @@ class CreateSolicitudcambiosTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::dropIfExists('solicitudcambios');
+        Schema::dropIfExists('permisos');
     }
 
 }

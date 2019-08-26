@@ -12,7 +12,7 @@ class Solicitudcambio extends Model {
      * @var array
      */
     protected $fillable = [
-        'id', 'observacion', 'estado', 'num_lavadora', 'tiempopendiente', 'servicio_id', 'created_at', 'updated_at'
+        'id', 'observacion', 'estado', 'num_lavadora', 'tiempopendiente', 'firma_cliente', 'servicio_id', 'persona_id', 'created_at', 'updated_at'
     ];
 
     /**
@@ -30,6 +30,14 @@ class Solicitudcambio extends Model {
 
     public function cambios() {
         return $this->hasMany('App\Cambios');
+    }
+
+    public function permisos() {
+        return $this->hasMany('App\Permiso');
+    }
+
+    public function persona() {
+        return $this->belongsTo('App\Persona');
     }
 
 }

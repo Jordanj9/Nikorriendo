@@ -44,4 +44,8 @@ class Servicio extends Model {
         return $this->hasMany('App\Solicitudcambio');
     }
 
+    public function permisos() {
+        return $this->hasMany('App\Permiso');
+    }
+
 }
