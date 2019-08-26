@@ -2,7 +2,7 @@
 @section('breadcrumb')
 <h1>
     Servicios
-    <small>Solicitudes de Servicios</small>
+    <small>Servicios</small>
 </h1>
 <ol class="breadcrumb">
     <li><a href="{{route('inicio')}}"><i class="fa fa-home"></i> Inicio</a></li>

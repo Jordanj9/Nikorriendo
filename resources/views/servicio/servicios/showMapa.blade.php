@@ -22,12 +22,12 @@
 @section('breadcrumb')
     <h1>
         Servicios
-        <small>Empleados de la empresa</small>
+        <small>Solicitudes de Servicio</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{route('inicio')}}"><i class="fa fa-home"></i> Inicio</a></li>
-        <li><a href="{{route('admin.servicio')}}"><i class="fa fa-gear"></i>Servicios</a></li>
-        <li><a href="{{route('servicio.index')}}"><i class="fa fa-users"></i> Solicitudes</a></li>
+        <li><a href="{{route('admin.servicio')}}"><i class="fa fa-indent"></i>Servicios</a></li>
+        <li><a href="{{route('servicio.index')}}"><i class="fa fa-pencil-square-o"></i> Solicitudes</a></li>
         <li class="active"><a> Ver</a></li>
     </ol>
 @endsection
