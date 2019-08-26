@@ -79,9 +79,6 @@
                                 <a href="{{route('servicio.show',$servicio->id)}}" data-toggle="tooltip"
                                    data-placement="top" title="Detalle del Servicio"
                                    style="color: deepskyblue; margin-left: 10px;"><i class="fa fa-eye"></i></a>
-                                <a href="{{route('servicio.show',$servicio->id)}}" data-toggle="tooltip"
-                                   data-placement="top" title="Ubicación del Servicio"
-                                   style="color: deepskyblue; margin-left: 10px;"><i class="fa  fa-map-marker"></i></a>
                                 <a href="{{route('servicio.liberarServicio',$servicio->id)}}" data-toggle="tooltip"
                                    data-placement="top" title="Liberar Servicio"
                                    style="color: orangered; margin-left: 10px;"><i class="fa  fa-times-circle"></i></a>
@@ -108,56 +105,6 @@
             });
             $('.select2').select2();
         });
-
-        function ir(id) {
-            $("#id").val(id);
-        }
-
-        function eliminar(event, id) {
-            event.preventDefault();
-            Swal.fire({
-                title: 'Estas seguro(a)?',
-                text: "no podras revertilo!",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Si, eliminarlo!',
-                cancelButtonText: 'cancelar'
-            }).then((result) => {
-                if (result.value) {
-                    let url = 'servicio/' + id;
-                    axios.delete(url).then(result => {
-                        let data = result.data;
-                        if (data.status == 'ok') {
-                            Swal.fire(
-                                'Eliminado!',
-                                data.message,
-                                'success'
-                            ).then(result => {
-                                location.reload();
-                            });
-                        } else if (data.status == 'warning') {
-                            Swal.fire(
-                                'Atención',
-                                data.message,
-                                'warning'
-                            ).then(result => {
-                                location.reload();
-                            });
-                        } else {
-                            Swal.fire(
-                                'error',
-                                data.message,
-                                'danger'
-                            ).then(result => {
-                                location.reload();
-                            });
-                        }
-                    });
-                }
-            });
-        }
 
     </script>
 @endsection

@@ -27,7 +27,8 @@
                 <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
                         title="Minimizar">
                     <i class="fa fa-minus"></i></button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Cerrar">
+                <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip"
+                        title="Cerrar">
                     <i class="fa fa-times"></i></button>
             </div>
         </div>
@@ -41,11 +42,13 @@
                     <table class="table table-hover">
                         <tbody>
                         <tr class="read">
-                            <td class="contact bg-green" colspan="2" ><center><b>Información del Cliente</b></center></td>
+                            <td class="contact bg-green" colspan="2">
+                                <center><b>Información del Cliente</b></center>
+                            </td>
                         </tr>
                         <tr class="read">
                             <td class="contact"><b>Telefono</b></td>
-                            <td class="subject">{{$servicio->cliente->telefono}}</td>
+                            <td class="subject"><a href="tel:{{$servicio->cliente->telefono}}"><i class="fa fa-phone"></i> {{$servicio->cliente->telefono}}</a></td>
                         </tr>
                         <tr class="read">
                             <td class="contact"><b>Nombre</b></td>
@@ -60,7 +63,9 @@
                             <td class="subject">{{$servicio->cliente->barrio->nombre}}</td>
                         </tr>
                         <tr class="read">
-                            <td class="contact bg-green" colspan="2" ><center><b>Información del Servicio</b></center></td>
+                            <td class="contact bg-green" colspan="2">
+                                <center><b>Información del Servicio</b></center>
+                            </td>
                         </tr>
                         <tr class="read">
                             <td class="contact"><b>Numero de Lavadoras</b></td>
@@ -97,7 +102,9 @@
 
                         @if($servicio->persona_id != null)
                             <tr class="read">
-                                <td class="contact bg-green" colspan="2" ><center><b>Información del Mensajero Encargado del Servicio</b></center></td>
+                                <td class="contact bg-green" colspan="2">
+                                    <center><b>Información del Mensajero Encargado del Servicio</b></center>
+                                </td>
                             </tr>
                             <tr class="read">
                                 <td class="contact"><b>Nombre</b></td>
@@ -105,14 +112,16 @@
                             </tr>
                             <tr class="read">
                                 <td class="contact"><b>Telefono</b></td>
-                                <td class="subject">{{$servicio->persona->telefono}}</td>
+                                <td class="subject"><a href="tel:{{$servicio->persona->telefono}}"><i class="fa fa-phone"></i> {{$servicio->persona->telefono}}</a></td>
                             </tr>
                         @endif
 
                         @if($servicio->estado == 'ENTREGADO' || $servicio->estado == 'RECOGER' || $servicio->estado == 'FINALIZADO' )
 
                             <tr class="read">
-                                <td class="contact bg-green" colspan="2" ><center><b>Datos de Entrega del servicio</b></center></td>
+                                <td class="contact bg-green" colspan="2">
+                                    <center><b>Datos de Entrega del servicio</b></center>
+                                </td>
                             </tr>
 
                             <tr class="read">
@@ -127,12 +136,15 @@
 
 
                             <tr class="read">
-                                <td class="contact bg-green" colspan="2" ><center><b>Firma del Cliente</b></center></td>
+                                <td class="contact bg-green" colspan="2">
+                                    <center><b>Firma del Cliente</b></center>
+                                </td>
                             </tr>
 
                             <tr class="read">
                                 <td class="contact bg-white" colspan="2">
-                                        <img src="{{ url('/') . '/docs/firma_entregas/'.$servicio->firma_recibido_cliente}}" alt="firma del cliente" width="150" height="150">
+                                    <img src="{{ url('/') . '/docs/firma_entregas/'.$servicio->firma_recibido_cliente}}"
+                                         alt="firma del cliente" width="150" height="150">
                                 </td>
                             </tr>
 
@@ -141,21 +153,26 @@
                         @if($servicio->lavadoras->count() > 0)
 
                             <tr class="read">
-                                <td class="contact bg-green" colspan="2" ><center><b>Lavadora(s) Entregada(s) en el Servicio</b></center></td>
+                                <td class="contact bg-green" colspan="2">
+                                    <center><b>Lavadora(s) Entregada(s) en el Servicio</b></center>
+                                </td>
                             </tr>
 
-                                @foreach($servicio->lavadoras as $lavadora)
-                                    <tr class="read">
-                                        <td  colspan="2" class="contact">{{$lavadora->serial.' - '.$lavadora->marca.' -BODEGA:'.$lavadora->bodega->nombre.' -SUCURSAL:'.$lavadora->bodega->sucursal->nombre}}</td>
-                                    </tr>
-                                @endforeach
+                            @foreach($servicio->lavadoras as $lavadora)
+                                <tr class="read">
+                                    <td colspan="2"
+                                        class="contact">{{$lavadora->serial.' - '.$lavadora->marca.' -BODEGA:'.$lavadora->bodega->nombre.' -SUCURSAL:'.$lavadora->bodega->sucursal->nombre}}</td>
+                                </tr>
+                            @endforeach
 
                         @endif
 
                         @if($servicio->estado == 'FINALIZADO')
 
                             <tr class="read">
-                                <td class="contact bg-green" colspan="2" ><center><b>Datos de Finalización del servicio</b></center></td>
+                                <td class="contact bg-green" colspan="2">
+                                    <center><b>Datos de Finalización del servicio</b></center>
+                                </td>
                             </tr>
 
                             <tr class="read">
@@ -164,15 +181,17 @@
                             </tr>
 
                             <tr class="read">
-                                <td class="contact bg-green" colspan="2" ><center><b>Firma del Cliente</b></center></td>
+                                <td class="contact bg-green" colspan="2">
+                                    <center><b>Firma del Cliente</b></center>
+                                </td>
                             </tr>
 
                             <tr class="read">
                                 <td class="contact bg-white" colspan="2">
-                                    <img src="{{ url('/') . '/docs/firma_recogidas/'.$servicio->firma_entrega_cliente}}" alt="firma del cliente" width="150" height="150">
+                                    <img src="{{ url('/') . '/docs/firma_recogidas/'.$servicio->firma_entrega_cliente}}"
+                                         alt="firma del cliente" width="150" height="150">
                                 </td>
                             </tr>
-
                         @endif
 
                         </tbody>
@@ -187,5 +206,6 @@
                     $('#example1').DataTable();
                 });
             </script>
+    </div>
 @endsection
 
