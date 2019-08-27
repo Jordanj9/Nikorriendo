@@ -269,7 +269,6 @@
         });
 
     }
-
     //callback al hacer clic en el marcador lo que hace es quitar y poner la animacion BOUNCE
     function toggleBounce() {
         if (marker.getAnimation() !== null) {
@@ -278,7 +277,6 @@
             marker.setAnimation(google.maps.Animation.BOUNCE);
         }
     }
-
 </script>
 </body>
 </html>

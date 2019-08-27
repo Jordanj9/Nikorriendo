@@ -156,7 +156,7 @@ class SolicitudcambioController extends Controller {
 
     /**
      * Acepta las solicitudes de cambio generada por la central
-     * 
+     *
      * @param type $solicitudcambio_id
      * @return true or false
      */

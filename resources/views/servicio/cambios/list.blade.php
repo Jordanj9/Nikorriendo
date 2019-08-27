@@ -75,16 +75,13 @@
                             <a href="{{route('servicio.show',$s->servicio_id)}}" data-toggle="tooltip"
                                data-placement="top" title="Detalle del Servicio"
                                style="color: deepskyblue; margin-left: 10px;"><i class="fa fa-eye"></i></a>
-                            <a href="{{route('servicio.show',$s->servicio_id)}}" data-toggle="tooltip"
-                               data-placement="top" title="Ubicación del Servicio"
-                               style="color: deepskyblue; margin-left: 10px;"><i class="fa  fa-map-marker"></i></a>
-                            @if($s->esatdo == 'PENDIENTE')
+                            @if($s->estado == 'PENDIENTE')
                             <a href="{{route('solicitud.entregarCambio',$s->id)}}" data-toggle="tooltip"
                                data-placement="top" title="Entregar Cambio"
-                               style="color: deepskyblue; margin-left: 10px;"><i class="fa  fa-dropbox"></i></a>
+                               style="color: orangered; margin-left: 10px;"><i class="fa  fa-dropbox"></i></a>
                             @endif
                             @if(session('ROL') == 'ADMINISTRADOR')
-                            <a data-toggle="tooltip" data-placement="top" title="Dar Permiso" onclick="cambio(event,'{{$s->id}}')"
+                              <a data-toggle="tooltip" data-placement="top" title="Dar Permiso" onclick="cambio(event,'{{$s->id}}')"
                                style="color: deeppink; margin-left: 10px;"><i class="fa fa-eye"></i></a>
                             @endif
                         </td>

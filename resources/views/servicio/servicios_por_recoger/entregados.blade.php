@@ -81,12 +81,9 @@
                             <a href="{{route('servicio.show',$servicio->id)}}" data-toggle="tooltip"
                                data-placement="top" title="Detalle del Servicio"
                                style="color: deepskyblue; margin-left: 10px;"><i class="fa fa-eye"></i></a>
-                            <a href="{{route('servicio.aceptarServicio',$servicio->id)}}" data-toggle="tooltip"
-                               data-placement="top" title="Liberar Servicio"
-                               style="color: orangered; margin-left: 10px;"><i class="fa  fa-times-circle"></i></a>
                             <a href="{{route('servicio.recogerServicio',$servicio->id)}}" data-toggle="tooltip"
-                               data-placement="top" title="Entregar Servicio"
-                               style="color: deepskyblue; margin-left: 10px;"><i class="fa  fa-dropbox"></i></a>
+                               data-placement="top" title="Recoger Servicio"
+                               style="color: orangered; margin-left: 10px;"><i class="fa  fa-dropbox"></i></a>
                             @if(session('ROL') == 'ADMINISTRADOR')
                             <a data-toggle="tooltip" data-placement="top" title="Dar Permiso" onclick="cambio(event,'{{$servicio->id}}')"
                                style="color: deeppink; margin-left: 10px;"><i class="fa fa-eye"></i></a>
