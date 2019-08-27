@@ -26,6 +26,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function() {
     Route::get('estructura', 'MenuController@estructura')->name('admin.estructura');
     Route::get('servicio', 'MenuController@servicio')->name('admin.servicio');
     Route::get('mantenimiento', 'MenuController@mantenimiento')->name('admin.mantenimiento');
+    Route::get('reporte', 'MenuController@reporte')->name('admin.reporte');
     Route::post('acceso', 'HomeController@confirmaRol')->name('rol');
     Route::get('inicio', 'HomeController@inicio')->name('inicio');
 //    Route::get('auditoria', 'MenuController@auditoria')->name('admin.auditoria');
@@ -104,4 +105,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'mantenimiento'], function() {
     Route::resource('repuesto', 'RepuestoController');
     //MANTENIMIENTOS
     Route::resource('mantenimiento', 'MantenimientoController');
+});
+
+//GRUPO DE RUTAS PARA LA GESTIÓN DE REPORTES
+Route::group(['middleware' => 'auth', 'prefix' => 'reporte'], function() {
+    
 });

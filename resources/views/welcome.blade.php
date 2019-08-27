@@ -38,7 +38,7 @@
                     <div class="row bort">
                         <div class="copyright">
                             © 2019. Todos los Derechos Reservados.
-                            <div class="credits">Desarrollado por <a href="#">Alberto Rojas</a>
+                            <div class="credits">Desarrollado por <a href="#">Jordan Cuadro, Camilo Colon y Alberto Rojas.</a>
                             </div>
                         </div>
                     </div>
