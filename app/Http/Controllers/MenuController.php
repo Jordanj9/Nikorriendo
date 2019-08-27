@@ -42,4 +42,12 @@ class MenuController extends Controller {
         return view('menu.mantenimiento')->with('location', 'mantenimiento');
     }
 
+    /**
+     * Show the view menu reporte.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function reporte() {
+        return view('menu.reporte')->with('location', 'reporte');
+    }
 }
