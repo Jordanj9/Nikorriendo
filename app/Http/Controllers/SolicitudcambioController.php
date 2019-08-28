@@ -77,6 +77,7 @@ class SolicitudcambioController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
+
         $servicio = Servicio::find($request->servicio_id);
         $solicitud = new Solicitudcambio($request->all());
         $hoy = getdate();
@@ -95,6 +96,7 @@ class SolicitudcambioController extends Controller {
         if ($result) {
             $final = strtotime("+1 day", $fin);
             $servicio->fechafin = date("Y-m-d H:i:s", $final);
+            $servicio->estado = 'CAMBIO';
             $servicio->save();
             $u = Auth::user();
             $aud = new Auditoriaservicio();
@@ -112,6 +114,7 @@ class SolicitudcambioController extends Controller {
             flash("La Solicitud de cambio para el cliente <strong>" . $servicio->cliente->nombre . "</strong> no pudo ser almacenado(a). Error: " . $result)->error();
             return redirect()->route('solicitud.index');
         }
+
     }
 
     /**
@@ -222,11 +225,19 @@ class SolicitudcambioController extends Controller {
             $cont = 0;
             $result = $solicitud->save();
             if ($result) {
-                $servicio = Servicio::find($request->servicio_id);
+                $hoy = getdate();
+                $fecha = $hoy['year'] . '-' . $hoy['mon'] . '-' . $hoy['mday'] . ' ' . $hoy['hours'] . ':' . $hoy['minutes'] . ':' . $hoy['seconds'];
+                $fecha = strtotime($fecha);
+                $servicio =$solicitud->servicio;
                 $fin = strtotime($servicio->fechafin);
-                $pendiente = strtotime($solicitud->pendiente);
-                $aux = abs($fin + $pendiente);
-                $servicio->fechafin = date("Y-m-d H:i:s", $fin);
+                $pendiente = explode(':',$solicitud->tiempopendiente);
+                $newDate = strtotime('+'.$pendiente[0].' hour',$fecha);
+                $newDate = strtotime('+'.$pendiente[1].' minute',$newDate);
+                $newDate = strtotime('+'.$pendiente[2].' second',$newDate);
+
+                $servicio->fechafin = date("Y-m-d H:i:s", $newDate);
+                $servicio->estado = 'ENTREGADO';
+
                 $servicio->save();
                 foreach ($request->lavadoras as $value) {
                     $cambio = new Cambios();

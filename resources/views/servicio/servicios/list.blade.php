@@ -21,7 +21,7 @@
     </div>
     <div class="box">
         <div class="box-header with-border">
-            <h3 class="box-title">Listado de Servicios</h3>
+            <h3 class="box-title">Listado de </br>Servicios</h3>
             <div class="box-tools pull-right">
                 @if(session('ROL')=='CENTRAL' || session('ROL')=='ADMINISTRADOR')
                     <a href="{{route('servicio.create')}}" type="button" class="btn btn-box-tool" data-toggle="tooltip"

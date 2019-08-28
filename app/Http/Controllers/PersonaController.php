@@ -163,20 +163,21 @@ class PersonaController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function destroy(Persona $persona) {
+
         $nombre = $persona->primer_nombre . ' ' . $persona->primer_apellido;
         $user = User::where('identificacion', $persona->identificacion)->first();
-        /* if(count($bodega->lavadoras) > 0){
+         if(count($persona->servicios) > 0 || count($persona->lavadoras) > 0 ) {
           return response()->json([
-          'status' => 'warning',
-          'message'=>"la bodega " .$nombre. " no pudo ser eliminado(a) porque tiene lavadoras asociadas. Error:"
+           'status' => 'warning',
+           'message'=>"el empleado " .$nombre. " no puede ser eliminado(a) porque tiene lavadoras  o servicios asocioados. Error"
           ]);
-          } */
+          }
         $result = $persona->delete();
         $result2 = $user->delete();
         if ($result && $result2) {
             return response()->json([
-                        'status' => 'ok',
-                        'message' => "el empleado " . $nombre . " fue eliminado(a) de forma exitosa!"
+                'status' => 'ok',
+                'message' => "el empleado " . $nombre . " fue eliminado(a) de forma exitosa!"
             ]);
         } else {
             return response()->json([

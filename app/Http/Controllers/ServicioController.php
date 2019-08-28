@@ -273,7 +273,6 @@ class ServicioController extends Controller
 
     public function aceptarServicio($id)
     {
-
         $u = Auth::user();
         $servicio = Servicio::find($id);
         $persona = Persona::where([['identificacion', $u->identificacion], ['tipo', 'MENSAJERO']])->first();
@@ -293,7 +292,7 @@ class ServicioController extends Controller
             $aud->save();
             if ($result) {
                 flash("El servicio para la dirección  <strong>" . $servicio->direccion . "</strong> le fue asignado correctamente!")->success();
-                return redirect()->route('servicio.getServiciosPorEntregar');
+                return redirect()->route('servicio.getServiciosPendientes');
             } else {
                 flash("El servico para la dirección <strong>" . $servicio->direccion . "</strong> no pudo ser asignado. Error: " . $result)->error();
                 return back();
@@ -612,7 +611,7 @@ class ServicioController extends Controller
     /**
      * recorre uno a uno los servicios y aquellos que la fecha fin sea menor que la fecha actual
      * seran colocados en estado por recorrer
-     * 
+     *
      * @param type $servicios
      * @return type response/Servicios
      */

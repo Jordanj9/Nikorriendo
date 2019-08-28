@@ -67,7 +67,7 @@
                     <!-- mini logo for sidebar mini 50x50 pixels -->
                     <span class="logo-mini">N<b>i</b>k<b>o</b></span>
                     <!-- logo for regular state and mobile devices -->
-                    <span class="logo-lg">{{ config('app.name', 'Consejo') }}<b> Valledupar</b></span>
+                    <span class="logo-lg">{{ config('app.name', 'Nikorriendo') }}<b> Valledupar</b></span>
                 </a>
                 <!-- Header Navbar: style can be found in header.less -->
                 <nav class="navbar navbar-static-top">

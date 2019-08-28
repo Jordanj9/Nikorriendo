@@ -232,7 +232,97 @@
             lat: '10.4502618'
         };
         setMapa(coords, 'map');  //pasamos las coordenadas al metodo para crear el mapa
+        axios.get('{{url('servicio/getServiciosPorRecogerJSON')}}').then(resonse => {
+            const data = resonse.data;
+            data.forEach(item => {
 
+                const imagen = '{{url('images/icon-maps/hombre.png')}}';
+
+                var contentString = `<div class="contenedor">
+                                        <div class="message">
+                                                <h1>${item.cliente_nombre}</h1>
+                                                <a href="tel:3173827414" class="telefono">${item.cliente_telefono}</a>
+                                                <p>${item.direccion}</p>
+                                                <p style="width : 100%">${item.num_lavadoras} lavadora(s)</p>
+                                                <p><strong>Tiempo Excedido:</strong> ${item.tiempo}</p>
+                                        </div>
+                                   </div>`;
+
+                var infowindow = new google.maps.InfoWindow({
+                    content: contentString
+                });
+
+                //Creamos el marcador en el mapa con sus propiedades
+                //para nuestro obetivo tenemos que poner el atributo draggable en true
+                //position pondremos las mismas coordenas que obtuvimos en la geolocalización
+                marker = new google.maps.Marker({
+                    map: map,
+                    icon: '{{url('/images/icon-maps/pin4.png')}}',
+                    title: item.direccion,
+                    draggable: true,
+                    animation: google.maps.Animation.DROP,
+                    position: new google.maps.LatLng(item.latitud, item.longitud),
+                });
+
+                marker.addListener('click', function () {
+                    infowindow.open(map, this);
+                });
+
+                marcadores.push(marker);
+
+            });
+
+            //pintamos el marker del servicio
+            servicio = {
+                id: '{{$servicio->id}}',
+                cliente_nombre: '{{$servicio->cliente->nombre}}',
+                cliente_telefono: '{{$servicio->cliente->telefono}}',
+                barrio: '{{$servicio->barrio->nombre}}',
+                num_lavadoras:'{{$servicio->num_lavadoras}}',
+                dias:'{{$servicio->num_lavadoras}}',
+                latitud: '{{$servicio->latitud}}',
+                longitud: '{{$servicio->longitud}}',
+                direccion: '{{$servicio->direccion}}'
+            };
+
+
+            contentString = `<div class="contenedor">
+                                        <div class="message">
+                                                <h1>${servicio.cliente_nombre}</h1>
+                                                <a href="tel:${servicio.cliente_telefono}" class="telefono">${servicio.cliente_telefono}</a>
+                                                <p>${servicio.direccion}</p>
+                                                <p style="width : 100%">${servicio.num_lavadoras} lavadora(s)</p>
+                                        </div>
+                                   </div>`;
+
+            var infowindow2 = new google.maps.InfoWindow({
+                content: contentString
+            });
+
+            marker = new google.maps.Marker({
+                map: map,
+                icon: '{{url('/images/icon-maps/pin10.png')}}',
+                title: servicio.direccion,
+                draggable: true,
+                animation: google.maps.Animation.DROP,
+                position: new google.maps.LatLng(servicio.latitud, servicio.longitud),
+            });
+
+            marker.addListener('click', function () {
+                infowindow2.open(map, this);
+            });
+
+            marcadores.push(marker);
+
+            var bounds = new google.maps.LatLngBounds();
+
+            marcadores.forEach(item => {
+                bounds.extend(new google.maps.LatLng(item.position.lat(), item.position.lng()));
+            });
+
+            map.fitBounds(bounds);
+
+        });
     }
 
     function setMapa(coords, mapa) {
