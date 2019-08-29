@@ -82,7 +82,7 @@ class ReporteController extends Controller {
     }
 
     /**
-     * 
+     *
      * @param string $estado estado del servicio
      * @param date $fechai fecha inicio del rango
      * @param date $fechaf fecha fin del rango

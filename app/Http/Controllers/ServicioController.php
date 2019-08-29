@@ -488,6 +488,7 @@ class ServicioController extends Controller
                     'status' => 'error',
                     'message' => "Error : tenga en cuenta que debe selecionar el mismo numero de lavadoras solicitadas por el cliente"
                 ]);
+
             }
         } else {
             return response()->json([
@@ -529,8 +530,6 @@ class ServicioController extends Controller
                 }
 
             }
-
-
 
         } else {
 
@@ -691,7 +690,6 @@ class ServicioController extends Controller
                     ['persona_id',$persona->id],
                     ['tipo','SERVICIO']
                 ])->get();
-
 
                 foreach ($persmisos as $item){
                     $service = $item->servicio;
