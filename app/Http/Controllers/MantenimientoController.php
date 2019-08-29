@@ -25,9 +25,16 @@ class MantenimientoController extends Controller {
         } else {
             $mantenimientos = Mantenimiento::all();
         }
+        $lav = Lavadora::where([['estado_lavadora', '<>', 'MANTENIMIENTO'], ['estado_lavadora', '<>', 'SERVICIO']])->get();
+        if (count($lav) > 0) {
+            foreach ($lav as $item) {
+                $lavadoras[$item->id] = $item->serial . ' - ' . $item->marca . ' FECHA: ' . $item->created_at;
+            }
+        }
         return view('mantenimiento.mantenimiento.list')
                         ->with('location', 'mantenimiento')
-                        ->with('mantenimientos', $mantenimientos);
+                        ->with('mantenimientos', $mantenimientos)
+                        ->with('lavadoras', $lavadoras);
     }
 
     /**
@@ -146,6 +153,24 @@ class MantenimientoController extends Controller {
             ]);
         }
 
+    }
+
+    /**
+     * Store a newly created resource in storage, nuevo mantenimiento manual
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store2(Request $request) {
+        $mant = new Estado_mantenimiento($request->all());
+        $result = $mant->save();
+        if ($result) {
+            flash("El Mantenimiento para <strong>" . $mant->lavadora->serial . "-" . $mant->lavadora->marca . "</strong> fue almacenado(a) de forma exitosa!")->success();
+            return redirect()->route('mantenimiento.index');
+        } else {
+            flash("El Mantenimiento para <strong>" . $mant->lavadora->serial . "-" . $mant->lavadora->marca . "</strong> no pudo ser almacenado(a) de forma exitosa! Error:" . $result)->error();
+            return redirect()->route('mantenimiento.index');
+        }
     }
 
     /**
