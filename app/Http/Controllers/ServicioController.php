@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Permiso;
 use App\Servicio;
 use App\Lavadora;
 use App\Persona;
@@ -502,7 +503,9 @@ class ServicioController extends Controller
     {
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
+
         if ($persona != null && session('ROL') != 'ADMINISTRADOR') {
+
             if (session('ROL') == 'CENTRAL') {
                 $servicios = Servicio::where([
                     ['estado', 'ENTREGADO']
@@ -512,15 +515,36 @@ class ServicioController extends Controller
                     ['persona_id', $persona->id],
                     ['estado', 'ENTREGADO']
                 ])->orWhere('estado', 'RECOGER')->get()->sortBy('estado');
+
+                $persmisos = Permiso::where([
+                    ['persona_id',$persona->id],
+                    ['tipo','SERVICIO']
+                ])->get();
+
+                foreach ($persmisos as $item){
+                    $service = $item->servicio;
+                    if($service->estado == 'RECOGER'){
+                        $servicios[] = $service;
+                    }
+                }
+
             }
+
+
+
         } else {
+
             $servicios = Servicio::where([
                 ['estado', 'ENTREGADO']
             ])->orWhere('estado', 'RECOGER')->get()->sortBy('estado');
+
         }
+
         $servicios = $this->cambioEstado($servicios);
+
         $per = Persona::all()->sortBy('primer_nombre');
         $personas = null;
+
         if (count($per) > 0) {
             foreach ($per as $i) {
                 if ($i->tipo == "MENSAJERO" && $i->estado == "ACTIVO") {
@@ -528,6 +552,7 @@ class ServicioController extends Controller
                 }
             }
         }
+
         return view('servicio.servicios_por_recoger.entregados')
                         ->with('location', 'servicio')
                         ->with('personas', $personas)
@@ -616,6 +641,7 @@ class ServicioController extends Controller
      * @return type response/Servicios
      */
     public function cambioEstado($servicios) {
+
         $hoy = getdate();
         $fecha = $hoy['year'] . '-' . $hoy['mon'] . '-' . $hoy['mday'] . ' ' . $hoy['hours'] . ':' . $hoy['minutes'] . ':' . $hoy['seconds'];
         $fecha = strtotime($fecha);
@@ -637,30 +663,52 @@ class ServicioController extends Controller
                 }
             }
         }
+
         return $servicios_por_recoger;
     }
 
     public function getServiciosPorRecogerJSON()
     {
-
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
+
         if ($persona != null && session('ROL') != 'ADMINISTRADOR') {
+
             if (session('ROL') == 'CENTRAL') {
+
                 $servicios = Servicio::where([
                             ['estado', 'ENTREGADO']
                         ])->orWhere('estado', 'RECOGER')->get();
+
             } else {
+
                 $servicios = Servicio::where([
                             ['persona_id', $persona->id],
                             ['estado', 'ENTREGADO']
                         ])->orWhere('estado', 'RECOGER')->get();
+
+                $persmisos = Permiso::where([
+                    ['persona_id',$persona->id],
+                    ['tipo','SERVICIO']
+                ])->get();
+
+
+                foreach ($persmisos as $item){
+                    $service = $item->servicio;
+                    if($service->estado == 'RECOGER'){
+                        $servicios[] = $service;
+                    }
+                }
+
             }
         } else {
+
             $servicios = Servicio::where([
                         ['estado', 'ENTREGADO']
                     ])->orWhere('estado', 'RECOGER')->get()->sortBy('estado');
+
         }
+
         $servicios = $this->cambioEstado($servicios);
 
         foreach ($servicios as $item) {
@@ -704,6 +752,8 @@ class ServicioController extends Controller
             $item->cliente_nombre = $item->cliente->nombre;
             $item->cliente_telefono = $item->cliente->telefono;
         }
+
+
 
         return json_encode($servicios);
     }

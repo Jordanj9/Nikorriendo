@@ -47,10 +47,10 @@ class PermisoController extends Controller {
             }
             $aud->detalles = $str;
             $aud->save();
-            flash("El permiso <strong>" . $servicio->cliente->nombre . "</strong> fue almacenado(a) de forma exitosa!")->success();
+            flash("El permiso <strong>" . $permiso->servicio->cliente->nombre . "</strong> fue almacenado(a) de forma exitosa!")->success();
             return redirect()->route('servicio.index');
         } else {
-            flash("El permiso <strong>" . $servicio->cliente->nombre . "</strong> no pudo ser almacenado(a). Error: " . $result)->error();
+            flash("El permiso <strong>" . $permiso->servicio->cliente->nombre . "</strong> no pudo ser almacenado(a). Error: " . $result)->error();
             return redirect()->route('solicitud.index');
         }
     }
