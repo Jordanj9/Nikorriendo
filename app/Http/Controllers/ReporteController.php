@@ -93,10 +93,16 @@ class ReporteController extends Controller {
      */
     public function getServicios($estado, $fi, $ff, $suc, $per, $lav) {
         $ser = collect();
-        if ($per != "null") {
+        if ($per != "null" || $lav != "null") {
             $persona = Persona::find($per);
             if ($persona != null) {
-                $ser = DB::table('servicios')->whereBetween('created_at', [$fi, $ff])->where('persona_id', $persona->id)->get();
+                if ($lav != null) {
+                    $ser = Servicio::whereHas('lavadoras', function(Builder $query) use ($lav) {
+                                $query->Where('id', $lav);
+                            })->whereBetween('created_at', [$fi, $ff])->where('persona_id', $persona->id)->get();
+                } else {
+                    $ser = DB::table('servicios')->whereBetween('created_at', [$fi, $ff])->where('persona_id', $persona->id)->get();
+                }
             } else {
                 return "null";
             }

@@ -73,6 +73,10 @@
                 <div class="ripple-container"></div>
             </a>
             @endif
+            <a class="btn btn-app btn-lg btn-block boton" href="{{route('permiso.index')}}">
+                <i class="fa fa-cogs"></i> PERMISOS
+                <div class="ripple-container"></div>
+            </a>
             @if(session()->exists('PAG_SERVICIO-GEOLOCALIZACION'))
             <a class="btn btn-app btn-lg btn-block boton" href="{{route('servicio.showServicios')}}">
                 <i class="fa fa-cogs"></i> GEOLOCALIZACIÓN
