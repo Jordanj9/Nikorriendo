@@ -118,7 +118,7 @@
                 <ul class="header-dropdown m-r--5">
                     <li class="dropdown">
                         <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-search"></i>
+                            <i class="fa fa-ellipsis-v"></i>
                         </a>
                         <ul class="dropdown-menu pull-right">
                             <li><a href="javascript:void(0);">Action</a></li>

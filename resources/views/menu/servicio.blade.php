@@ -1,4 +1,24 @@
 @extends('layouts.admin')
+@section('style')
+<style>
+
+    .boton{
+        color: #C35345; 
+        font-weight: bold;
+        border: 1px solid gray; 
+        border-radius: 20px
+    }
+
+    @media (max-width:468px){
+
+        .boton{
+            width: 100%;
+        }
+
+    }
+
+</style>
+@endsection
 @section('breadcrumb')
 <h1>
     Servicio
@@ -24,51 +44,39 @@
     <div class="box-body">
         <div class="button-demo">
             @if(session()->exists('PAG_SERVICIO-SERVICIOS'))
-            <a href="{{route('servicio.index')}}" class="btn bg-red-gradient margin">
-                <div>
-                    <span style="color: white">SERVICIOS</span>
-                    <span class="ink animated"></span>
-                </div>
+            <a class="btn btn-app btn-lg btn-block boton" href="{{route('servicio.index')}}">
+                <i class="fa fa-cogs"></i> SERVICIOS
+                <div class="ripple-container"></div>
             </a>
             @endif
             @if(session()->exists('PAG_SERVICIO-SOLICITUD-SERVICIO'))
-            <a href="{{route('servicio.getServiciosPendientes')}}" class="btn bg-red-gradient margin">
-                <div>
-                    <span style="color: white">SOLICITUDES DE SERVICIO</span>
-                    <span class="ink animated"></span>
-                </div>
+            <a class="btn btn-app btn-lg btn-block boton" href="{{route('servicio.getServiciosPendientes')}}">
+                <i class="fa fa-cogs"></i> SOLICITUDES DE SERVICIO
+                <div class="ripple-container"></div>
             </a>
             @endif
             @if(session()->exists('PAG_SERVICIO-CAMBIOS'))
-            <a href="{{route('solicitud.index')}}" class="btn bg-red-gradient margin">
-                <div>
-                    <span style="color: white">SOLICITUDES DE CAMBIOS</span>
-                    <span class="ink animated"></span>
-                </div>
+            <a class="btn btn-app btn-lg btn-block boton" href="{{route('solicitud.index')}}">
+                <i class="fa fa-cogs"></i> SOLICITUDES DE CAMBIOS
+                <div class="ripple-container"></div>
             </a>
             @endif
             @if(session()->exists('PAG_SERVICIO-ENTREGAR'))
-            <a href="{{route('servicio.getServiciosPorEntregar')}}" class="btn bg-red-gradient margin">
-                <div>
-                    <span style="color: white">SERVICIOS POR ENTREGAR</span>
-                    <span class="ink animated"></span>
-                </div>
+            <a class="btn btn-app btn-lg btn-block boton" href="{{route('servicio.getServiciosPorEntregar')}}">
+                <i class="fa fa-cogs"></i> SERVICIOS POR ENTREGAR
+                <div class="ripple-container"></div>
             </a>
             @endif
             @if(session()->exists('PAG_SERVICIO-RECOGER'))
-            <a href="{{route('servicio.getServiciosPorRecoger')}}" class="btn bg-red-gradient margin">
-                <div>
-                    <span style="color: white">SERVICIOS POR RECOGER</span>
-                    <span class="ink animated"></span>
-                </div>
+            <a class="btn btn-app btn-lg btn-block boton" href="{{route('servicio.getServiciosPorRecoger')}}">
+                <i class="fa fa-cogs"></i> SERVICIOS POR RECOGER
+                <div class="ripple-container"></div>
             </a>
             @endif
             @if(session()->exists('PAG_SERVICIO-GEOLOCALIZACION'))
-            <a href="{{route('servicio.showServicios')}}" class="btn bg-red-gradient margin">
-                <div>
-                    <span style="color: white">GEOLOCALIZACIÓN</span>
-                    <span class="ink animated"></span>
-                </div>
+            <a class="btn btn-app btn-lg btn-block boton" href="{{route('servicio.showServicios')}}">
+                <i class="fa fa-cogs"></i> GEOLOCALIZACIÓN
+                <div class="ripple-container"></div>
             </a>
             @endif
         </div>
