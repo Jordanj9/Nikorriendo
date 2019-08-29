@@ -104,7 +104,7 @@
                         @if(count($servicio->solicitudcambios)>0)
                             <tr class="read">
                                 <td class="contact bg-green" colspan="2">
-                                    <center><b>Detalles del Cambio</b></center>
+                                    <center><b>Detalles de los Cambios</b></center>
                                 </td>
                             </tr>
 
@@ -115,8 +115,30 @@
                                 </tr>
                                 <tr class="read">
                                     <td class="contact"><b>Observación</b></td>
-                                    <td class="subject">$solicitud->cambio</td>
+                                    <td class="subject">{{$solicitud->observacion}}</td>
                                 </tr>
+                                <tr class="read">
+                                    <td class="contact"><b>Tiempo Excedido</b></td>
+                                    <td class="subject">{{$solicitud->tiempopendiente}}</td>
+                                </tr>
+
+                                <tr class="read">
+                                    <td class="contact bg-green" colspan="2">
+                                        <center><b>Cambios</b></center>
+                                    </td>
+                                </tr>
+
+                                @foreach($solicitud->cambios as $cambio)
+                                    <tr class="read">
+                                        <td class="contact"><b>Lavadora Dañada</b></td>
+                                        <td class="subject">{{$cambio->lavadora_antes->id.' - Marca: '.$cambio->lavadora_antes->marca}}</td>
+                                    </tr>
+                                    <tr class="read">
+                                        <td class="contact"><b>Lavadora Nueva</b></td>
+                                        <td class="subject">{{$cambio->lavadora->id.' - Marca: '.$cambio->lavadora->marca}}</td>
+                                    </tr>
+                                @endforeach
+
                             @endforeach
 
                         @endif

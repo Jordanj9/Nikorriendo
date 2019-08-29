@@ -160,7 +160,6 @@ class ServicioController extends Controller
 
     public function show(Servicio $servicio)
     {
-
         return view('servicio.servicios.show')
             ->with('location', 'servicio')
             ->with('servicio', $servicio);

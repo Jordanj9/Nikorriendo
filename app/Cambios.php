@@ -28,7 +28,7 @@ class Cambios extends Model {
         return $this->belongsTo(Lavadora::class);
     }
 
-    public function lavadora_vieja(){
+    public function lavadora_antes(){
         return $this->belongsTo(Lavadora::class,'lavadora_vieja');
     }
 
