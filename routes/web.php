@@ -109,5 +109,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'mantenimiento'], function() {
 
 //GRUPO DE RUTAS PARA LA GESTIÓN DE REPORTES
 Route::group(['middleware' => 'auth', 'prefix' => 'reporte'], function() {
-    
+    //REPORTE GENERAL
+    Route::get('servicio/general', 'ReporteController@reporteGeneral')->name('reporte.general');
+    Route::get('servicio/{sucursal_id}/getpersonas', 'ReporteController@getPersonas')->name('reporte.getpersonas');
+    Route::get('servicio/{perosona_id}/getlavadoras', 'ReporteController@getLavadoras')->name('reporte.getlavadoras');
+    Route::get('servicio/general/{estado}/{fechai}/{fechaf}/{sucursal_id}/{perosona_id}/{lavadora_id}/getservicios', 'ReporteController@getServicios')->name('reporte.getservicios');
 });

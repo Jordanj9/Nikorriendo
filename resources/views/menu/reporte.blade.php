@@ -24,7 +24,7 @@
     <div class="box-body">
         <div class="button-demo">
             @if(session()->exists('PAG_REPORTE-GENERAL'))
-            <a href="{{route('repuesto.index')}}" class="btn bg-purple-gradient margin">
+            <a href="{{route('reporte.general')}}" class="btn bg-maroon-gradient margin">
                 <div>
                     <span style="color: white">Reporte General</span>
                     <span class="ink animated"></span>
