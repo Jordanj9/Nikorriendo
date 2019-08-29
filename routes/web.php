@@ -105,6 +105,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'mantenimiento'], function() {
     Route::resource('repuesto', 'RepuestoController');
     //MANTENIMIENTOS
     Route::resource('mantenimiento', 'MantenimientoController');
+    Route::post('mantenimiento/guardarMantenimiento', 'MantenimientoController@store2')->name('mantenimiento.store2');
 });
 
 //GRUPO DE RUTAS PARA LA GESTIÓN DE REPORTES

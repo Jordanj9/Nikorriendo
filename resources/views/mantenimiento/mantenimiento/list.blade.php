@@ -23,9 +23,11 @@
     <div class="box-header with-border">
         <h3 class="box-title">Listado de Mantenimientos</h3>
         <div class="box-tools pull-right">
-            <a href="{{route('mantenimiento.create')}}" type="button" class="btn btn-box-tool" data-toggle="tooltip"
-               title="Nuevo Mantenimiento">
+            @if(session('ROL') == 'ADMINISTRADOR')
+            <a type="button" class="btn btn-box-tool" data-toggle="tooltip"
+               title="Nuevo Mantenimiento" onclick="crear(event)">
                 <i class="fa fa-plus-circle"></i></a>
+            @endif
             <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
                     title="Minimizar">
                 <i class="fa fa-minus"></i></button>
@@ -65,13 +67,44 @@
                         <td>{{$m->created_at}}</td>
                         <td>{{$m->updated_at}}</td>
                         <td style="text-align: center;">
-                            <a href="{{ route('barrio.edit',$m->id)}}" data-toggle="tooltip" data-placement="top" title="Editar Barrio" style="color: green; margin-left: 10px;"><i class="fa fa-edit"></i></a>
                             <a href="#" onclick="eliminar(event,{{$m->id}})" data-toggle="tooltip" data-placement="top" title="Eliminar Barrio" style="color: red; margin-left: 10px;"><i class="fa fa-trash-o"></i></a>
                         </td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
+        </div>
+    </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Generar Mantenimiento</h4>
+            </div>
+            <div class="modal-body">
+                <div class="outer_div">
+                    {!! Form::open(['route'=>'mantenimiento.store2','method'=>'POST','role'=>'form','class'=>''])!!}
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Seleccione la Lavadora</label>
+                            {!! Form::select('lavadora_id',$lavadoras,null,['class'=>'form-control','placeholder'=>'Seleccione el Empleado','id'=>'persona_id']) !!}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12" style="margin-top: 20px !important">
+                            <button class="btn btn-success icon-btn pull-right" type="submit"><i class="fa fa-fw fa-lg fa-save"></i>Guardar</button>
+                            <button class="btn btn-info icon-btn pull-right" type="reset"><i class="fa fa-fw fa-lg fa-trash-o"></i>Limpiar</button>
+                            <a class="btn btn-danger icon-btn pull-right" data-dismiss="modal"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancelar</a>
+                        </div>
+                    </div>
+                    {!! Form::close() !!}
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
         </div>
     </div>
 </div>
@@ -88,6 +121,10 @@
                                 function ir(id) {
                                 $("#id").val(id);
                                 }
+                                function crear(event) {
+                                event.preventDefault();
+                                $('#myModal').modal('show');
+                                }
                                 function eliminar(event, id){
                                 event.preventDefault();
                                 Swal.fire({
@@ -101,7 +138,7 @@
                                         cancelButtonText:'cancelar'
                                 }).then((result) => {
                                 if (result.value) {
-                                let url = 'barrio/' + id;
+                                let url = 'mantenimiento/' + id;
                                 axios.delete(url).then(result => {
                                 let data = result.data;
                                 if (data.status == 'ok') {
