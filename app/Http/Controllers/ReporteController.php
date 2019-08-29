@@ -92,15 +92,13 @@ class ReporteController extends Controller {
      * @return json servicios
      */
     public function getServicios($estado, $fi, $ff, $suc, $per, $lav) {
-        //dd($estado . " fi:" . $fi . " -ff:" . $ff . " -suc:" . $suc . " -per:" . $per . " -lav:" . $lav);
         $ser = collect();
-        //dd($per);
         if ($per != "null") {
             $persona = Persona::find($per);
             if ($persona != null) {
                 $ser = DB::table('servicios')->whereBetween('created_at', [$fi, $ff])->where('persona_id', $persona->id)->get();
             } else {
-                return "null 1";
+                return "null";
             }
         } elseif ($suc != "null") {
             $ser = DB::table('servicios')->whereBetween('created_at', [$fi, $ff])->where('sucursal_id', $suc)->get();
@@ -153,7 +151,11 @@ class ReporteController extends Controller {
                 $service = null;
                 foreach ($servicios as $i) {
                     $obj["id"] = $i->id;
-                    $obj["men"] = $i->persona->primer_nombre . " " . $i->persona->primer_apellido;
+                    if ($i->persona_id != null) {
+                        $obj["men"] = $i->persona->primer_nombre . " " . $i->persona->primer_apellido;
+                    } else {
+                        $obj["men"] = "SIN ASIGNAR";
+                    }
                     $obj["tel_cli"] = $i->cliente->telefono;
                     $obj["cli"] = $i->cliente->nombre;
                     $obj["dir"] = $i->direccion;
@@ -182,10 +184,10 @@ class ReporteController extends Controller {
                 $service["cant"] = $cantidad;
                 return json_encode($service);
             } else {
-                return "null 2";
+                return "null";
             }
         } else {
-            return "null 3";
+            return "null";
         }
     }
 
