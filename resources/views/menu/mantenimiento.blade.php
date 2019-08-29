@@ -1,4 +1,24 @@
 @extends('layouts.admin')
+@section('style')
+    <style>
+
+        .boton{
+            color: #FFFFFF !important;
+            font-weight: bold;
+            border: 1px solid gray;
+            border-radius: 20px;
+        }
+
+        @media (max-width:468px){
+
+            .boton{
+                width: 100%;
+            }
+
+        }
+
+    </style>
+@endsection
 @section('breadcrumb')
 <h1>
     Mantenimiento
@@ -24,18 +44,18 @@
     <div class="box-body">
         <div class="button-demo">
             @if(session()->exists('PAG_MANTENIMIENTO-REPUESTO'))
-            <a class="btn btn-app btn-lg" href="{{route('repuesto.index')}}" style="color: #66639E; font-weight: bold">
+            <a class="btn btn-app btn-lg bg-purple-gradient boton" href="{{route('repuesto.index')}}" style="color: #66639E; font-weight: bold">
                 <i class="fa fa-cogs"></i> REPUESTOS
                 <div class="ripple-container"></div></a>
             @endif
             @if(session()->exists('PAG_MANTENIMIENTO-MANTENIMIENTOS'))
-            <a class="btn btn-app btn-lg" href="{{route('mantenimiento.index')}}"  style="color: #66639E; font-weight: bold">
+            <a class="btn btn-app btn-lg bg-purple-gradient boton " href="{{route('mantenimiento.index')}}"  style="color: #66639E; font-weight: bold">
                 <i class="fa fa-list-ul"></i> >MANTENIMIENTOS
                 <div class="ripple-container"></div></a>
             @endif
             @if(session()->exists('PAG_MANTENIMIENTO-FACTURAR-MANTENIMIENTO'))
-            <a class="btn btn-app btn-lg" href="{{route('mantenimiento.create')}}"  style="color: #66639E; font-weight: bold">
-                <i class="fa fa-check-square-o"></i> >FACTURAR MANTENIMIENTO
+            <a class="btn btn-app btn-lg bg-purple-gradient boton " href="{{route('mantenimiento.create')}}"  style="color: #66639E; font-weight: bold">
+                <i class="fa fa-check-square-o"></i>FACTURAR MANTENIMIENTO
                 <div class="ripple-container"></div></a>
             @endif
         </div>

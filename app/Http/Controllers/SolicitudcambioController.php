@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Permiso;
 use App\Solicitudcambio;
 use App\Lavadora;
 use App\Cambios;
@@ -42,10 +43,25 @@ class SolicitudcambioController extends Controller {
                         }
                     }
                 }
+                $persmisos = Permiso::where([
+                    ['persona_id', $persona->id],
+                    ['tipo', 'CAMBIO']
+                ])->get();
+
+                foreach ($persmisos as $item){
+                    $solicitud = $item->solicitudcambio;
+                    if($solicitud->estado == 'PENDIENTE'){
+                        $solicitudes[] = $solicitud;
+                    }
+                }
+
             }
         } else {
             $solicitudes = Solicitudcambio::all();
         }
+
+
+
         $per = Persona::all()->sortBy('primer_nombre');
         $personas = null;
         if (count($per) > 0) {
@@ -239,6 +255,7 @@ class SolicitudcambioController extends Controller {
                 $servicio->estado = 'ENTREGADO';
 
                 $servicio->save();
+
                 foreach ($request->lavadoras as $value) {
                     $cambio = new Cambios();
                     $cambio->lavadora_vieja = $request->lavadoras_ser[$cont];
@@ -259,6 +276,9 @@ class SolicitudcambioController extends Controller {
                     $mant->lavadora_id = $item;
                     $mant->save();
                 }
+
+                $servicio->lavadoras()->sync($request->lavadoras);
+
                 $aud = new Auditoriaservicio();
                 $u = Auth::user();
                 $aud->usuario = "ID: " . $u->identificacion . ",  USUARIO: " . $u->nombres . " " . $u->apellidos;

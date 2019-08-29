@@ -33,7 +33,7 @@ class Permiso extends Model {
     }
 
     public function solicitudcambio() {
-        return $this->belongsTo('App\Solicitucambio');
+        return $this->belongsTo(Solicitudcambio::class);
     }
 
 }

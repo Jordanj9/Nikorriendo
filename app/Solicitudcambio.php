@@ -29,7 +29,7 @@ class Solicitudcambio extends Model {
     }
 
     public function cambios() {
-        return $this->hasMany('App\Cambios');
+        return $this->hasMany(Cambios::class);
     }
 
     public function permisos() {

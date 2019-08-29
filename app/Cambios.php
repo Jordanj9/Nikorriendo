@@ -25,15 +25,19 @@ class Cambios extends Model {
     ];
 
     public function lavadora() {
-        return $this->belongsTo('App\Lavadora');
+        return $this->belongsTo(Lavadora::class);
+    }
+
+    public function lavadora_vieja(){
+        return $this->belongsTo(Lavadora::class,'lavadora_vieja');
     }
 
     public function solicitudcambio() {
-        return $this->belongsTo('App\Solicitudcambio');
+        return $this->belongsTo(Solicitudcambio::class);
     }
 
     public function persona() {
-        return $this->belongsTo('App\Persona');
+        return $this->belongsTo(Persona::class);
     }
 
 }

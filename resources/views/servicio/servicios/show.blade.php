@@ -48,7 +48,8 @@
                         </tr>
                         <tr class="read">
                             <td class="contact"><b>Telefono</b></td>
-                            <td class="subject"><a href="tel:{{$servicio->cliente->telefono}}"><i class="fa fa-phone"></i> {{$servicio->cliente->telefono}}</a></td>
+                            <td class="subject"><a href="tel:{{$servicio->cliente->telefono}}"><i
+                                        class="fa fa-phone"></i> {{$servicio->cliente->telefono}}</a></td>
                         </tr>
                         <tr class="read">
                             <td class="contact"><b>Nombre</b></td>
@@ -100,6 +101,26 @@
                             @endif
                         </tr>
 
+                        @if(count($servicio->solicitudcambios)>0)
+                            <tr class="read">
+                                <td class="contact bg-green" colspan="2">
+                                    <center><b>Detalles del Cambio</b></center>
+                                </td>
+                            </tr>
+
+                            @foreach($servicio->solicitudcambios as $solicitud)
+                                <tr class="read">
+                                    <td class="contact"><b>Id</b></td>
+                                    <td class="subject">{{$solicitud->id}}</td>
+                                </tr>
+                                <tr class="read">
+                                    <td class="contact"><b>Observación</b></td>
+                                    <td class="subject">$solicitud->cambio</td>
+                                </tr>
+                            @endforeach
+
+                        @endif
+
                         @if($servicio->persona_id != null)
                             <tr class="read">
                                 <td class="contact bg-green" colspan="2">
@@ -112,7 +133,8 @@
                             </tr>
                             <tr class="read">
                                 <td class="contact"><b>Telefono</b></td>
-                                <td class="subject"><a href="tel:{{$servicio->persona->telefono}}"><i class="fa fa-phone"></i> {{$servicio->persona->telefono}}</a></td>
+                                <td class="subject"><a href="tel:{{$servicio->persona->telefono}}"><i
+                                            class="fa fa-phone"></i> {{$servicio->persona->telefono}}</a></td>
                             </tr>
                         @endif
 
