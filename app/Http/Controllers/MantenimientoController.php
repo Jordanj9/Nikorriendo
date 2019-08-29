@@ -10,16 +10,24 @@ use App\Repuesto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class MantenimientoController extends Controller
-{
+class MantenimientoController extends Controller {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index() {
+        $u = Auth::user();
+        $persona = Persona::where([['identificacion', $u->identificacion], ['tipo', 'MENSAJERO']])->first();
+        if ($persona != null && session('ROL') != 'ADMINISTRADOR') {
+            $mantenimientos = Mantenimiento::where('persona_id', $persona->id)->get();
+        } else {
+            $mantenimientos = Mantenimiento::all();
+        }
+        return view('mantenimiento.mantenimiento.list')
+                        ->with('location', 'mantenimiento')
+                        ->with('mantenimientos', $mantenimientos);
     }
 
     /**
@@ -34,41 +42,38 @@ class MantenimientoController extends Controller
         ])->get();
         $persona = Persona::where('identificacion',Auth::user()->identificacion)->first();
 
-        if($persona == null){
+        if ($persona == null) {
             flash("usted no puede <strong>" . 'realizar' . "</strong> tal operación en nuestro sistema, solo es permitido para los tecnicos")->warning();
             return redirect()->route('admin.mantenimiento');
         }
 
         $aux = Estado_mantenimiento::where([
-                      ['estado','PENDIENTE']
-                    ])->get();
+                    ['estado', 'PENDIENTE']
+                ])->get();
 
         //estos son los mantenimientos que se encuentran por realizar
         $mantenimientos = null;
         $mantenimientos = collect($mantenimientos);
 
-        if(count($aux)>0){
+        if (count($aux) > 0) {
             foreach ($aux as $item) {
-                if($item->lavadora->bodega->sucursal_id == $persona->sucursal_id){
-                    $mantenimientos[$item->id] = $item->lavadora->serial.' - '.$item->lavadora->marca.' FECHA '.$item->created_at;
+                if ($item->lavadora->bodega->sucursal_id == $persona->sucursal_id) {
+                    $mantenimientos[$item->id] = $item->lavadora->serial . ' - ' . $item->lavadora->marca . ' FECHA ' . $item->created_at;
                 }
             }
         }
 
-        if(count($mantenimientos) > 0){
+        if (count($mantenimientos) > 0) {
 
             return view('mantenimiento.mantenimiento.facturar')
-                ->with('location','mantenimiento')
-                ->with('mantenimientos',$mantenimientos)
-                ->with('persona',$persona)
-                ->with('repuestos',$repuestos);
-
-        }else{
+                            ->with('location', 'mantenimiento')
+                            ->with('mantenimientos', $mantenimientos)
+                            ->with('persona', $persona)
+                            ->with('repuestos', $repuestos);
+        } else {
             flash("no <strong>" . 'hay' . "</strong> mantenimientos por realizar en esta sucursal")->warning();
             return redirect()->route('admin.mantenimiento');
         }
-
-
     }
 
     /**
@@ -149,8 +154,7 @@ class MantenimientoController extends Controller
      * @param  \App\Mantenimiento  $mantenimiento
      * @return \Illuminate\Http\Response
      */
-    public function show(Mantenimiento $mantenimiento)
-    {
+    public function show(Mantenimiento $mantenimiento) {
         //
     }
 
@@ -160,8 +164,7 @@ class MantenimientoController extends Controller
      * @param  \App\Mantenimiento  $mantenimiento
      * @return \Illuminate\Http\Response
      */
-    public function edit(Mantenimiento $mantenimiento)
-    {
+    public function edit(Mantenimiento $mantenimiento) {
         //
     }
 
@@ -172,8 +175,7 @@ class MantenimientoController extends Controller
      * @param  \App\Mantenimiento  $mantenimiento
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Mantenimiento $mantenimiento)
-    {
+    public function update(Request $request, Mantenimiento $mantenimiento) {
         //
     }
 
@@ -183,8 +185,8 @@ class MantenimientoController extends Controller
      * @param  \App\Mantenimiento  $mantenimiento
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Mantenimiento $mantenimiento)
-    {
+    public function destroy(Mantenimiento $mantenimiento) {
         //
     }
+
 }
