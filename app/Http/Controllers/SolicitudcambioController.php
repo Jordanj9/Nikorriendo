@@ -61,6 +61,7 @@ class SolicitudcambioController extends Controller {
         }
 
 
+        $solicitudes = $solicitudes->sortByDesc('created_at');
 
         $per = Persona::all()->sortBy('primer_nombre');
         $personas = null;

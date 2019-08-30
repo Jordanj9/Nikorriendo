@@ -85,6 +85,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'servicio'], function() {
     Route::get('recogerServicio/{id}', 'ServicioController@recogerServicio')->name('servicio.recogerServicio');
     Route::get('liberar_servicio/{id}', 'ServicioController@liberarServicio')->name('servicio.liberarServicio');
     Route::post('permiso', 'ServicioController@permiso')->name('servicio.permiso');
+    Route::post('servicio_observacion','ServicioController@guardarObservacion')->name('servicio.observacion');
     //SOLICITUD CAMBIOS
     Route::resource('solicitud', 'SolicitudcambioController');
     Route::get('solicitud/cambio/{id}', 'SolicitudcambioController@solicitudCambio')->name('solicitud.solicitudcambio');

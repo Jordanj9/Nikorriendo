@@ -23,7 +23,7 @@
         <div class="box-header with-border">
             <h3 class="box-title">Listado de </br>Servicios</h3>
             <div class="box-tools pull-right">
-                @if(session('ROL')=='CENTRAL' || session('ROL')=='ADMINISTRADOR')
+                @if(session('ROL')=='CENTRAL')
                     <a href="{{route('servicio.create')}}" type="button" class="btn btn-box-tool" data-toggle="tooltip"
                        title="Nuevo Servicio">
                         <i class="fa fa-plus-circle"></i></a>
@@ -93,6 +93,9 @@
                                        style="color: red; margin-left: 10px;"><i
                                             class="fa  fa-calendar-times-o"></i></a>
                                 @endif
+                                <a href="#"  onclick="observacion(event,'{{$servicio->id}}')"
+                                   data-placement="top" title="Observación del Servicio"
+                                   style="color: #00a157; margin-left: 10px;"><i class="fa fa-file-text"></i></a>
                             </td>
                         </tr>
                     @endforeach
@@ -148,6 +151,46 @@
             </div>
         </div>
     </div>
+
+    <!-- modal -->
+    <div class="modal fade" id="modal_observacion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Agregar Observación</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="outer_div">
+                        {!! Form::open(['route'=>'servicio.observacion','method'=>'POST','role'=>'form','class'=>''])!!}
+                        <input type="hidden" name="servicio_id" id="servicio_id_observacion"/>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <textarea name="observacion" id="observacion" cols="30" rows="5" class="form-control" placeholder="Agregue una nueva observación al servicio"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12" style="margin-top: 20px !important">
+                                <button class="btn btn-success icon-btn pull-right" type="submit"><i
+                                        class="fa fa-fw fa-lg fa-save"></i>Guardar
+                                </button>
+                                <button class="btn btn-info icon-btn pull-right" type="reset"><i
+                                        class="fa fa-fw fa-lg fa-trash-o"></i>Limpiar
+                                </button>
+                                <a class="btn btn-danger icon-btn pull-right" data-dismiss="modal"><i
+                                        class="fa fa-fw fa-lg fa-times-circle"></i>Cancelar</a>
+                            </div>
+                        </div>
+                        {!! Form::close() !!}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 @section('script')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
@@ -192,7 +235,7 @@
                         } else if (data.status == 'warning') {
                             Swal.fire(
                                 'Atención',
-                                data.message,
+                                data.message,servicio_id,
                                 'warning'
                             ).then(result => {
                                 location.reload();
@@ -209,6 +252,12 @@
                     });
                 }
             });
+        }
+
+        function observacion(event,id){
+            event.preventDefault();
+            $('#servicio_id_observacion').val(id);
+            $('#modal_observacion').modal('show');
         }
     </script>
 @endsection

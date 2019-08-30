@@ -20,6 +20,7 @@ class CreateServiciosTable extends Migration {
             $table->integer('dias')->default(1);
             $table->integer('num_lavadoras')->default(1);
             $table->string('estado', 50);
+            $table->text('observacion');
             $table->string('direccion', 100);
             $table->string('firma_recibido_cliente')->nullable();
             $table->string('firma_entrega_personal')->nullable();

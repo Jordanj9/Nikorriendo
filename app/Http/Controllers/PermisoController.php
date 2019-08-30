@@ -23,6 +23,9 @@ class PermisoController extends Controller {
         } else {
             $permisos = Permiso::all();
         }
+
+        $permisos = $permisos->sortByDesc('created_at');
+
         return view('servicio.permiso.list')
                         ->with('location', 'servcio')
                         ->with('permisos', $permisos);

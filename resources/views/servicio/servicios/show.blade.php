@@ -84,6 +84,13 @@
                             <td class="contact"><b>Barrio</b></td>
                             <td class="subject">{{$servicio->barrio->nombre}}</td>
                         </tr>
+
+                        @if($servicio->observacion != null)
+                            <tr class="read">
+                                <td class="contact"><b>Observaciones</b></td>
+                                <td class="subject"> {!! $servicio->observacion !!}</td>
+                            </tr>
+                        @endif
                         <tr class="read">
                             <td class="contact"><b>Estado</b></td>
                             @if($servicio->estado == 'PENDIENTE')
@@ -102,13 +109,14 @@
                         </tr>
 
                         @if(count($servicio->solicitudcambios)>0)
-                            <tr class="read">
-                                <td class="contact bg-green" colspan="2">
-                                    <center><b>Detalles de los Cambios</b></center>
-                                </td>
-                            </tr>
 
                             @foreach($servicio->solicitudcambios as $solicitud)
+                                <tr class="read">
+                                    <td class="contact bg-green" colspan="2">
+                                        <center><b>Detalles de los Cambios</b></center>
+                                    </td>
+                                </tr>
+
                                 <tr class="read">
                                     <td class="contact"><b>Id</b></td>
                                     <td class="subject">{{$solicitud->id}}</td>
@@ -118,17 +126,18 @@
                                     <td class="subject">{{$solicitud->observacion}}</td>
                                 </tr>
                                 <tr class="read">
-                                    <td class="contact"><b>Tiempo Excedido</b></td>
+                                    <td class="contact"><b>Tiempo Pendiente</b></td>
                                     <td class="subject">{{$solicitud->tiempopendiente}}</td>
                                 </tr>
 
-                                <tr class="read">
-                                    <td class="contact bg-green" colspan="2">
-                                        <center><b>Cambios</b></center>
-                                    </td>
-                                </tr>
-
                                 @foreach($solicitud->cambios as $cambio)
+
+                                    <tr class="read">
+                                        <td class="contact bg-green" colspan="2">
+                                            <center><b>Cambios</b></center>
+                                        </td>
+                                    </tr>
+
                                     <tr class="read">
                                         <td class="contact"><b>Lavadora Dañada</b></td>
                                         <td class="subject">{{$cambio->lavadora_antes->id.' - Marca: '.$cambio->lavadora_antes->marca}}</td>
