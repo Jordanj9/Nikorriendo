@@ -8,27 +8,28 @@ require('./bootstrap');
 
 //window.Vue = require('vue');
 
-import Push from 'push.js'
+import Echo from 'laravel-echo';
+import swal from 'sweetalert';
 
-Push.Permission.request(onGranted, onDenied);
+window.Pusher = require('pusher-js');
+
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: process.env.MIX_PUSHER_APP_KEY,
+    wsHost: window.location.hostname,
+    wsPort:6001,
+    disableStats: true,
+});
 
 window.Echo.channel('new-service')
     .listen('NewService', (data) => {
-       const notifications  =  document.querySelector('.notifications-menu .dropdown-menu .header');
-       notifications.innerText =  data.servicio.direccion;
+        let audio = new Audio();
+        audio.src = '../audio1.mp3';
+        audio.play();
+        swal('hola');
+    });
 
-        Push.create("nuevo servicio!", {
-            body: `Dirección: ${data.servicio.direccion} - #Lavadoras: ${data.servicio.num_lavadoras}`,
-            timeout: 2000,
-            onClick: function () {
-                window.focus();
-                this.close();
-            }
-        });
 
-});
 
-function onGranted() {
-}
-function onDenied() {
-}
+
+

@@ -49,7 +49,7 @@
                 <div class="ripple-container"></div></a>
             @endif
             @if(session()->exists('PAG_MANTENIMIENTO-MANTENIMIENTOS'))
-            <a class="btn btn-app btn-lg" href="{{route('mantenimiento.index')}}"  style="color: #66639E; font-weight: bold">
+            <a class="btn btn-app btn-lg bg-purple-gradient boton" href="{{route('mantenimiento.index')}}"  style="color: #66639E; font-weight: bold">
                 <i class="fa fa-list-ul"></i> MANTENIMIENTOS
                 <div class="ripple-container"></div></a>
             @endif
