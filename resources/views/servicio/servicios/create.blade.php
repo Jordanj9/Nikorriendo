@@ -183,7 +183,7 @@
                 <div class="col-md-12" style="margin-top: 20px !important">
                     <button class="btn btn-success icon-btn pull-right" type="submit"><i class="fa fa-fw fa-lg fa-save"></i>Guardar</button>
                     <button class="btn btn-info icon-btn pull-right" type="reset"><i class="fa fa-fw fa-lg fa-trash-o"></i>Limpiar</button>
-                    <a class="btn btn-danger icon-btn pull-right" href="{{route('bodega.index')}}"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancelar</a>
+                    <a class="btn btn-danger icon-btn pull-right" href="{{route('servicio.index')}}"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancelar</a>
                 </div>
             </div>
             {!! Form::close() !!}
