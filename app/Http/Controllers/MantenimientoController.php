@@ -19,7 +19,7 @@ class MantenimientoController extends Controller {
      */
     public function index() {
         $u = Auth::user();
-        $persona = Persona::where([['identificacion', $u->identificacion], ['tipo', 'MENSAJERO']])->first();
+        $persona = Persona::where([['identificacion', $u->identificacion], ['tipo', 'TECNICO']])->first();
         if ($persona != null && session('ROL') != 'ADMINISTRADOR') {
             $mantenimientos = Mantenimiento::where('persona_id', $persona->id)->get();
         } else {

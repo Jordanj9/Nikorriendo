@@ -15,7 +15,16 @@ class PermisoController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        //
+        $u = Auth::user();
+        $persona = Persona::where('identificacion', $u->identificacion)->first();
+        if ($persona != null && session('ROL') == 'TECNICO') {
+            $permisos = Permiso::where('persona_id', $persona->id)->get();
+        } else {
+            $permisos = Permiso::all();
+        }
+        return view('servicio.permiso.list')
+                        ->with('location', 'servcio')
+                        ->with('permisos', $permisos);
     }
 
     /**
