@@ -145,7 +145,7 @@
                 </div>
                 <div class="col-md-4">
                     <label>Barrio</label>
-                    {!! Form::select('barrio_id_cliente',$barrios,null,['class'=>'form-control','placeholder'=>'-- Seleccione una opción --','required','id'=>'barrio_cliente']) !!}
+                    {!! Form::select('barrio_id_cliente',$barrios,null,['class'=>'form-control select2','required','id'=>'barrio_cliente']) !!}
                 </div>
             </div>
             <div class="col-md-12"><h4 class="head" style="color: #2c3e50"><b>Datos del Servicio</b></h4></div>
@@ -160,7 +160,7 @@
             </div>
             <div class="col-md-4">
                 <label>Barrio</label>
-                {!! Form::select('barrio_id_servicio',$barrios,null,['class'=>'form-control','placeholder'=>'-- Seleccione una opción --','required','id'=>'barrio_servicio']) !!}
+                {!! Form::select('barrio_id_servicio',$barrios,null,['class'=>'form-control select2','required','id'=>'barrio_servicio']) !!}
             </div>
             <div class="col-md-12">
                 <label class="control-label">Ubicación del servicio (Ingrese la dirección o arrastre el marcador <i style="color:red; font-size: 20px" class="fa fa-map-marker"></i> si la dirección no concuerda con el punto pintado en el mapa)</label>
@@ -195,7 +195,9 @@
 <script src="{{asset('js/axios.min.js')}}"></script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACMXJBl7W2A6fYConiB7bfeCkKuNusyyo&callback=initMap&libraries=places"></script>
 <script type="text/javascript">
-
+    $(function () {
+        $('.select2').select2();
+    });
                         //  class para gecodifcar las direcciones en latitudes y en longitudes
                         class Geocoding {
                             constructor(key) {

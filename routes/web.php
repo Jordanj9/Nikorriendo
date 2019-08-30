@@ -76,6 +76,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'servicio'], function() {
     Route::get('servicio/{telefono}/getcliente', 'ServicioController@getClientes')->name('servicio.getclientes');
     Route::get('getServiciosPendientes', 'ServicioController@getServiciosPendientes')->name('servicio.getServiciosPendientes');
     Route::get('aceptar_servicio/{id}', 'ServicioController@aceptarServicio')->name('servicio.aceptarServicio');
+    Route::get('aceptar_servicioJSON/{id}', 'ServicioController@aceptarServicioJSON')->name('servicio.aceptarServicioJSON');
     Route::get('getServiciosPorEntregar', 'ServicioController@getServiciosPorEntregar')->name('servicio.getServiciosPorEntregar');
     Route::get('entregarServicio/{id}', 'ServicioController@entregarServicio')->name('servicio.entregarServicio');
     Route::get('getServiciosPorRecoger', 'ServicioController@getServiciosPorRecoger')->name('servicio.getServiciosPorRecoger');

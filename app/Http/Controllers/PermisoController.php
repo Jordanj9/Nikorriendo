@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Permiso;
 use App\Auditoriaservicio;
+use App\Persona;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 

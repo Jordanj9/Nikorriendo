@@ -354,10 +354,8 @@
 <script src="{{ asset('plugins/pnotify/dist/pnotify.nonblock.js')}}"></script>
 <script src="{{ asset('plugins/ckeditor/ckeditor.js')}}"></script>
 <script src="{{asset('js/app.js')}}"></script>
-<script src="{{asset('js/time_run/main.js')}}"></script>
 <script type="text/javascript">
     var url = "<?php echo config('app.url'); ?>public/";
-
     $(document).ready(function () {
         $('.sidebar-menu').tree();
     });
@@ -385,6 +383,5 @@
     }
 </script>
 @yield('script')
-
 </body>
 </html>

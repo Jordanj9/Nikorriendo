@@ -72,7 +72,7 @@
                 <div class="ripple-container"></div>
             </a>
             @endif
-            <a class="btn btn-app btn-lg btn-block boton" href="{{route('permiso.index')}}">
+            <a class="btn btn-app btn-lg bg-red-gradient boton" href="{{route('permiso.index')}}">
                 <i class="fa fa-cogs"></i> PERMISOS
                 <div class="ripple-container"></div>
             </a>
@@ -125,7 +125,8 @@
 @section('script')
 <script type="text/javascript">
     $(function () {
-        $('#example1').DataTable();
+
+        $('#example1').DataTable({});
     });
 </script>
 @endsection

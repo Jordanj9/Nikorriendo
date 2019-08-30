@@ -29632,12 +29632,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var laravel_echo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! laravel-echo */ "./node_modules/laravel-echo/dist/echo.js");
 /* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! sweetalert */ "./node_modules/sweetalert/dist/sweetalert.min.js");
 /* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(sweetalert__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); //window.Vue = require('vue');
+__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+
+var base_url = 'http://localhost/Proyectos/Nikorriendo/public/'; //window.Vue = require('vue');
 
 
 
@@ -29652,9 +29656,30 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
 });
 window.Echo.channel('new-service').listen('NewService', function (data) {
   var audio = new Audio();
-  audio.src = 'audio1.mp3';
+  audio.src = base_url + 'audio/audio1.mp3';
   audio.play();
-  sweetalert__WEBPACK_IMPORTED_MODULE_1___default()('hola');
+  sweetalert__WEBPACK_IMPORTED_MODULE_1___default()({
+    title: "Nuevo Servicio",
+    text: "".concat(data.servicio.direccion, " - #lavadoras:").concat(data.servicio.num_lavadoras),
+    icon: "info",
+    buttons: {
+      aceptar: {
+        text: "Aceptar",
+        value: "aceptar"
+      },
+      cancel: "Ignorar"
+    }
+  }).then(function (result) {
+    console.log(result);
+
+    if (result == 'aceptar') {
+      var url = base_url + 'servicio/aceptar_servicioJSON/' + data.servicio.id;
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(url).then(function (response) {
+        var data = response.data;
+        sweetalert__WEBPACK_IMPORTED_MODULE_1___default()(data.message);
+      });
+    }
+  });
 });
 
 /***/ }),

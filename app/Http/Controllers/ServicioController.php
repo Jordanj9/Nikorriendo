@@ -303,6 +303,44 @@ class ServicioController extends Controller
         }
     }
 
+    public function aceptarServicioJSON($id)
+    {
+        $u = Auth::user();
+        $servicio = Servicio::find($id);
+        $persona = Persona::where([['identificacion', $u->identificacion], ['tipo', 'MENSAJERO']])->first();
+        if ($persona != null) {
+            $servicio->estado = 'ASIGNADO';
+            $servicio->persona_id = $persona->id;
+            $result = $servicio->save();
+            $u = Auth::user();
+            $aud = new Auditoriaservicio();
+            $aud->usuario = "ID: " . $u->identificacion . ",  USUARIO: " . $u->nombres . " " . $u->apellidos;
+            $aud->operacion = "ASIGNACION";
+            $str = "ASIGNACION DE SERVICIO. DATOS: ";
+            foreach ($servicio->attributesToArray() as $key => $value) {
+                $str = $str . ", " . $key . ": " . $value;
+            }
+            $aud->detalles = $str;
+            $aud->save();
+            if ($result) {
+                return  response()->json([
+                      'status' => 'ok',
+                       'message' => "El servicio para la dirección " . $servicio->direccion . " le fue asignado correctamente!",
+                ]);
+            } else {
+                return  response()->json([
+                    'status' => 'error',
+                    'message' => "El servicio para la dirección " . $servicio->direccion . "no pudo ser asignado. Error: " . $result,
+                ]);
+            }
+        } else {
+            return  response()->json([
+                'status' => 'error',
+                'message' => "El servico para la dirección " . $servicio->direccion . " no pudo ser asignado. Error: no tiene los privilegios suficientes para realizar esta acción ",
+            ]);
+        }
+    }
+
     public function liberarServicio($id)
     {
         $u = Auth::user();
