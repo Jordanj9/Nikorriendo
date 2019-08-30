@@ -120,11 +120,31 @@
 
 <script src="{{ asset('js/axios.min.js')}}"></script>
 <script src="{{ asset('bower_components/jquery/dist/jquery.min.js')}}"></script>
-<script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACMXJBl7W2A6fYConiB7bfeCkKuNusyyo&callback=initMap"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACMXJBl7W2A6fYConiB7bfeCkKuNusyyo&callback=initMap"></script>
 <script type="text/javascript">
+    var map;
+    var marcadores = [];
+    var marker;
+    var coords;
 
-    $(function () {
+    function initMap() {
+        //usamos la API para geolocalizar el usuario
+        /* navigator.geolocation.getCurrentPosition(
+             function (position) {
+                 coords = {
+                     lng: position.coords.longitude,
+                     lat: position.coords.latitude
+                 };
+                 setMapa(coords, 'map');  //pasamos las coordenadas al metodo para crear el mapa
+             }, function (error) {
+                 console.log(error);
+             });*/
+        coords = {
+            lng: '-73.273496',
+            lat: '10.4502618'
+        };
+        setMapa(coords, 'map');  //pasamos las coordenadas al metodo para crear el mapa
+
         axios.get('{{url('servicio/getServiciosPorRecogerJSON')}}').then(resonse => {
             const data = resonse.data;
             data.forEach(item => {
@@ -225,30 +245,6 @@
 
             map.fitBounds(bounds);
         });
-    });
-
-    var map;
-    var marcadores = [];
-    var marker;
-    var coords;
-
-    function initMap() {
-        //usamos la API para geolocalizar el usuario
-        /* navigator.geolocation.getCurrentPosition(
-             function (position) {
-                 coords = {
-                     lng: position.coords.longitude,
-                     lat: position.coords.latitude
-                 };
-                 setMapa(coords, 'map');  //pasamos las coordenadas al metodo para crear el mapa
-             }, function (error) {
-                 console.log(error);
-             });*/
-        coords = {
-            lng: '-73.273496',
-            lat: '10.4502618'
-        };
-        setMapa(coords, 'map');  //pasamos las coordenadas al metodo para crear el mapa
 
     }
 

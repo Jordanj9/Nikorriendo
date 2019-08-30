@@ -1,4 +1,23 @@
 @extends('layouts.admin')
+@section('style')
+    <style>
+
+        .boton{
+            color: #FFFFFF !important;
+            font-weight: bold;
+            border-radius: 20px;
+        }
+
+        @media (max-width:468px){
+
+            .boton{
+                width: 100%;
+            }
+
+        }
+
+    </style>
+@endsection
 @section('breadcrumb')
 <h1>
     General
@@ -24,52 +43,34 @@
     <div class="box-body">
         <div class="button-demo">
             @if(session()->exists('PAG_ESTRUCTURA-SUCURSAL'))
-            <a href="{{route('sucursal.index')}}" class="btn bg-yellow-gradient margin">
-                <div>
-                    <span style="color: white">SUCURSALES</span>
-                    <span class="ink animated"></span>
-                </div>
-            </a>
+                <a class="btn btn-app btn-lg bg-yellow-gradient boton" href="{{route('sucursal.index')}}" style="font-weight: bold">
+                    <i class="fa fa-sitemap"></i> SUCURSALES
+                    <div class="ripple-container"></div></a>
             @endif
             @if(session()->exists('PAG_ESTRUCTURA-BODEGA'))
-            <a href="{{route('bodega.index')}}" class="btn bg-yellow-gradient margin">
-                <div>
-                    <span style="color: white">BODEGAS</span>
-                    <span class="ink animated"></span>
-                </div>
-            </a>
+                    <a class="btn btn-app btn-lg bg-yellow-gradient boton" href="{{route('bodega.index')}}" style="font-weight: bold">
+                        <i class="fa fa-archive"></i> BODEGAS
+                        <div class="ripple-container"></div></a>
             @endif
             @if(session()->exists('PAG_ESTRUCTURA-LAVADORA'))
-            <a href="{{route('lavadora.index')}}" class="btn bg-yellow-gradient margin">
-                <div>
-                    <span style="color: white">LAVADORAS</span>
-                    <span class="ink animated"></span>
-                </div>
-            </a>
+                    <a class="btn btn-app btn-lg bg-yellow-gradient boton" href="{{route('lavadora.index')}}" style="font-weight: bold">
+                        <i class="fa fa-camera-retro"></i> LAVADORAS
+                        <div class="ripple-container"></div></a>
             @endif
             @if(session()->exists('PAG_ESTRUCTURA-EMPLEADO'))
-            <a href="{{route('persona.index')}}" class="btn bg-yellow-gradient margin">
-                <div>
-                    <span style="color: white">EMPLEADOS</span>
-                    <span class="ink animated"></span>
-                </div>
-            </a>
+                    <a class="btn btn-app btn-lg bg-yellow-gradient boton" href="{{route('persona.index')}}" style="font-weight: bold">
+                        <i class="fa fa-users"></i> EMPLEADOS
+                        <div class="ripple-container"></div></a>
             @endif
             @if(session()->exists('PAG_ESTRUCTURA-ASIGNAR-LAVADORA'))
-            <a href="{{route('lavadora_persona.index')}}" class="btn bg-yellow-gradient margin">
-                <div>
-                    <span style="color: white">ASIGNAR LAVADORA A EMPLEADO</span>
-                    <span class="ink animated"></span>
-                </div>
-            </a>
+                    <a class="btn btn-app btn-lg bg-yellow-gradient boton" href="{{route('lavadora_persona.index')}}" style="font-weight: bold">
+                        <i class="fa fa-exchange"></i>ASIGNAR LAVADORA A EMPLEADO
+                        <div class="ripple-container"></div></a>
             @endif
             @if(session()->exists('PAG_ESTRUCTURA-SUCURSAL'))
-            <a href="{{route('barrio.index')}}" class="btn bg-yellow-gradient margin">
-                <div>
-                    <span style="color: white">BARRIOS</span>
-                    <span class="ink animated"></span>
-                </div>
-            </a>
+                    <a class="btn btn-app btn-lg bg-yellow-gradient boton" href="{{route('barrio.index')}}" style="font-weight: bold">
+                        <i class="fa fa-map-marker"></i>BARRIOS
+                        <div class="ripple-container"></div></a>
             @endif
         </div>
     </div>

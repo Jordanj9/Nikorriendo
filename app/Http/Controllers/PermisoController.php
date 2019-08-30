@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Permiso;
 use App\Auditoriaservicio;
+use App\Persona;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -22,6 +23,9 @@ class PermisoController extends Controller {
         } else {
             $permisos = Permiso::all();
         }
+
+        $permisos = $permisos->sortByDesc('created_at');
+
         return view('servicio.permiso.list')
                         ->with('location', 'servcio')
                         ->with('permisos', $permisos);
@@ -56,10 +60,19 @@ class PermisoController extends Controller {
             }
             $aud->detalles = $str;
             $aud->save();
-            flash("El permiso <strong>" . $servicio->cliente->nombre . "</strong> fue almacenado(a) de forma exitosa!")->success();
+            if($permiso->tipo == 'SERVICIO'){
+                flash("El permiso <strong>" . $permiso->servicio->cliente->nombre . "</strong> fue almacenado(a) de forma exitosa!")->success();
+            }else {
+                flash("El permiso <strong>" . $permiso->solicitudcambio->servicio->cliente->nombre . "</strong> fue almacenado(a) de forma exitosa!")->success();
+            }
+
             return redirect()->route('servicio.index');
         } else {
-            flash("El permiso <strong>" . $servicio->cliente->nombre . "</strong> no pudo ser almacenado(a). Error: " . $result)->error();
+            if($permiso->tipo == 'SERVICIO'){
+                flash("El permiso <strong>" . $permiso->servicio->cliente->nombre . "</strong> no pudo ser almacenado(a) de forma exitosa!". $result)->error();
+            }else {
+                flash("El permiso <strong>" . $permiso->solicitudcambio->servicio->cliente->nombre . "</strong> no pudo ser almacenado(a) de forma exitosa!". $result)->error();
+            }
             return redirect()->route('solicitud.index');
         }
     }

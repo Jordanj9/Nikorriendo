@@ -21,7 +21,7 @@
     </div>
     <div class="box">
         <div class="box-header with-border">
-            <h3 class="box-title">Listado de sucursales</h3>
+            <h3 class="box-title">Listado de  </br> sucursales</h3>
             <div class="box-tools pull-right">
                 <a href="{{route('sucursal.create')}}" type="button" class="btn btn-box-tool" data-toggle="tooltip"
                    title="Nuevo sucursal">

@@ -21,7 +21,7 @@
 </div>
 <div class="box">
     <div class="box-header with-border">
-        <h3 class="box-title">Listado de Barrios</h3>
+        <h3 class="box-title">Listado de </br> Barrios</h3>
         <div class="box-tools pull-right">
             <a href="{{route('barrio.create')}}" type="button" class="btn btn-box-tool" data-toggle="tooltip"
                title="Nuevo Barrio">
@@ -49,7 +49,7 @@
                     @foreach($barrios as $barrio)
                     <tr>
                         <td>{{$barrio->id}}</td>
-                        <td>{{$barrio->nombre}}</td>                       
+                        <td>{{$barrio->nombre}}</td>
                         <td>{{$barrio->created_at}}</td>
                         <td>{{$barrio->updated_at}}</td>
                         <td style="text-align: center;">

@@ -20,6 +20,7 @@ class CreateMantenimientosTable extends Migration
             $table->bigInteger('estado_mantenimiento_id')->unsigned();
             $table->foreign('estado_mantenimiento_id')->references('id')->on('estado_mantenimientos')->onDelete('cascade');
             $table->decimal('total',10,2);
+            $table->string('descripcion')->nullable();
             $table->timestamps();
         });
 

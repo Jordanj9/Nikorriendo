@@ -36,7 +36,6 @@
             <table id="example1" class="table table-bordered table-striped table-hover">
                 <thead>
                     <tr class="danger">
-                        <th>ESTADO PERMISO</th>
                         <th>TIPO</th>
                         <th>RESPONSABLE</th>
                         <th>PERMISO A</th>
@@ -53,7 +52,6 @@
                 <tbody>
                     @foreach($permisos as $p)
                     <tr>
-                        <td>{{$p->estado}}</td>
                         <td>{{$p->tipo}}</td>
                         <td>@if($p->tipo == "SERVICIO")
                             {{$p->servicio->persona->primer_nombre." ".$p->servicio->persona->primer_apellido}}
@@ -63,7 +61,7 @@
                         </td>
                         <td>{{$p->persona->primer_nombre." ".$p->persona->primer_apellido}}</td>
                         @if($p->tipo == "SERVICIO")
-                        <td>{{$p->servicio->cliente->nombre}}</td>
+                        <td>{{$p->servicio->cliente->telefono}}</td>
                         <td>{{$p->servicio->cliente->nombre}}</td>
                         <td>{{$p->servicio->direccion}}</td>
                         <td>{{$p->servicio->fechaentrega == null ? 'SIN ENTREGAR' : $p->servicio->fechaentrega }}</td>
@@ -86,7 +84,7 @@
                             @endif
                         </td>
                         @else
-                        <td>{{$p->solicitudcambio->servicio->cliente->nombre}}</td>
+                        <td>{{$p->solicitudcambio->servicio->cliente->telefono}}</td>
                         <td>{{$p->solicitudcambio->servicio->cliente->nombre}}</td>
                         <td>{{$p->solicitudcambio->servicio->direccion}}</td>
                         <td>{{$p->solicitudcambio->servicio->fechaentrega == null ? 'SIN ENTREGAR' : $p->solicitudcambio->servicio->fechaentrega }}</td>

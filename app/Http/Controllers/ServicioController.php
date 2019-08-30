@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Permiso;
 use App\Servicio;
 use App\Lavadora;
 use App\Persona;
@@ -26,11 +27,14 @@ class ServicioController extends Controller
                 $servicios = Servicio::where([
                     ['sucursal_id', $persona->sucursal_id],
                     ['persona_id', $persona->id]
-                ])->get()->sortBy('estado');
+                ])->get();
             }
         } else {
-            $servicios = Servicio::all()->sortBy('estado');
+            $servicios = Servicio::all();
         }
+
+        $servicios = $servicios->sortByDesc('created_at');
+
         return view('servicio.servicios.list')
             ->with('location', 'servicio')
             ->with('servicios', $servicios);
@@ -42,8 +46,8 @@ class ServicioController extends Controller
         $persona = Persona::where([['identificacion', $u->identificacion], ['tipo', 'CENTRAL']])->first();
         $existe = false;
         $barrios = Barrio::all()->pluck('nombre', 'id');
-        if ($persona != null ||session('ROL') == 'ADMINISTRADOR' ) {
-            if(session('ROL') == 'ADMINISTRADOR'){
+        if ($persona != null || session('ROL') == 'ADMINISTRADOR') {
+            if (session('ROL') == 'ADMINISTRADOR') {
                 $bodegas = Bodega::all();
                 if (count($bodegas) > 0) {
                     foreach ($bodegas as $i) {
@@ -59,7 +63,7 @@ class ServicioController extends Controller
                     $mensaje = "Atencion!. No hay lavadoras disponibles en el momento";
                 }
 
-            }else {
+            } else {
 
                 $bodegas = Bodega::where('sucursal_id', $persona->sucursal_id)->get();
                 if (count($bodegas) > 0) {
@@ -89,7 +93,8 @@ class ServicioController extends Controller
         }
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
         $result_cliente = true;
@@ -159,31 +164,34 @@ class ServicioController extends Controller
 
     public function show(Servicio $servicio)
     {
-
         return view('servicio.servicios.show')
             ->with('location', 'servicio')
             ->with('servicio', $servicio);
     }
 
-    public function showSeriviciosEnMapa($id) {
+    public function showSeriviciosEnMapa($id)
+    {
         $servicio = Servicio::find($id);
         return view('servicio.servicios.showMapa')
             ->with('location', 'servicio')
             ->with('servicio', $servicio);
     }
 
-    public function showServicios(){
+    public function showServicios()
+    {
 
         return view('servicio.geolocalizacion.list')
             ->with('location', 'servicio');
 
     }
 
-    public function edit(Servicio $servicio){
+    public function edit(Servicio $servicio)
+    {
         //
     }
 
-    public function update(Request $request, Servicio $servicio){
+    public function update(Request $request, Servicio $servicio)
+    {
         //
     }
 
@@ -217,7 +225,8 @@ class ServicioController extends Controller
         }
     }
 
-    public function getClientes($id){
+    public function getClientes($id)
+    {
         $cli = Cliente::where('telefono', $id)->first();
         if ($cli !== null) {
             $obj["id"] = $cli->id;
@@ -233,7 +242,8 @@ class ServicioController extends Controller
         }
     }
 
-    function orderMultiDimensionalArray($toOrderArray, $field, $inverse = false){
+    function orderMultiDimensionalArray($toOrderArray, $field, $inverse = false)
+    {
         $position = array();
         $newRow = array();
         foreach ($toOrderArray as $key => $row) {
@@ -273,7 +283,6 @@ class ServicioController extends Controller
 
     public function aceptarServicio($id)
     {
-
         $u = Auth::user();
         $servicio = Servicio::find($id);
         $persona = Persona::where([['identificacion', $u->identificacion], ['tipo', 'MENSAJERO']])->first();
@@ -293,7 +302,7 @@ class ServicioController extends Controller
             $aud->save();
             if ($result) {
                 flash("El servicio para la dirección  <strong>" . $servicio->direccion . "</strong> le fue asignado correctamente!")->success();
-                return redirect()->route('servicio.getServiciosPorEntregar');
+                return redirect()->route('servicio.getServiciosPendientes');
             } else {
                 flash("El servico para la dirección <strong>" . $servicio->direccion . "</strong> no pudo ser asignado. Error: " . $result)->error();
                 return back();
@@ -304,14 +313,52 @@ class ServicioController extends Controller
         }
     }
 
+    public function aceptarServicioJSON($id)
+    {
+        $u = Auth::user();
+        $servicio = Servicio::find($id);
+        $persona = Persona::where([['identificacion', $u->identificacion], ['tipo', 'MENSAJERO']])->first();
+        if ($persona != null) {
+            $servicio->estado = 'ASIGNADO';
+            $servicio->persona_id = $persona->id;
+            $result = $servicio->save();
+            $u = Auth::user();
+            $aud = new Auditoriaservicio();
+            $aud->usuario = "ID: " . $u->identificacion . ",  USUARIO: " . $u->nombres . " " . $u->apellidos;
+            $aud->operacion = "ASIGNACION";
+            $str = "ASIGNACION DE SERVICIO. DATOS: ";
+            foreach ($servicio->attributesToArray() as $key => $value) {
+                $str = $str . ", " . $key . ": " . $value;
+            }
+            $aud->detalles = $str;
+            $aud->save();
+            if ($result) {
+                return response()->json([
+                    'status' => 'ok',
+                    'message' => "El servicio para la dirección " . $servicio->direccion . " le fue asignado correctamente!",
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => "El servicio para la dirección " . $servicio->direccion . "no pudo ser asignado. Error: " . $result,
+                ]);
+            }
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => "El servico para la dirección " . $servicio->direccion . " no pudo ser asignado. Error: no tiene los privilegios suficientes para realizar esta acción ",
+            ]);
+        }
+    }
+
     public function liberarServicio($id)
     {
         $u = Auth::user();
         $servicio = Servicio::find($id);
         $persona = Persona::where([
-                    ['identificacion', $u->identificacion],
-                    ['tipo', 'MENSAJERO']
-                ])->first();
+            ['identificacion', $u->identificacion],
+            ['tipo', 'MENSAJERO']
+        ])->first();
         if ($persona != null) {
             $servicio->estado = 'PENDIENTE';
             $servicio->persona_id = $persona->id;
@@ -347,18 +394,21 @@ class ServicioController extends Controller
             if (session('ROL') == 'CENTRAL') {
                 $servicios = Servicio::where([
                     ['estado', 'ASIGNADO']
-                ])->get()->sortBy('estado');
+                ])->get();
             } else {
                 $servicios = Servicio::where([
                     ['persona_id', $persona->id],
                     ['estado', 'ASIGNADO']
-                ])->get()->sortBy('estado');
+                ])->get();
             }
         } else {
             $servicios = Servicio::where([
                 ['estado', 'ASIGNADO']
-            ])->get()->sortBy('estado');
+            ])->get();
         }
+
+        $servicios =  $servicios->sortByDesc('created_at');
+
         return view('servicio.servicios_por_entregar.aceptados')
             ->with('location', 'servicio')
             ->with('servicios', $servicios);
@@ -479,8 +529,8 @@ class ServicioController extends Controller
                 $aud->detalles = $str . " - " . $str2;
                 $aud->save();
                 return response()->json([
-                            'status' => 'ok',
-                            'message' => "Success : el servicio para la dirección " . $servicio->direccion . " fue entregado correctamente",
+                    'status' => 'ok',
+                    'message' => "Success : el servicio para la dirección " . $servicio->direccion . " fue entregado correctamente",
                 ]);
             } else {
 
@@ -488,6 +538,7 @@ class ServicioController extends Controller
                     'status' => 'error',
                     'message' => "Error : tenga en cuenta que debe selecionar el mismo numero de lavadoras solicitadas por el cliente"
                 ]);
+
             }
         } else {
             return response()->json([
@@ -503,7 +554,9 @@ class ServicioController extends Controller
     {
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
+
         if ($persona != null && session('ROL') != 'ADMINISTRADOR') {
+
             if (session('ROL') == 'CENTRAL') {
                 $servicios = Servicio::where([
                     ['estado', 'ENTREGADO']
@@ -513,15 +566,34 @@ class ServicioController extends Controller
                     ['persona_id', $persona->id],
                     ['estado', 'ENTREGADO']
                 ])->orWhere('estado', 'RECOGER')->get()->sortBy('estado');
+
+                $persmisos = Permiso::where([
+                    ['persona_id', $persona->id],
+                    ['tipo', 'SERVICIO']
+                ])->get();
+
+                foreach ($persmisos as $item) {
+                    $service = $item->servicio;
+                    if ($service->estado == 'RECOGER') {
+                        $servicios[] = $service;
+                    }
+                }
+
             }
+
         } else {
+
             $servicios = Servicio::where([
                 ['estado', 'ENTREGADO']
             ])->orWhere('estado', 'RECOGER')->get()->sortBy('estado');
+
         }
+
         $servicios = $this->cambioEstado($servicios);
+
         $per = Persona::all()->sortBy('primer_nombre');
         $personas = null;
+
         if (count($per) > 0) {
             foreach ($per as $i) {
                 if ($i->tipo == "MENSAJERO" && $i->estado == "ACTIVO") {
@@ -529,10 +601,13 @@ class ServicioController extends Controller
                 }
             }
         }
+
+        $servicios = $servicios->sortBy('fechafin');
+
         return view('servicio.servicios_por_recoger.entregados')
-                        ->with('location', 'servicio')
-                        ->with('personas', $personas)
-                        ->with('servicios', $servicios);
+            ->with('location', 'servicio')
+            ->with('personas', $personas)
+            ->with('servicios', $servicios);
     }
 
     public function recogerServicio($id)
@@ -612,11 +687,13 @@ class ServicioController extends Controller
     /**
      * recorre uno a uno los servicios y aquellos que la fecha fin sea menor que la fecha actual
      * seran colocados en estado por recorrer
-     * 
+     *
      * @param type $servicios
      * @return type response/Servicios
      */
-    public function cambioEstado($servicios) {
+    public function cambioEstado($servicios)
+    {
+
         $hoy = getdate();
         $fecha = $hoy['year'] . '-' . $hoy['mon'] . '-' . $hoy['mday'] . ' ' . $hoy['hours'] . ':' . $hoy['minutes'] . ':' . $hoy['seconds'];
         $fecha = strtotime($fecha);
@@ -638,30 +715,51 @@ class ServicioController extends Controller
                 }
             }
         }
+
         return $servicios_por_recoger;
     }
 
     public function getServiciosPorRecogerJSON()
     {
-
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
+
         if ($persona != null && session('ROL') != 'ADMINISTRADOR') {
+
             if (session('ROL') == 'CENTRAL') {
+
                 $servicios = Servicio::where([
-                            ['estado', 'ENTREGADO']
-                        ])->orWhere('estado', 'RECOGER')->get();
+                    ['estado', 'ENTREGADO']
+                ])->orWhere('estado', 'RECOGER')->get();
+
             } else {
+
                 $servicios = Servicio::where([
-                            ['persona_id', $persona->id],
-                            ['estado', 'ENTREGADO']
-                        ])->orWhere('estado', 'RECOGER')->get();
+                    ['persona_id', $persona->id],
+                    ['estado', 'ENTREGADO']
+                ])->orWhere('estado', 'RECOGER')->get();
+
+                $persmisos = Permiso::where([
+                    ['persona_id', $persona->id],
+                    ['tipo', 'SERVICIO']
+                ])->get();
+
+                foreach ($persmisos as $item) {
+                    $service = $item->servicio;
+                    if ($service->estado == 'RECOGER') {
+                        $servicios[] = $service;
+                    }
+                }
+
             }
         } else {
+
             $servicios = Servicio::where([
-                        ['estado', 'ENTREGADO']
-                    ])->orWhere('estado', 'RECOGER')->get()->sortBy('estado');
+                ['estado', 'ENTREGADO']
+            ])->orWhere('estado', 'RECOGER')->get()->sortBy('estado');
+
         }
+
         $servicios = $this->cambioEstado($servicios);
 
         foreach ($servicios as $item) {
@@ -675,7 +773,6 @@ class ServicioController extends Controller
 
     public function getServiciosPorEntregarJSON()
     {
-
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
         if ($persona != null) {
@@ -706,7 +803,40 @@ class ServicioController extends Controller
             $item->cliente_telefono = $item->cliente->telefono;
         }
 
+
         return json_encode($servicios);
+    }
+
+
+    public function guardarObservacion(Request $request)
+    {
+        $u = Auth::user();
+        $servicio = Servicio::find($request->servicio_id);
+        $m = new Servicio($servicio->attributesToArray());
+        $servicio->observacion = $servicio->observacion . ' <strong>Usuario:</strong>' . $u->nombres . ' ' . $u->apellidos . ' <strong>-Observacion:</strong>: ' . $request->observacion.'</br>';
+        $result = $servicio->save();
+
+        if ($result) {
+            $aud = new Auditoriaservicio();
+            $aud->usuario = "ID: " . $u->identificacion . ",  USUARIO: " . $u->nombres . " " . $u->apellidos;
+            $aud->operacion = "OBSERVACION";
+            $str = "OBSERVACION DEL SERVICIO. DATOS NUEVOS: ";
+            $str2 = " DATOS ANTIGUOS: ";
+            foreach ($m->attributesToArray() as $key => $value) {
+                $str2 = $str2 . ", " . $key . ": " . $value;
+            }
+            foreach ($servicio->attributesToArray() as $key => $value) {
+                $str = $str . ", " . $key . ": " . $value;
+            }
+            $aud->detalles = $str . " - " . $str2;
+            $aud->save();
+
+            flash("La observacion para el servicio para la dirección <strong>" . $servicio->direccion . "</strong> fue agregada exitosamente.")->success();
+            return redirect()->route('servicio.index');
+        }else{
+            flash("La observacion para el servicio para la dirección <strong>" . $servicio->direccion . "</strong> no fue agregada exitosamente. Error:".$result)->error();
+            return  redirect()->route('servicio.index');
+        }
     }
 
 }

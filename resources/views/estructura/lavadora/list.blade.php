@@ -21,7 +21,7 @@
 </div>
 <div class="box">
     <div class="box-header with-border">
-        <h3 class="box-title">Listado de Lavadoras</h3>
+        <h3 class="box-title">Listado de </br> Lavadoras</h3>
         <div class="box-tools pull-right">
             <a href="{{route('lavadora.create')}}" type="button" class="btn btn-box-tool" data-toggle="tooltip"
                title="Nuevo Bodega">

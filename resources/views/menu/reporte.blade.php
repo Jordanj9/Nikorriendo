@@ -1,4 +1,23 @@
 @extends('layouts.admin')
+@section('style')
+    <style>
+
+        .boton{
+            color: #FFFFFF !important;
+            font-weight: bold;
+            border-radius: 20px;
+        }
+
+        @media (max-width:468px){
+
+            .boton{
+                width: 100%;
+            }
+
+        }
+
+    </style>
+@endsection
 @section('breadcrumb')
 <h1>
     Reporte
@@ -24,7 +43,7 @@
     <div class="box-body">
         <div class="button-demo">
             @if(session()->exists('PAG_REPORTE-GENERAL'))
-            <a class="btn btn-app btn-lg" href="{{route('reporte.general')}}" style="color: #B91752; font-weight: bold">
+            <a class="btn btn-app btn-lg bg-maroon-gradient boton" href="{{route('reporte.general')}}" style="font-weight: bold">
                 <i class="fa fa-bar-chart"></i> Reporte General
                 <div class="ripple-container"></div></a>
             @endif

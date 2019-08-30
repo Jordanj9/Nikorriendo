@@ -12,7 +12,7 @@ class Mantenimiento extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'persona_id', 'estado_mantenimiento_id', 'total','created_at', 'updated_at'
+        'id', 'persona_id', 'estado_mantenimiento_id', 'total','descripcion','created_at', 'updated_at'
     ];
 
     /**
@@ -33,7 +33,8 @@ class Mantenimiento extends Model
     }
 
     public function repuestos(){
-       return $this->belongsToMany(Repuesto::class,'mantenimiento_repuesto');
+       return $this->belongsToMany(Repuesto::class,'mantenimiento_repuesto')
+           ->withPivot('precio');
     }
 
 }

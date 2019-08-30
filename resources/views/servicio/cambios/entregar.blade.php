@@ -15,7 +15,7 @@
 
         <link rel="shortcut icon" href="{{asset('images/nikorriendo-blanco.ico')}}">
 
-        <title>Canvas</title>
+        <title>{{ config('app.name', 'Nikorriendo') }}</title>
         <style>
             canvas {
                 width: 300px;

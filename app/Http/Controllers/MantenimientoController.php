@@ -42,9 +42,12 @@ class MantenimientoController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
-        $repuestos = Repuesto::all();
-        $persona = Persona::where('identificacion', Auth::user()->identificacion)->first();
+    public function create()
+    {
+        $repuestos = Repuesto::where([
+            ['stock','>','0']
+        ])->get();
+        $persona = Persona::where('identificacion',Auth::user()->identificacion)->first();
 
         if ($persona == null) {
             flash("usted no puede <strong>" . 'realizar' . "</strong> tal operación en nuestro sistema, solo es permitido para los tecnicos")->warning();
@@ -86,8 +89,70 @@ class MantenimientoController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
-        //
+    public function store(Request $request)
+    {
+        $user = Auth::user();
+        $persona =  Persona::where([
+            ['identificacion',$user->identificacion],
+            ['tipo','TECNICO']
+        ])->first();
+
+
+        if($persona != null){
+
+            $estado_mantenimiento = Estado_mantenimiento::find($request->estado_mantenimiento_id);
+            $estado_mantenimiento->estado  = 'REALIZADO';
+            $result = $estado_mantenimiento->save();
+
+            $lavadora = $estado_mantenimiento->lavadora;
+            $lavadora->estado_lavadora = 'DISPONIBLE';
+            $result2 = $lavadora->save();
+
+            if($result && $result2){
+
+              $mantenimiento = new Mantenimiento();
+              $mantenimiento->persona_id = $persona->id;
+              $mantenimiento->total = $request->total;
+              $mantenimiento->descripcion = $request->descripcion;
+              $mantenimiento->estado_mantenimiento_id = $estado_mantenimiento->id;
+              $result3 = $mantenimiento->save();
+
+              if($result3){
+                  $repuestos = $request->repuestos;
+
+                  foreach ($repuestos as $item){
+                      $repuesto = Repuesto::find($item['id']);
+                      $repuesto->stock =  $repuesto->stock - 1;
+                      $repuesto->save();
+                      $mantenimiento->repuestos()->attach($item['id'],['precio'=>$item['precio']]);
+                  }
+
+                  return response()->json([
+                      'status' => 'ok',
+                      'message' => 'mantenimiento almacenado correctamente',
+                  ]);
+
+              }else{
+                  return response()->json([
+                      'status' => 'error',
+                      'message' => 'error al intentar guardar el mantenimiento, Error'.$result.$result2
+                  ]);
+              }
+
+            }else{
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'error al intentar guardar el mantenimiento, Error'.$result.$result2
+                ]);
+            }
+
+        }else{
+            return response()->json([
+                'status' => 'error',
+                'message' => 'usuario no valido, no posees los privilegios suficientes para realizar esta acción',
+            ]);
+        }
+
     }
 
     /**

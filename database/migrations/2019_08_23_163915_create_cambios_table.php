@@ -14,7 +14,8 @@ class CreateCambiosTable extends Migration {
     public function up() {
         Schema::create('cambios', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('lavadora_vieja');
+            $table->bigInteger('lavadora_vieja')->unsigned();
+            $table->foreign('lavadora_vieja')->references('id')->on('lavadoras')->onDelete('cascade');
             $table->bigInteger('lavadora_id')->unsigned();
             $table->foreign('lavadora_id')->references('id')->on('lavadoras')->onDelete('cascade');
             $table->bigInteger('solicitudcambio_id')->unsigned();

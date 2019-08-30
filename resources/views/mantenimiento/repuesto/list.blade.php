@@ -48,7 +48,9 @@
                         <th>BODEGA</th>
                         <th>CREADO</th>
                         <th>MODIFICADO</th>
-                        <th>ACCIONES</th>
+                        @if(session('ROL')=='ADMINISTRADOR' || session('ROL')=='CENTRAL')
+                            <th>ACCIONES</th>
+                        @endif
                     </tr>
                     </thead>
                     <tbody>
@@ -62,14 +64,16 @@
                             <td>{{$repuesto->bodega->nombre}}</td>
                             <td>{{$repuesto->created_at}}</td>
                             <td>{{$repuesto->updated_at}}</td>
-                            <td style="text-align: center;">
-                                <a href="{{ route('repuesto.edit',$repuesto->id)}}" data-toggle="tooltip"
-                                   data-placement="top" title="Editar repuesto"
-                                   style="color: green; margin-left: 10px;"><i class="fa fa-edit"></i></a>
-                                <a href="#" onclick="eliminar(event,{{$repuesto->id}})" data-toggle="tooltip"
-                                   data-placement="top" title="Eliminar repuesto"
-                                   style="color: red; margin-left: 10px;"><i class="fa fa-trash-o"></i></a>
-                            </td>
+                            @if(session('ROL')=='ADMINISTRADOR' || session('ROL')=='CENTRAL')
+                                <td style="text-align: center;">
+                                    <a href="{{ route('repuesto.edit',$repuesto->id)}}" data-toggle="tooltip"
+                                       data-placement="top" title="Editar repuesto"
+                                       style="color: green; margin-left: 10px;"><i class="fa fa-edit"></i></a>
+                                    <a href="#" onclick="eliminar(event,{{$repuesto->id}})" data-toggle="tooltip"
+                                       data-placement="top" title="Eliminar repuesto"
+                                       style="color: red; margin-left: 10px;"><i class="fa fa-trash-o"></i></a>
+                                </td>
+                            @endif
                         </tr>
                     @endforeach
                     </tbody>
@@ -84,7 +88,7 @@
     <script type="text/javascript">
         $(function () {
             $('#example1').DataTable({
-                responsive:true
+                responsive: true
             });
         });
 
