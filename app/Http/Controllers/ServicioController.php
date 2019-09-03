@@ -674,7 +674,8 @@ class ServicioController extends Controller {
         if ($persona != null && session('ROL') != 'ADMINISTRADOR') {
             if (session('ROL') == 'CENTRAL') {
                 $servicios = Servicio::where([
-                            ['estado', 'ENTREGADO']
+                            ['estado', 'ENTREGADO'],
+                            ['sucursal_id',$persona->sucursal_id]
                         ])->orWhere('estado', 'RECOGER')->get();
             } else {
                 $servicios = Servicio::where([
@@ -709,10 +710,11 @@ class ServicioController extends Controller {
     public function getServiciosPorEntregarJSON() {
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
-        if ($persona != null) {
+        if ($persona != null && session('ROL') != 'ADMINISTRADOR') {
             if (session('ROL') == 'CENTRAL') {
                 $servicios = Servicio::where([
-                            ['estado', 'ASIGNADO']
+                            ['estado', 'ASIGNADO'],
+                            ['sucursal_id',$persona->sucursal_id]
                         ])->get()->sortBy('estado');
             } else {
                 $servicios = Servicio::where([
@@ -725,6 +727,36 @@ class ServicioController extends Controller {
                         ['estado', 'ASIGNADO']
                     ])->orWhere('estado', 'PENDIENTE')->get();
         }
+        foreach ($servicios as $item) {
+            $item->barrio = $item->barrio->nombre;
+            $item->cliente_nombre = $item->cliente->nombre;
+            $item->cliente_telefono = $item->cliente->telefono;
+        }
+        return json_encode($servicios);
+    }
+
+    public function getServiciosEntregadosJSON(){
+
+        $u = Auth::user();
+        $persona = Persona::where('identificacion', $u->identificacion)->first();
+        if ($persona != null && session('ROL') != 'ADMINISTRADOR') {
+            if (session('ROL') == 'CENTRAL') {
+                $servicios = Servicio::where([
+                    ['estado', 'ENTREGADO'],
+                    ['sucursal_id',$persona->sucursal_id]
+                ])->get()->sortBy('estado');
+            } else {
+                $servicios = Servicio::where([
+                    ['persona_id', $persona->id],
+                    ['estado', 'ENTREGADO']
+                ])->get()->sortBy('estado');
+            }
+        } else {
+            $servicios = Servicio::where([
+                ['estado', 'ENTREGADO']
+            ])->get();
+        }
+
         foreach ($servicios as $item) {
             $item->barrio = $item->barrio->nombre;
             $item->cliente_nombre = $item->cliente->nombre;

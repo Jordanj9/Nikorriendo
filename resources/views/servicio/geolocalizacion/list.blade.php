@@ -161,6 +161,7 @@
                                                 <div style="width : 100%; margin-bottom: 10px;">
                                                   <a href="${ruta}" class="btn btn-success pull-right">Recoger Servicio</a>
                                                  </div>
+                                                  <h1>Servicio por Recoger</h1>
                                         </div>
                                    </div>`;
 
@@ -211,6 +212,7 @@
                                                   <div style="width : 100%; margin-bottom: 10px;">
                                                    <a href="${ruta}" class="btn btn-success pull-right">Entregar Servicio</a>
                                                  </div>
+                                                <h1>Servicio por Entregar</h1>
                                         </div>
                                    </div>`;
 
@@ -245,7 +247,51 @@
 
             map.fitBounds(bounds);
         });
+        axios.get('{{url('servicio/getServiciosEntregadosJSON')}}').then(resonse => {
+            const data = resonse.data;
+            data.forEach(item => {
 
+                var contentString = `<div class="contenedor">
+                                        <div class="message">
+                                                <h1>${item.cliente_nombre}</h1>
+                                                <a href="tel:${item.cliente_telefono}" class="telefono">${item.cliente_telefono}</a>
+                                                <p>${item.direccion}</p>
+                                                <p style="width : 100%">${item.num_lavadoras} lavadora(s)</p>
+                                                <h1>En servicio...</h1>
+                                        </div>
+                                   </div>`;
+
+                var infowindow = new google.maps.InfoWindow({
+                    content: contentString
+                });
+
+                //Creamos el marcador en el mapa con sus propiedades
+                //para nuestro obetivo tenemos que poner el atributo draggable en true
+                //position pondremos las mismas coordenas que obtuvimos en la geolocalización
+                marker = new google.maps.Marker({
+                    map: map,
+                    icon: '{{url('/images/icon-maps/pin2.png')}}',
+                    title: item.direccion,
+                    draggable: true,
+                    animation: google.maps.Animation.DROP,
+                    position: new google.maps.LatLng(item.latitud, item.longitud),
+                });
+
+                marker.addListener('click', function () {
+                    infowindow.open(map, this);
+                });
+
+                marcadores.push(marker);
+
+            });
+            var bounds = new google.maps.LatLngBounds();
+
+            marcadores.forEach(item => {
+                bounds.extend(new google.maps.LatLng(item.position.lat(), item.position.lng()));
+            });
+
+            map.fitBounds(bounds);
+        });
     }
 
     function setMapa(coords, mapa) {

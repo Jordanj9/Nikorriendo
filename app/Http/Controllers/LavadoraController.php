@@ -116,17 +116,18 @@ class LavadoraController extends Controller {
      */
     public function destroy(Lavadora $lavadora) {
         $serial = $lavadora->serial;
-        $result = $lavadora->delete();
+        $lavadora->estado_lavadora = 'INACTIVA';
+        $result = $lavadora->save();
 
         if ($result) {
             return response()->json([
                         'status' => 'ok',
-                        'message' => "la lavadora " . $serial . " fue eliminado(a) de forma exitosa!"
+                        'message' => "la lavadora " . $serial . " fue dada de baja de forma exitosa!"
             ]);
         } else {
             return response()->json([
                         'status' => 'error',
-                        'message' => "la lavadora " . $serial . " no pudo ser eliminado(a). Error:"
+                        'message' => "la lavadora " . $serial . " no pudo ser dada de baja. Error: $result"
             ]);
         }
     }
