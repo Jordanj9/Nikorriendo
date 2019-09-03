@@ -101,6 +101,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'servicio'], function() {
     Route::get('show_mapa/{id}', 'ServicioController@showSeriviciosEnMapa')->name('servicio.showSeriviciosEnMapa');
     Route::get('getServiciosPorRecogerJSON', 'ServicioController@getServiciosPorRecogerJSON')->name('servicio.getServiciosPorRecogerJSON');
     Route::get('getServiciosPorEntregarJSON', 'ServicioController@getServiciosPorEntregarJSON')->name('servicio.getServiciosPorEntregarJSON');
+    Route::get('getServiciosEntregadosJSON', 'ServicioController@getServiciosEntregadosJSON')->name('servicio.getServiciosEntregadosJSON');
     Route::get('show_servicios', 'ServicioController@showServicios')->name('servicio.showServicios');
 });
 
