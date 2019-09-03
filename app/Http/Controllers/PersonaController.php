@@ -163,7 +163,6 @@ class PersonaController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function destroy(Persona $persona) {
-
         $nombre = $persona->primer_nombre . ' ' . $persona->primer_apellido;
         $user = User::where('identificacion', $persona->identificacion)->first();
          if(count($persona->servicios) > 0 || count($persona->lavadoras) > 0 ) {

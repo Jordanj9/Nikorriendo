@@ -25,7 +25,7 @@ class LavadoraPersonaController extends Controller {
                 }
             }
         }
-        $lav = Lavadora::all();
+        $lav = Lavadora::where('estado_lavadora', '<>', 'INACTIVA')->get();
         $lavadoras = null;
         $lavadoras = collect($lavadoras);
         if (count($lav) > 0) {

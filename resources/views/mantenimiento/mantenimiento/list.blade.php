@@ -67,7 +67,7 @@
                         <td>{{$m->created_at}}</td>
                         <td>{{$m->updated_at}}</td>
                         <td style="text-align: center;">
-                            @if($m->estado == 'PENDIENTE')
+                            @if($m->estado == 'PENDIENTE' && session('ROL') == 'ADMINISTRADOR')
                             <a href="#" onclick="eliminar(event,{{$m->id}})" data-toggle="tooltip" data-placement="top" title="Eliminar Barrio" style="color: red; margin-left: 10px;"><i class="fa fa-trash-o"></i></a>
                             @endif
                         </td>
