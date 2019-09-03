@@ -195,9 +195,9 @@
 <script src="{{asset('js/axios.min.js')}}"></script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACMXJBl7W2A6fYConiB7bfeCkKuNusyyo&callback=initMap&libraries=places"></script>
 <script type="text/javascript">
-    $(function () {
-        $('.select2').select2();
-    });
+                        $(function () {
+                            $('.select2').select2();
+                        });
                         //  class para gecodifcar las direcciones en latitudes y en longitudes
                         class Geocoding {
                             constructor(key) {
@@ -307,17 +307,23 @@
                         //Funcion principal
                         function initMap() {
                             //usamos la API para geolocalizar el usuario
-                            navigator.geolocation.getCurrentPosition(
-                                    function (position) {
-                                        coords = {
-                                            lng: position.coords.longitude,
-                                            lat: position.coords.latitude
-                                        };
-                                        setMapa(coords, 'map');  //pasamos las coordenadas al metodo para crear el mapa
-                                    }, function (error) {
-                                console.log(error);
-                            });
+//                            navigator.geolocation.getCurrentPosition(
+//                                    function (position) {
+//                                        coords = {
+//                                            lng: position.coords.longitude,
+//                                            lat: position.coords.latitude
+//                                        };
+//                                        setMapa(coords, 'map');  //pasamos las coordenadas al metodo para crear el mapa
+//                                    }, function (error) {
+//                                console.log(error);
+//                            });
+                            coords = {
+                                lng: '-73.273496',
+                                lat: '10.4502618'
+                            };
+                            setMapa(coords, 'map');  //pasamos las coordenadas al metodo para crear el mapa
                         }
+
 
                         function setMapa(coords, mapa) {
                             //Se crea una nueva instancia del objeto mapa

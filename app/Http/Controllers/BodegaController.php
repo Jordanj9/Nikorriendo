@@ -110,9 +110,7 @@ class BodegaController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function destroy(Bodega $bodega) {
-
         $nombre =  $bodega->nombre;
-
         if(count($bodega->lavadoras) > 0){
             return response()->json([
                 'status' => 'warning',
@@ -120,7 +118,6 @@ class BodegaController extends Controller {
             ]);
         }
         $result = $bodega->delete();
-
         if($result){
             return response()->json([
                 'status' => 'ok',

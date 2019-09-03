@@ -15,6 +15,7 @@ use App\Mantenimiento;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class ReporteController extends Controller {
@@ -96,9 +97,9 @@ class ReporteController extends Controller {
         if ($per != "null" || $lav != "null") {
             $persona = Persona::find($per);
             if ($persona != null) {
-                if ($lav != null) {
+                if ($lav != "null") {
                     $ser = Servicio::whereHas('lavadoras', function(Builder $query) use ($lav) {
-                                $query->Where('id', $lav);
+                                $query->Where('lavadoras.id', $lav);
                             })->whereBetween('created_at', [$fi, $ff])->where('persona_id', $persona->id)->get();
                 } else {
                     $ser = DB::table('servicios')->whereBetween('created_at', [$fi, $ff])->where('persona_id', $persona->id)->get();
@@ -133,14 +134,15 @@ class ReporteController extends Controller {
                         'total' => 0,
                         'cant' => 0
                     ];
-                    $cont = 0;
                     foreach ($servicios as $i) {
                         $l = date("Y-m-d", $start);
                         $c = explode("-", $l);
                         $k = explode("-", $i->created_at);
                         if ($k[1] == $c[1]) {
+                            if($i->estado == 'FINALIZADO'){
                             $to["total"] = $to["total"] + $i->total;
-                            $to["cant"] = $to["cant"] + $cont++;
+                            }
+                            $to["cant"] = $to["cant"] + 1;
                         }
                     }
                     $total[$l] = $to;

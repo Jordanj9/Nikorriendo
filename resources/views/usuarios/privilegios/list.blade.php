@@ -51,7 +51,7 @@
                     </div>
                     <div class="form-group">
                         <div class="form-line">
-                            {!! Form::select('paginas[]',$paginas,null,['class'=>'form-control','style'=>'height: 250px','placeholder'=>'-- Seleccione una opción --','multiple','size="20"','id'=>'paginas']) !!}
+                            {!! Form::select('paginas[]',$paginas,null,['class'=>'form-control','style'=>'height: 250px','multiple','size="20"','id'=>'paginas']) !!}
                         </div>
                     </div>
                 </div>

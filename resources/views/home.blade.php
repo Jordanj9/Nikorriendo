@@ -36,6 +36,17 @@
             <!-- /.info-box -->
         </div>
         @endif
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-navy-active"><i class="fa fa-key"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Gestión De</span>
+                    <a href="{{route('usuario.vistacontrasenia')}}" class="info-box-number">Cambio de Contraseña</a>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
         @if(session()->exists('MOD_USUARIOS'))
         <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">

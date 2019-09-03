@@ -33,7 +33,7 @@
     <link href="{{asset('css/themes/all-themes.css')}}" rel="stylesheet"/>
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ asset('bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css')}}">
-    <link rel="shortcut icon" href="{{asset('images/logomio.png')}}">
+    <link rel="shortcut icon" href="{{asset('images/logo.png')}}">
 
     <link rel="stylesheet" href="{{asset('bower_components/datatables.net/css/responsive.dataTables.min.css')}}">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->

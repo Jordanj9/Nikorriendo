@@ -118,11 +118,11 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
-                                        <a type="submit" class="btn btn-app btn-lg bg-orange-active btn-block boton waves-effect" href=""
+                                        <button type="submit" class="btn btn-app btn-lg bg-orange-active btn-block boton waves-effect" href=""
                                            style="color: #66639E; font-weight: bold">
                                             <i class="fa fa-search"></i>CONSULTAR USUARIO
                                             <div class="ripple-container"></div>
-                                        </a>
+                                        </button>
                                         <!--<button type="submit" class="btn bg-orange-active waves-effect btn-block boton">
                                             CONSULTAR USUARIO
                                         </button>-->
@@ -145,7 +145,7 @@
                 </div>
                 <div class="modal-body">
                     {!! Form::open(['route'=>'usuario.operaciones','method'=>'POST','class'=>'form-horizontal'])!!}
-                    <input type="hidden" name="id" id="id"/>
+                    <input type="hidden" name="id" id="ide"/>
                     <div class="form-group">
                         <div class="col-md-2">
                             <label class="col-md-2 control-label">Nueva Contraseña</label>
@@ -174,7 +174,7 @@
         });
 
         function ir(id) {
-            $("#id").val(id);
+            $("#ide").val(id);
         }
     </script>
 @endsection

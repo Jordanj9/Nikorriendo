@@ -192,6 +192,50 @@ class UsuarioController extends Controller {
         }
     }
 
+    /*
+     * vista para cambiar la contraseña
+     */
+
+    public function vistacontrasenia() {
+        return view('pass')->with('location', '');
+    }
+
+    /*
+     * cambia la contraseña
+     */
+
+    public function cambiarcontrasenia(Request $request) {
+        $u = Auth::user();
+        if ($u !== null) {
+            if (Hash::check($request->pass0, $u->password)) {
+                if (strlen($request->pass1) < 6 or strlen($request->pass2) < 6) {
+                    flash('La nueva contraseña no puede tener menos de 6 caracteres.')->error();
+                    return redirect()->route('usuario.vistacontrasenia');
+                } else {
+                    if ($request->pass1 !== $request->pass2) {
+                        flash('Las contraseñas no coinciden.')->error();
+                        return redirect()->route('usuario.vistacontrasenia');
+                    } else {
+                        $u->password = bcrypt($request->pass1);
+                        if ($u->save()) {
+                            flash('Contraseña cambiada con exito.')->success();
+                            return redirect()->route('usuario.vistacontrasenia');
+                        } else {
+                            flash('La contraseña no pudo ser cambiada.')->error();
+                            return redirect()->route('usuario.vistacontrasenia');
+                        }
+                    }
+                }
+            } else {
+                flash('La contraseña actual ingresada no es correcta.')->error();
+                return redirect()->route('usuario.vistacontrasenia');
+            }
+        } else {
+            flash('No se ha podido establecer el usuario, no se cambio la contraseña.')->error();
+            return redirect()->route('usuario.vistacontrasenia');
+        }
+    }
+
     //cambia la contraseña de cualquier usuario
     public function cambiarPass(Request $request) {
         if (strlen($request->pass1) < 6 or strlen($request->pass2) < 6) {
