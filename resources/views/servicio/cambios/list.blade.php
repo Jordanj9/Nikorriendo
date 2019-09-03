@@ -23,9 +23,6 @@
         <div class="box-header with-border">
             <h3 class="box-title">Listado de </br> Solicitudes</h3>
             <div class="box-tools pull-right">
-                <a href="{{route('barrio.create')}}" type="button" class="btn btn-box-tool" data-toggle="tooltip"
-                   title="Nuevo Barrio">
-                    <i class="fa fa-plus-circle"></i></a>
                 <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
                         title="Minimizar">
                     <i class="fa fa-minus"></i></button>

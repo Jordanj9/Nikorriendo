@@ -24,7 +24,7 @@
         <h3 class="box-title">Listado de </br> Lavadoras</h3>
         <div class="box-tools pull-right">
             <a href="{{route('lavadora.create')}}" type="button" class="btn btn-box-tool" data-toggle="tooltip"
-               title="Nuevo Bodega">
+               title="Nueva Lavadora">
                 <i class="fa fa-plus-circle"></i></a>
             <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
                     title="Minimizar">

@@ -51,13 +51,6 @@
                 @endif
             </div>
             <div class="row">
-                <div class="col-md-12">
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>  Recordarme
-                        </label>
-                    </div>
-                </div>
                 <!-- /.col -->
                 <div class="col-md-12">
                     <button type="submit" class="btn btn-danger btn-raised btn-block btn-flat"> Ingresar</button>
@@ -65,7 +58,6 @@
                 <!-- /.col -->
             </div>
         </form>
-        <a href="{{route('register')}}" class="text-center"> ¿No tienes una cuenta? Registrate</a>
     </div>
     <!-- /.login-box-body -->
 </div>

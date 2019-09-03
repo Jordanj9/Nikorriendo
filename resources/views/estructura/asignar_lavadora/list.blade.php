@@ -51,7 +51,7 @@
                     </div>
                     <div class="form-group">
                         <div class="form-line">
-                            {!! Form::select('lavadoras[]',$lavadoras,null,['class'=>'form-control','style'=>'height: 400px;  overflow-x: scroll;','placeholder'=>'-- Seleccione una opción --','multiple','size="20"','id'=>'lavadoras']) !!}
+                            {!! Form::select('lavadoras[]',$lavadoras,null,['class'=>'form-control','style'=>'height: 400px;  overflow-x: scroll;','multiple','size="20"','id'=>'lavadoras']) !!}
                         </div>
                     </div>
                 </div>
@@ -84,7 +84,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-md-12">
-                            <br/><button type="submit" id="btn-enviar" class="btn bg-red waves-effect btn-block"><strong>Guardar los Cambios Para el Grupo Seleccionado</strong></button>
+                            <br/><button type="submit" id="btn-enviar" class="btn bg-red waves-effect btn-block"><strong>Guardar los Cambios</strong></button>
                         </div>
                     </div>
                     {!! Form::close() !!}

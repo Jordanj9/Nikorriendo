@@ -18,6 +18,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('usuarios/contrasenia/cambiar', 'UsuarioController@vistacontrasenia')->name('usuario.vistacontrasenia');
+Route::post('usuarios/contrasenia/cambiar/finalizar', 'UsuarioController@cambiarcontrasenia')->name('usuario.cambiarcontrasenia');
+Route::post('usuario/contrasenia/cambiar/admin/finalizar', 'UsuarioController@cambiarPass')->name('usuario.cambiarPass');
 
 //TODOS LOS MENUS
 //GRUPO DE RUTAS PARA LA ADMINISTRACIÓN
@@ -48,7 +51,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'usuarios'], function() {
     Route::resource('usuario', 'UsuarioController');
     Route::get('usuario/{id}/delete', 'UsuarioController@destroy')->name('usuario.delete');
     Route::post('operaciones', 'UsuarioController@operaciones')->name('usuario.operaciones');
-    Route::post('usuario/contrasenia/cambiar/admin/finalizar', 'UsuarioController@cambiarPass')->name('usuario.cambiarPass');
 });
 
 //GRUPO DE RUTAS PARA LA ESTRUCTURA DE LA EMPRESA
@@ -85,7 +87,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'servicio'], function() {
     Route::get('recogerServicio/{id}', 'ServicioController@recogerServicio')->name('servicio.recogerServicio');
     Route::get('liberar_servicio/{id}', 'ServicioController@liberarServicio')->name('servicio.liberarServicio');
     Route::post('permiso', 'ServicioController@permiso')->name('servicio.permiso');
-    Route::post('servicio_observacion','ServicioController@guardarObservacion')->name('servicio.observacion');
+    Route::get('cambiorecoger/{servicio}', 'ServicioController@cambiorecoger')->name('servicio.cambiorecoger');
+    Route::post('servicio_observacion', 'ServicioController@guardarObservacion')->name('servicio.observacion');
     //SOLICITUD CAMBIOS
     Route::resource('solicitud', 'SolicitudcambioController');
     Route::get('solicitud/cambio/{id}', 'SolicitudcambioController@solicitudCambio')->name('solicitud.solicitudcambio');

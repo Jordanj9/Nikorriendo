@@ -52,6 +52,12 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
+                    <label>Se Encuentra en Bodega?</label>
+                    {!! Form::select('estado_bodega',['SI'=>'SI','NO'=>'NO'],$lavadora->estado_bodega,['class'=>'form-control','placeholder'=>'-- Seleccione una opción --','required']) !!}
+                 </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
                     <label>Bodegas</label>
                     {!! Form::select('bodega_id',$bodegas,$lavadora->bodega->id,['class'=>'form-control','placeholder'=>'-- Seleccione una opción --','required']) !!}
                 </div>
