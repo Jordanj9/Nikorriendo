@@ -64,7 +64,7 @@ class SolicitudcambioController extends Controller {
         $solicitudes = $solicitudes->sortByDesc('created_at');
 
         $per = Persona::all()->sortBy('primer_nombre');
-        $personas = null;
+        $personas = collect([]);
         if (count($per) > 0) {
             foreach ($per as $i) {
                 if ($i->tipo == "MENSAJERO" && $i->estado == "ACTIVO") {
