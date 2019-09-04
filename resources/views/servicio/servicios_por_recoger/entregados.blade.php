@@ -73,7 +73,7 @@
                                     <label class="label label-success">{{$servicio->estado}}</label>
                                 @endif
                             </td>
-                            <td>{{$servicio->tiempo}}</td>
+                            <td>{!!$servicio->tiempo!!}</td>
                             <td>{{$servicio->persona->primer_nombre.' '.$servicio->persona->primer_apellido}}</td>
                             <td>{{$servicio->created_at}}</td>
                             <td>{{$servicio->updated_at}}</td>

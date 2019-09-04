@@ -13,9 +13,11 @@ use App\Barrio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ServicioController extends Controller {
+class ServicioController extends Controller
+{
 
-    public function index() {
+    public function index()
+    {
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
         if ($persona != null && session('ROL') != 'ADMINISTRADOR') {
@@ -23,9 +25,9 @@ class ServicioController extends Controller {
                 $servicios = Servicio::where('sucursal_id', $persona->sucursal_id)->get()->sortBy('estado');
             } else {
                 $servicios = Servicio::where([
-                            ['sucursal_id', $persona->sucursal_id],
-                            ['persona_id', $persona->id]
-                        ])->get();
+                    ['sucursal_id', $persona->sucursal_id],
+                    ['persona_id', $persona->id]
+                ])->get();
             }
         } else {
             $servicios = Servicio::all();
@@ -34,11 +36,12 @@ class ServicioController extends Controller {
         $servicios = $servicios->sortByDesc('created_at');
 
         return view('servicio.servicios.list')
-                        ->with('location', 'servicio')
-                        ->with('servicios', $servicios);
+            ->with('location', 'servicio')
+            ->with('servicios', $servicios);
     }
 
-    public function create() {
+    public function create()
+    {
         $u = Auth::user();
         $persona = Persona::where([['identificacion', $u->identificacion], ['tipo', 'CENTRAL']])->first();
         $existe = false;
@@ -78,16 +81,17 @@ class ServicioController extends Controller {
             }
 
             return view('servicio.servicios.create')
-                            ->with('location', 'servicio')
-                            ->with('barrios', $barrios)
-                            ->with('mensaje', $mensaje);
+                ->with('location', 'servicio')
+                ->with('barrios', $barrios)
+                ->with('mensaje', $mensaje);
         } else {
             flash("Usted no posee permisos para acceder a esta funcionalidad.")->warning();
             return redirect()->route('servicio.index');
         }
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
         $result_cliente = true;
@@ -155,34 +159,40 @@ class ServicioController extends Controller {
         }
     }
 
-    public function show(Servicio $servicio) {
+    public function show(Servicio $servicio)
+    {
         return view('servicio.servicios.show')
-                        ->with('location', 'servicio')
-                        ->with('servicio', $servicio);
+            ->with('location', 'servicio')
+            ->with('servicio', $servicio);
     }
 
-    public function showSeriviciosEnMapa($id) {
+    public function showSeriviciosEnMapa($id)
+    {
         $servicio = Servicio::find($id);
         return view('servicio.servicios.showMapa')
-                        ->with('location', 'servicio')
-                        ->with('servicio', $servicio);
+            ->with('location', 'servicio')
+            ->with('servicio', $servicio);
     }
 
-    public function showServicios() {
+    public function showServicios()
+    {
 
         return view('servicio.geolocalizacion.list')
-                        ->with('location', 'servicio');
+            ->with('location', 'servicio');
     }
 
-    public function edit(Servicio $servicio) {
+    public function edit(Servicio $servicio)
+    {
         //
     }
 
-    public function update(Request $request, Servicio $servicio) {
+    public function update(Request $request, Servicio $servicio)
+    {
         //
     }
 
-    public function destroy(Servicio $servicio) {
+    public function destroy(Servicio $servicio)
+    {
         $result = false;
         if ($servicio->estado == 'PENDIENTE' || $servicio->estado == 'ASIGNADO') {
             $servicio->estado = 'CANCELADO';
@@ -200,18 +210,19 @@ class ServicioController extends Controller {
             $aud->detalles = $str;
             $aud->save();
             return response()->json([
-                        'status' => 'ok',
-                        'message' => "EL servicio para la direccion " . $servicio->direccion . " fue cancelado(a) de forma exitosa!"
+                'status' => 'ok',
+                'message' => "EL servicio para la direccion " . $servicio->direccion . " fue cancelado(a) de forma exitosa!"
             ]);
         } else {
             return response()->json([
-                        'status' => 'error',
-                        'message' => "El servicio para la direccion " . $servicio->direccion . " no pudo ser cancelado(a). Error:"
+                'status' => 'error',
+                'message' => "El servicio para la direccion " . $servicio->direccion . " no pudo ser cancelado(a). Error:"
             ]);
         }
     }
 
-    public function getClientes($id) {
+    public function getClientes($id)
+    {
         $cli = Cliente::where('telefono', $id)->first();
         if ($cli !== null) {
             $obj["id"] = $cli->id;
@@ -227,7 +238,8 @@ class ServicioController extends Controller {
         }
     }
 
-    function orderMultiDimensionalArray($toOrderArray, $field, $inverse = false) {
+    function orderMultiDimensionalArray($toOrderArray, $field, $inverse = false)
+    {
         $position = array();
         $newRow = array();
         foreach ($toOrderArray as $key => $row) {
@@ -246,7 +258,8 @@ class ServicioController extends Controller {
         return $returnArray;
     }
 
-    public function getServiciosPendientes() {
+    public function getServiciosPendientes()
+    {
 
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
@@ -260,11 +273,12 @@ class ServicioController extends Controller {
             $servicios = Servicio::where([['estado', 'PENDIENTE']])->get()->sortBy('estado');
         }
         return view('servicio.solicitudes_de_servicio.pendientes')
-                        ->with('location', 'servicio')
-                        ->with('servicios', $servicios);
+            ->with('location', 'servicio')
+            ->with('servicios', $servicios);
     }
 
-    public function aceptarServicio($id) {
+    public function aceptarServicio($id)
+    {
         $u = Auth::user();
         $servicio = Servicio::find($id);
         $persona = Persona::where([['identificacion', $u->identificacion], ['tipo', 'MENSAJERO']])->first();
@@ -295,7 +309,8 @@ class ServicioController extends Controller {
         }
     }
 
-    public function aceptarServicioJSON($id) {
+    public function aceptarServicioJSON($id)
+    {
         $u = Auth::user();
         $servicio = Servicio::find($id);
         $persona = Persona::where([['identificacion', $u->identificacion], ['tipo', 'MENSAJERO']])->first();
@@ -315,30 +330,31 @@ class ServicioController extends Controller {
             $aud->save();
             if ($result) {
                 return response()->json([
-                            'status' => 'ok',
-                            'message' => "El servicio para la dirección " . $servicio->direccion . " le fue asignado correctamente!",
+                    'status' => 'ok',
+                    'message' => "El servicio para la dirección " . $servicio->direccion . " le fue asignado correctamente!",
                 ]);
             } else {
                 return response()->json([
-                            'status' => 'error',
-                            'message' => "El servicio para la dirección " . $servicio->direccion . "no pudo ser asignado. Error: " . $result,
+                    'status' => 'error',
+                    'message' => "El servicio para la dirección " . $servicio->direccion . "no pudo ser asignado. Error: " . $result,
                 ]);
             }
         } else {
             return response()->json([
-                        'status' => 'error',
-                        'message' => "El servico para la dirección " . $servicio->direccion . " no pudo ser asignado. Error: no tiene los privilegios suficientes para realizar esta acción ",
+                'status' => 'error',
+                'message' => "El servico para la dirección " . $servicio->direccion . " no pudo ser asignado. Error: no tiene los privilegios suficientes para realizar esta acción ",
             ]);
         }
     }
 
-    public function liberarServicio($id) {
+    public function liberarServicio($id)
+    {
         $u = Auth::user();
         $servicio = Servicio::find($id);
         $persona = Persona::where([
-                    ['identificacion', $u->identificacion],
-                    ['tipo', 'MENSAJERO']
-                ])->first();
+            ['identificacion', $u->identificacion],
+            ['tipo', 'MENSAJERO']
+        ])->first();
         if ($persona != null) {
             $servicio->estado = 'PENDIENTE';
             $servicio->persona_id = $persona->id;
@@ -366,34 +382,36 @@ class ServicioController extends Controller {
         }
     }
 
-    public function getServiciosPorEntregar() {
+    public function getServiciosPorEntregar()
+    {
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
         if ($persona != null) {
             if (session('ROL') == 'CENTRAL') {
                 $servicios = Servicio::where([
-                            ['estado', 'ASIGNADO']
-                        ])->get();
+                    ['estado', 'ASIGNADO']
+                ])->get();
             } else {
                 $servicios = Servicio::where([
-                            ['persona_id', $persona->id],
-                            ['estado', 'ASIGNADO']
-                        ])->get();
+                    ['persona_id', $persona->id],
+                    ['estado', 'ASIGNADO']
+                ])->get();
             }
         } else {
             $servicios = Servicio::where([
-                        ['estado', 'ASIGNADO']
-                    ])->get();
+                ['estado', 'ASIGNADO']
+            ])->get();
         }
 
         $servicios = $servicios->sortByDesc('created_at');
 
         return view('servicio.servicios_por_entregar.aceptados')
-                        ->with('location', 'servicio')
-                        ->with('servicios', $servicios);
+            ->with('location', 'servicio')
+            ->with('servicios', $servicios);
     }
 
-    public function entregarServicio($id) {
+    public function entregarServicio($id)
+    {
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
         if ($persona != null) {
@@ -408,16 +426,17 @@ class ServicioController extends Controller {
             }
             $lavadoras = collect($lavadoras);
             return view('servicio.servicios_por_entregar.entregar')
-                            ->with('location', 'servicio')
-                            ->with('lavadoras', $lavadoras)
-                            ->with('servicio_id', $id);
+                ->with('location', 'servicio')
+                ->with('lavadoras', $lavadoras)
+                ->with('servicio_id', $id);
         } else {
             flash("Error : esta opción solo es valida para los <strong>" . 'mensajeros' . "</strong> ")->error();
             return back();
         }
     }
 
-    public function guardarEntrega(Request $request) {
+    public function guardarEntrega(Request $request)
+    {
 
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
@@ -448,8 +467,7 @@ class ServicioController extends Controller {
                 // y usar base64_decode para obtener la información binaria de la imagen
                 $data = base64_decode($base_to_php[1]); // BBBFBfj42Pj4....
 
-                $nombre_file = 'firma_entrega_' . $hoy['year'] . $hoy['mon'] . $hoy['mday'] . $hoy['hours'] . $hoy['minutes'] . $hoy['seconds'] . '.png';
-                ;
+                $nombre_file = 'firma_entrega_' . $hoy['year'] . $hoy['mon'] . $hoy['mday'] . $hoy['hours'] . $hoy['minutes'] . $hoy['seconds'] . '.png';;
                 // Proporciona una locación a la nueva imagen (con el nombre y formato especifico)
                 $filepath = public_path() . '/docs/firma_entregas/' . $nombre_file; // or image.jpg
                 // Finalmente guarda la imágen en el directorio especificado y con la informacion dada
@@ -483,13 +501,13 @@ class ServicioController extends Controller {
                     $aud->save();
 
                     return response()->json([
-                                'status' => 'ok',
-                                'message' => "Success : el servicio para la dirección " . $servicio->direccion . " fue entregado correctamente",
+                        'status' => 'ok',
+                        'message' => "Success : el servicio para la dirección " . $servicio->direccion . " fue entregado correctamente",
                     ]);
                 } else {
                     return response()->json([
-                                'status' => 'error',
-                                'message' => "Error : el servicio para la dirección " . $servicio->direccion . " no pudo ser entregado correctamente",
+                        'status' => 'error',
+                        'message' => "Error : el servicio para la dirección " . $servicio->direccion . " no pudo ser entregado correctamente",
                     ]);
                 }
                 $aud = new Auditoriaservicio();
@@ -507,25 +525,26 @@ class ServicioController extends Controller {
                 $aud->detalles = $str . " - " . $str2;
                 $aud->save();
                 return response()->json([
-                            'status' => 'ok',
-                            'message' => "Success : el servicio para la dirección " . $servicio->direccion . " fue entregado correctamente",
+                    'status' => 'ok',
+                    'message' => "Success : el servicio para la dirección " . $servicio->direccion . " fue entregado correctamente",
                 ]);
             } else {
 
                 return response()->json([
-                            'status' => 'error',
-                            'message' => "Error : tenga en cuenta que debe selecionar el mismo numero de lavadoras solicitadas por el cliente"
+                    'status' => 'error',
+                    'message' => "Error : tenga en cuenta que debe selecionar el mismo numero de lavadoras solicitadas por el cliente"
                 ]);
             }
         } else {
             return response()->json([
-                        'status' => 'error',
-                        'message' => "Error : no tiene los privilegios suficientes para realizar esta acción"
+                'status' => 'error',
+                'message' => "Error : no tiene los privilegios suficientes para realizar esta acción"
             ]);
         }
     }
 
-    public function getServiciosPorRecoger() {
+    public function getServiciosPorRecoger()
+    {
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
         if ($persona != null && session('ROL') != 'ADMINISTRADOR') {
@@ -556,24 +575,26 @@ class ServicioController extends Controller {
         }
         $servicios = $servicios->sortBy('fechafin');
         return view('servicio.servicios_por_recoger.entregados')
-                        ->with('location', 'servicio')
-                        ->with('personas', $personas)
-                        ->with('servicios', $servicios);
+            ->with('location', 'servicio')
+            ->with('personas', $personas)
+            ->with('servicios', $servicios);
     }
 
-    public function recogerServicio($id) {
+    public function recogerServicio($id)
+    {
         $servicio = Servicio::find($id);
         if (session('ROL') == 'ADMINISTRADOR' || session('ROL') == 'MENSAJERO') {
             return view('servicio.servicios_por_recoger.recoger')
-                            ->with('location', 'servicio')
-                            ->with('servicio', $servicio);
+                ->with('location', 'servicio')
+                ->with('servicio', $servicio);
         } else {
             flash("Error : esta opción solo es valida para los <strong>" . 'mensajeros' . "</strong> ")->error();
             return back();
         }
     }
 
-    public function guardarRecogida(Request $request) {
+    public function guardarRecogida(Request $request)
+    {
         $servicio = Servicio::find($request->servicio_id);
         $m = new Servicio($servicio->attributesToArray());
         $servicio->estado = 'FINALIZADO';
@@ -618,13 +639,13 @@ class ServicioController extends Controller {
             $aud->detalles = $str . " - " . $str2;
             $aud->save();
             return response()->json([
-                        'status' => 'ok',
-                        'message' => "Success : el servicio para la dirección " . $servicio->direccion . " fue recogido correctamente",
+                'status' => 'ok',
+                'message' => "Success : el servicio para la dirección " . $servicio->direccion . " fue recogido correctamente",
             ]);
         } else {
             return response()->json([
-                        'status' => 'error',
-                        'message' => "Error : el servicio para la dirección " . $servicio->direccion . " no pudo ser recogido correctamente",
+                'status' => 'error',
+                'message' => "Error : el servicio para la dirección " . $servicio->direccion . " no pudo ser recogido correctamente",
             ]);
         }
     }
@@ -636,7 +657,8 @@ class ServicioController extends Controller {
      * @param type $servicios
      * @return type response/Servicios
      */
-    public function cambioEstado($servicios) {
+    public function cambioEstado($servicios)
+    {
         $hoy = getdate();
         $fecha = $hoy['year'] . '-' . $hoy['mon'] . '-' . $hoy['mday'] . ' ' . $hoy['hours'] . ':' . $hoy['minutes'] . ':' . $hoy['seconds'];
         $fecha = strtotime($fecha);
@@ -649,12 +671,30 @@ class ServicioController extends Controller {
                         $item->estado = "RECOGER";
                         $item->save();
                     }
+
                     $horas = abs(($fecha - strtotime($item->fechafin)) / 3600);
-                    $minutos = '0.' . explode(".", $horas)[1];
-                    $horas = floor($horas);
-                    $minutos = floor($minutos * 60);
-                    $item->tiempo = $horas . ' horas y ' . $minutos . ' minutos';
+                    $operacion = $horas / 24;
+                    $dia = floor($operacion);
+                    $operacion = ($operacion - $dia) * 24;
+                    $horas = floor($operacion);
+                    $operacion = ($operacion - $horas) * 60;
+                    $minutos = floor($operacion);
+                    $str = '';
+                    if($dia > 0 ){
+                        $str = '<strong>'.$dia.'</strong> Dia(s) </br>';
+                    }
+
+                    if($horas > 0){
+                        $str.='<strong>'.$horas.'</strong> Hora(s)</br>';
+                    }
+                    if($minutos > 0){
+                        $str.='<strong>'.$minutos.'</strong> Minuto(s)</br>';
+                    }
+
+                    $item->tiempo = $str;
+
                     $servicios_por_recoger[] = $item;
+
                 } elseif ($item->estado == "RECOGER") {
 //                    $horas = abs(($fecha - strtotime($item->fechafin)) / 3600);
 //                    $minutos = '0.' . explode(".", $horas)[1];
@@ -668,24 +708,25 @@ class ServicioController extends Controller {
         return $servicios_por_recoger;
     }
 
-    public function getServiciosPorRecogerJSON() {
+    public function getServiciosPorRecogerJSON()
+    {
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
         if ($persona != null && session('ROL') != 'ADMINISTRADOR') {
             if (session('ROL') == 'CENTRAL') {
                 $servicios = Servicio::where([
-                            ['estado', 'ENTREGADO'],
-                            ['sucursal_id',$persona->sucursal_id]
-                        ])->orWhere('estado', 'RECOGER')->get();
+                    ['estado', 'ENTREGADO'],
+                    ['sucursal_id', $persona->sucursal_id]
+                ])->orWhere('estado', 'RECOGER')->get();
             } else {
                 $servicios = Servicio::where([
-                            ['persona_id', $persona->id],
-                            ['estado', 'ENTREGADO']
-                        ])->orWhere('estado', 'RECOGER')->get();
+                    ['persona_id', $persona->id],
+                    ['estado', 'ENTREGADO']
+                ])->orWhere('estado', 'RECOGER')->get();
                 $persmisos = Permiso::where([
-                            ['persona_id', $persona->id],
-                            ['tipo', 'SERVICIO']
-                        ])->get();
+                    ['persona_id', $persona->id],
+                    ['tipo', 'SERVICIO']
+                ])->get();
                 foreach ($persmisos as $item) {
                     $service = $item->servicio;
                     if ($service->estado == 'RECOGER') {
@@ -695,8 +736,8 @@ class ServicioController extends Controller {
             }
         } else {
             $servicios = Servicio::where([
-                        ['estado', 'ENTREGADO']
-                    ])->orWhere('estado', 'RECOGER')->get()->sortBy('estado');
+                ['estado', 'ENTREGADO']
+            ])->orWhere('estado', 'RECOGER')->get()->sortBy('estado');
         }
         $servicios = $this->cambioEstado($servicios);
         foreach ($servicios as $item) {
@@ -707,25 +748,26 @@ class ServicioController extends Controller {
         return json_encode($servicios);
     }
 
-    public function getServiciosPorEntregarJSON() {
+    public function getServiciosPorEntregarJSON()
+    {
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
         if ($persona != null && session('ROL') != 'ADMINISTRADOR') {
             if (session('ROL') == 'CENTRAL') {
                 $servicios = Servicio::where([
-                            ['estado', 'ASIGNADO'],
-                            ['sucursal_id',$persona->sucursal_id]
-                        ])->get()->sortBy('estado');
+                    ['estado', 'ASIGNADO'],
+                    ['sucursal_id', $persona->sucursal_id]
+                ])->get()->sortBy('estado');
             } else {
                 $servicios = Servicio::where([
-                            ['persona_id', $persona->id],
-                            ['estado', 'ASIGNADO']
-                        ])->get()->sortBy('estado');
+                    ['persona_id', $persona->id],
+                    ['estado', 'ASIGNADO']
+                ])->get()->sortBy('estado');
             }
         } else {
             $servicios = Servicio::where([
-                        ['estado', 'ASIGNADO']
-                    ])->orWhere('estado', 'PENDIENTE')->get();
+                ['estado', 'ASIGNADO']
+            ])->orWhere('estado', 'PENDIENTE')->get();
         }
         foreach ($servicios as $item) {
             $item->barrio = $item->barrio->nombre;
@@ -735,7 +777,8 @@ class ServicioController extends Controller {
         return json_encode($servicios);
     }
 
-    public function getServiciosEntregadosJSON(){
+    public function getServiciosEntregadosJSON()
+    {
 
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
@@ -743,7 +786,7 @@ class ServicioController extends Controller {
             if (session('ROL') == 'CENTRAL') {
                 $servicios = Servicio::where([
                     ['estado', 'ENTREGADO'],
-                    ['sucursal_id',$persona->sucursal_id]
+                    ['sucursal_id', $persona->sucursal_id]
                 ])->get()->sortBy('estado');
             } else {
                 $servicios = Servicio::where([
@@ -765,7 +808,8 @@ class ServicioController extends Controller {
         return json_encode($servicios);
     }
 
-    public function guardarObservacion(Request $request) {
+    public function guardarObservacion(Request $request)
+    {
         $u = Auth::user();
         $servicio = Servicio::find($request->servicio_id);
         $m = new Servicio($servicio->attributesToArray());
@@ -796,10 +840,11 @@ class ServicioController extends Controller {
     /**
      * Da el permiso para recoger el servicio antes del tiempo establecido anteriormente
      *
-     * @param  \App\Servico  $servico
+     * @param \App\Servico $servico
      * @return \Illuminate\Http\Response
      */
-    public function cambiorecoger($id) {
+    public function cambiorecoger($id)
+    {
         $servicio = Servicio::find($id);
         $m = new Servicio($servicio->attributesToArray());
         $nombre = $servicio->direccion;
@@ -821,13 +866,13 @@ class ServicioController extends Controller {
             $aud->detalles = $str . " - " . $str2;
             $aud->save();
             return response()->json([
-                        'status' => 'ok',
-                        'message' => "El permiso para el servicio " . $nombre . " fue realizado de forma exitosa!"
+                'status' => 'ok',
+                'message' => "El permiso para el servicio " . $nombre . " fue realizado de forma exitosa!"
             ]);
         } else {
             return response()->json([
-                        'status' => 'error',
-                        'message' => "El permiso para el servicio" . $nombre . " no pudo ser realizado. Error:"
+                'status' => 'error',
+                'message' => "El permiso para el servicio" . $nombre . " no pudo ser realizado. Error:"
             ]);
         }
     }
