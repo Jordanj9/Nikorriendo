@@ -152,11 +152,11 @@
 
             <div class="col-md-4">
                 <label>Dias de Alquiler</label>
-                <input type="number" class="form-control" placeholder="Dias del Alquiler" name="dias" id="dias" value="1"/>
+                <input type="number" class="form-control" min="1" placeholder="Dias del Alquiler" name="dias" id="dias" value="1"/>
             </div>
             <div class="col-md-4">
                 <label>Numero de lavadoras</label>
-                <input type="number" value="1" class="form-control" placeholder="Numero de lavadora requeridas" name="num_lavadoras" id="num_lavadoras"/>
+                <input type="number" value="1" min="1" class="form-control" placeholder="Numero de lavadora requeridas" name="num_lavadoras" id="num_lavadoras"/>
             </div>
             <div class="col-md-4">
                 <label>Barrio</label>

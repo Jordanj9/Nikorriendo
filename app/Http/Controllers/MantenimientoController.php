@@ -27,6 +27,7 @@ class MantenimientoController extends Controller {
         }
         $lavadoras = collect();
         $lav = Lavadora::where([['estado_lavadora', '<>', 'MANTENIMIENTO'], ['estado_lavadora', '<>', 'SERVICIO']])->get();
+        $lavadoras = collect([]);
         if (count($lav) > 0) {
             foreach ($lav as $item) {
                 $lavadoras[$item->id] = $item->serial . ' - ' . $item->marca . ' FECHA: ' . $item->created_at;
@@ -152,7 +153,7 @@ class MantenimientoController extends Controller {
 
     /**
      * Store a newly created resource in storage, nuevo mantenimiento manual
-     * 
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */

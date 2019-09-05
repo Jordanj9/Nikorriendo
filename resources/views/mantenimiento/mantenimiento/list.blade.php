@@ -92,7 +92,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Seleccione la Lavadora</label>
-                            {!! Form::select('lavadora_id',$lavadoras,null,['class'=>'form-control','placeholder'=>'Seleccione el Empleado','id'=>'persona_id']) !!}
+                            {!! Form::select('lavadora_id',$lavadoras,null,['class'=>'form-control','placeholder'=>'Seleccione el Empleado','id'=>'persona_id','required'=>'true']) !!}
                         </div>
                     </div>
                     <div class="form-group">
