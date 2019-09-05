@@ -25,6 +25,7 @@ class MantenimientoController extends Controller {
         } else {
             $mantenimientos = Mantenimiento::all();
         }
+        $lavadoras = collect();
         $lav = Lavadora::where([['estado_lavadora', '<>', 'MANTENIMIENTO'], ['estado_lavadora', '<>', 'SERVICIO']])->get();
         if (count($lav) > 0) {
             foreach ($lav as $item) {
