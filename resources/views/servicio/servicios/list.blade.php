@@ -42,8 +42,8 @@
                 <thead>
                     <tr class="danger">
                         <th>TELEFONO</th>
-                        <th>CLIENTE</th>
                         <th>DIRECCIÓN</th>
+                        <th>CLIENTE</th>
                         <th>FECHA DE ENTREGA</th>
                         <th>FECHA FIN</th>
                         <th>FECHA RECOGIDA</th>
@@ -57,8 +57,8 @@
                     @foreach($servicios as $servicio)
                     <tr>
                         <td>{{$servicio->cliente->telefono}}</td>
-                        <td>{{$servicio->cliente->nombre}}</td>
                         <td>{{$servicio->direccion}}</td>
+                        <td>{{$servicio->cliente->nombre}}</td>
                         <td>{{$servicio->fechaentrega == null ? 'SIN ENTREGAR' : $servicio->fechaentrega }}</td>
                         <td>{{$servicio->fechafin == null ? 'SIN CALCULAR' : $servicio->fechafin }}</td>
                         <td>{{$servicio->fecharecogido == null ? 'SIN RECOGER' : $servicio->fecharecogido  }}</td>

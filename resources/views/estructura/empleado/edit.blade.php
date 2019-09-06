@@ -112,7 +112,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Correo</label>
-                    <input type="email" class="form-control" placeholder="Correo electronico de contacto del empleado" required name="email" value="{{$persona->email}}"/>
+                    <input type="email" class="form-control" placeholder="Correo electronico de contacto del empleado" name="email" value="{{$persona->email}}"/>
                 </div>
             </div>
             <div class="col-md-6">
@@ -169,7 +169,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Correo</label>
-                    <input type="text" class="form-control" placeholder="Correo del contacto de emergencia" required name="email_contacto" value="{{$persona->contacto_emergencia->email}}"/>
+                    <input type="email" class="form-control" placeholder="Correo del contacto de emergencia" name="email_contacto" value="{{$persona->contacto_emergencia->email}}"/>
                 </div>
             </div>
 

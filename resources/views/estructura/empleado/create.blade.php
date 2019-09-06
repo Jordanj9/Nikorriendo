@@ -81,7 +81,6 @@
                         <input type="text" class="form-control" placeholder="Segundo apellido del empleado" name="segundo_apellido" />
                     </div>
                 </div>
-
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Sexo</label>
@@ -90,7 +89,6 @@
                         ['class'=>'form-control','placeholder'=>'-- Seleccione una opción --','required']) !!}
                     </div>
                 </div>
-
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Tipo de Sangre</label>
@@ -127,49 +125,41 @@
                         <input type="text" class="form-control" placeholder="Domicilio donde reside el empleado" required name="direccion"/>
                     </div>
                 </div>
-
                 <div class="col-md-12">
                     <div class="alert alert-success">
                          <p class="h5"><center><b>Contacto de Emergencia</b></center></p>
                     </div>
                 </div>
-
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Nombre</label>
                         <input type="text" class="form-control" placeholder="Nombre completo del Contacto de emergencia" required name="nombre_contacto"/>
                     </div>
                 </div>
-
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Parentezco</label>
                         <input type="text" class="form-control" placeholder="Relacion con el empleado" required name="parentezco_contacto"/>
                     </div>
                 </div>
-
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Telefono</label>
                         <input type="text" class="form-control" placeholder="Telefono de contacto" required name="telefono_contacto"/>
                     </div>
                 </div>
-
-
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Correo</label>
-                        <input type="text" class="form-control" placeholder="Correo del contacto de emergencia" required name="email_contacto"/>
+                        <input type="email" class="form-control" placeholder="Correo del contacto de emergencia" name="email_contacto"/>
                     </div>
                 </div>
-
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Dirección</label>
                         <input type="text" class="form-control" placeholder="Domicilio donde reside el contacto de emergencia" required name="direccion_contacto"/>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <div class="col-md-12" style="margin-top: 20px !important">
                         <button class="btn btn-success icon-btn pull-right" type="submit"><i class="fa fa-fw fa-lg fa-save"></i>Guardar</button>

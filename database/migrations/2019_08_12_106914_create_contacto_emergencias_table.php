@@ -17,7 +17,7 @@ class CreateContactoEmergenciasTable extends Migration {
             $table->string('nombres', 80);
             $table->string('parentezco', 30);
             $table->string('telefono', 11);
-            $table->string('email');
+            $table->string('email')->nullable();
             $table->string('direccion', 80);
             $table->timestamps();
         });

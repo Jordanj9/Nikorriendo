@@ -25,7 +25,7 @@ class CreatePersonasTable extends Migration
             $table->string('primer_apellido',30);
             $table->string('segundo_apellido',30)->nullable();
             $table->string('tipo_sangre',4);
-            $table->string('email');
+            $table->string('email')->nullable();
             $table->string('telefono',11);
             $table->enum('sexo',['F','M']);
             $table->string('direccion',50);

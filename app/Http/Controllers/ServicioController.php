@@ -10,6 +10,7 @@ use App\Cliente;
 use App\Auditoriaservicio;
 use App\Bodega;
 use App\Barrio;
+use App\Http\Requests\ServicioRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -90,7 +91,7 @@ class ServicioController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(ServicioRequest $request)
     {
         $u = Auth::user();
         $persona = Persona::where('identificacion', $u->identificacion)->first();
