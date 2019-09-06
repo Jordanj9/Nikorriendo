@@ -164,24 +164,19 @@
                     <input type="text" class="form-control" placeholder="Telefono de contacto" required name="telefono_contacto" value="{{$persona->contacto_emergencia->telefono}}"/>
                 </div>
             </div>
-
-
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Correo</label>
                     <input type="email" class="form-control" placeholder="Correo del contacto de emergencia" name="email_contacto" value="{{$persona->contacto_emergencia->email}}"/>
                 </div>
             </div>
-
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Dirección</label>
                     <input type="text" class="form-control" placeholder="Domicilio donde reside el contacto de emergencia" required name="direccion_contacto" value="{{$persona->contacto_emergencia->direccion}}"/>
                 </div>
             </div>
-
             <input type="hidden" name="id_contacto" value="{{$persona->contacto_emergencia_id}}">
-
             <div class="form-group">
                 <div class="col-md-12" style="margin-top: 20px !important">
                     <button class="btn btn-success icon-btn pull-right" type="submit"><i class="fa fa-fw fa-lg fa-save"></i>Guardar</button>

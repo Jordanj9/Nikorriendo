@@ -40,6 +40,7 @@
                     <tr class="danger">
                         <th>IDENTIFICACIÓN</th>
                         <th>NOMBRE</th>
+                        <th>TIPO</th>
                         <th>SEXO</th>
                         <th>DIRECCION</th>
                         <th>CORREO</th>
@@ -55,6 +56,7 @@
                         <tr>
                             <td>{{$empleado->identificacion}}</td>
                             <td>{{$empleado->nombre}}</td>
+                            <td>{{$empleado->tipo}}</td>
                             <td>{{$empleado->sexo}}</td>
                             <td>{{$empleado->direccion}}</td>
                             <td>{{$empleado->email}}</td>

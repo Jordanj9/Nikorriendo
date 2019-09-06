@@ -358,9 +358,8 @@ class ServicioController extends Controller
         ])->first();
         if ($persona != null) {
             $servicio->estado = 'PENDIENTE';
-            $servicio->persona_id = $persona->id;
+            $servicio->persona_id = null;
             $result = $servicio->save();
-            $u = Auth::user();
             $aud = new Auditoriaservicio();
             $aud->usuario = "ID: " . $u->identificacion . ",  USUARIO: " . $u->nombres . " " . $u->apellidos;
             $aud->operacion = "LIBERACION";
