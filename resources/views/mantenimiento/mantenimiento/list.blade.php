@@ -53,6 +53,30 @@
                 <tbody>
                     @foreach($mantenimientos as $m)
                     <tr>
+                        @if(session('ROL') == 'ADMINISTRADOR')
+                        <td>{{$m->lavadora->serial."-".$m->lavadora->marca}}</td>
+                        @if($m->estado == 'PENDIENTE')
+                        <td>SIN ASIGNAR</td>
+                        <td>{{$m->estado}}</td>
+                        <td>SIN REPUESTOS</td>
+                        <td> -- </td>
+                        @else
+                        @foreach($m->mantenimiento as $i)
+                        <td>{{$i->persona->primer_nombre." ".$i->persona->primer_apellido}}</td>
+                        <td>{{$m->estado}}</td>
+                        <td>
+                        <ul>
+                                @foreach($i->repuestos as $r)
+                                <li>{{$r->nombre." - PRECIO:$".$r->pivot->precio}}</li>
+                                @endforeach
+                            </ul>
+                        </td>
+                        <td>{{$i->total}}</td>
+                        @endforeach
+                        @endif
+                        <td>{{$m->created_at}}</td>
+                        <td>{{$m->updated_at}}</td>
+                        @else
                         <td>{{$m->estado_mantenimiento->lavadora->serial."-".$m->estado_mantenimiento->lavadora->marca}}</td>
                         <td>{{$m->persona->primer_nombre." ".$m->persona->primer_apellido}}</td>
                         <td>{{$m->estado_mantenimiento->estado}}</td>
@@ -66,6 +90,7 @@
                         <td>{{$m->total}}</td>
                         <td>{{$m->created_at}}</td>
                         <td>{{$m->updated_at}}</td>
+                        @endif
                         <td style="text-align: center;">
                             @if($m->estado == 'PENDIENTE' && session('ROL') == 'ADMINISTRADOR')
                             <a href="#" onclick="eliminar(event,{{$m->id}})" data-toggle="tooltip" data-placement="top" title="Eliminar Mantenimiento" style="color: red; margin-left: 10px;"><i class="fa fa-trash-o"></i></a>
@@ -92,7 +117,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Seleccione la Lavadora</label>
-                            {!! Form::select('lavadora_id',$lavadoras,null,['class'=>'form-control','placeholder'=>'Seleccione el Empleado','id'=>'persona_id','required'=>'true']) !!}
+                            {!! Form::select('lavadora_id',$lavadoras,null,['class'=>'form-control','placeholder'=>'Seleccione la Lavadora','id'=>'lavadora_id','required'=>'true']) !!}
                         </div>
                     </div>
                     <div class="form-group">

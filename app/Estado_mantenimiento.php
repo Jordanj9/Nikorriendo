@@ -28,4 +28,7 @@ class Estado_mantenimiento extends Model
       return $this->belongsTo(Lavadora::class);
     }
 
+    public function mantenimiento(){
+        return $this->hasMany(Mantenimiento::class);
+    }
 }

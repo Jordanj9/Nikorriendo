@@ -23,7 +23,19 @@ class MantenimientoController extends Controller {
         if ($persona != null && session('ROL') != 'ADMINISTRADOR') {
             $mantenimientos = Mantenimiento::where('persona_id', $persona->id)->get();
         } else {
-            $mantenimientos = Mantenimiento::all();
+            $mantenimientos = Estado_mantenimiento::all();
+//            if (count($mantenimientos) > 0) {
+//                $cont = 0;
+//                foreach ($mantenimientos as $m) {
+//                    $mant = $m->mantenimiento;
+//                    if (count($mant) > 0) {
+//                        foreach ($mant as $i) {
+//                            $mantenimientos[$cont]['mante'] = $i;
+//                        }
+//                    }
+//                    $cont ++;
+//                }
+//            }
         }
         $lavadoras = collect();
         $lav = Lavadora::where([['estado_lavadora', '<>', 'MANTENIMIENTO'], ['estado_lavadora', '<>', 'SERVICIO']])->get();
@@ -45,24 +57,16 @@ class MantenimientoController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        $repuestos = Repuesto::where([
-                    ['stock', '>', '0']
-                ])->get();
+        $repuestos = Repuesto::where('stock', '>', '0')->get();
         $persona = Persona::where('identificacion', Auth::user()->identificacion)->first();
-
         if ($persona == null) {
             flash("usted no puede <strong>" . 'realizar' . "</strong> tal operación en nuestro sistema, solo es permitido para los tecnicos")->warning();
             return redirect()->route('admin.mantenimiento');
         }
-
-        $aux = Estado_mantenimiento::where([
-                    ['estado', 'PENDIENTE']
-                ])->get();
-
+        $aux = Estado_mantenimiento::where('estado', 'PENDIENTE')->get();
         //estos son los mantenimientos que se encuentran por realizar
         $mantenimientos = null;
         $mantenimientos = collect($mantenimientos);
-
         if (count($aux) > 0) {
             foreach ($aux as $item) {
                 if ($item->lavadora->bodega->sucursal_id == $persona->sucursal_id) {
@@ -70,9 +74,7 @@ class MantenimientoController extends Controller {
                 }
             }
         }
-
         if (count($mantenimientos) > 0) {
-
             return view('mantenimiento.mantenimiento.facturar')
                             ->with('location', 'mantenimiento')
                             ->with('mantenimientos', $mantenimientos)
@@ -92,41 +94,29 @@ class MantenimientoController extends Controller {
      */
     public function store(Request $request) {
         $user = Auth::user();
-        $persona = Persona::where([
-                    ['identificacion', $user->identificacion],
-                    ['tipo', 'TECNICO']
-                ])->first();
-
-
+        $persona = Persona::where([['identificacion', $user->identificacion], ['tipo', 'TECNICO']])->first();
         if ($persona != null) {
-
             $estado_mantenimiento = Estado_mantenimiento::find($request->estado_mantenimiento_id);
             $estado_mantenimiento->estado = 'REALIZADO';
             $result = $estado_mantenimiento->save();
-
             $lavadora = $estado_mantenimiento->lavadora;
             $lavadora->estado_lavadora = 'DISPONIBLE';
             $result2 = $lavadora->save();
-
             if ($result && $result2) {
-
                 $mantenimiento = new Mantenimiento();
                 $mantenimiento->persona_id = $persona->id;
                 $mantenimiento->total = $request->total;
                 $mantenimiento->descripcion = $request->descripcion;
                 $mantenimiento->estado_mantenimiento_id = $estado_mantenimiento->id;
                 $result3 = $mantenimiento->save();
-
                 if ($result3) {
                     $repuestos = $request->repuestos;
-
                     foreach ($repuestos as $item) {
                         $repuesto = Repuesto::find($item['id']);
                         $repuesto->stock = $repuesto->stock - 1;
                         $repuesto->save();
                         $mantenimiento->repuestos()->attach($item['id'], ['precio' => $item['precio']]);
                     }
-
                     return response()->json([
                                 'status' => 'ok',
                                 'message' => 'mantenimiento almacenado correctamente',
