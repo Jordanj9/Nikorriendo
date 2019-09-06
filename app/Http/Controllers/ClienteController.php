@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Barrio;
 use App\Cliente;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,10 @@ class ClienteController extends Controller
      */
     public function index()
     {
-        //
+        $clientes = Cliente::all();
+        return view('estructura.cliente.list')
+            ->with('location', 'estructura')
+            ->with('clientes', $clientes);
     }
 
     /**
@@ -57,7 +61,11 @@ class ClienteController extends Controller
      */
     public function edit(Cliente $cliente)
     {
-        //
+        $barrios = Barrio::all()->pluck('nombre','id');
+        return view('estructura.cliente.edit')
+            ->with('location', 'estructura')
+            ->with('barrios',$barrios)
+            ->with('cliente', $cliente);
     }
 
     /**
@@ -69,7 +77,21 @@ class ClienteController extends Controller
      */
     public function update(Request $request, Cliente $cliente)
     {
-        //
+        foreach ($cliente->attributesToArray() as $key => $value) {
+            if (isset($request->$key)) {
+                $cliente->$key = strtoupper($request->$key);
+            }
+        }
+
+        $result = $cliente->save();
+
+        if ($result) {
+            flash("El cliente <strong>" . $cliente->nombre . "</strong> fue modificado(a) de forma exitosa!")->success();
+            return redirect()->route('cliente.index');
+        } else {
+            flash("El cliente <strong>" . $cliente->nombre . "</strong> no pudo ser modificado(a). Error: " . $result)->error();
+            return redirect()->route('cliente.index');
+        }
     }
 
     /**
