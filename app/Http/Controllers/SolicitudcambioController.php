@@ -44,25 +44,20 @@ class SolicitudcambioController extends Controller {
                     }
                 }
                 $persmisos = Permiso::where([
-                    ['persona_id', $persona->id],
-                    ['tipo', 'CAMBIO']
-                ])->get();
-
-                foreach ($persmisos as $item){
+                            ['persona_id', $persona->id],
+                            ['tipo', 'CAMBIO']
+                        ])->get();
+                foreach ($persmisos as $item) {
                     $solicitud = $item->solicitudcambio;
-                    if($solicitud->estado == 'PENDIENTE'){
+                    if ($solicitud->estado == 'PENDIENTE') {
                         $solicitudes[] = $solicitud;
                     }
                 }
-
             }
         } else {
             $solicitudes = Solicitudcambio::all();
         }
-
-
         $solicitudes = $solicitudes->sortByDesc('created_at');
-
         $per = Persona::all()->sortBy('primer_nombre');
         $personas = collect([]);
         if (count($per) > 0) {
@@ -94,7 +89,6 @@ class SolicitudcambioController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-
         $servicio = Servicio::find($request->servicio_id);
         $solicitud = new Solicitudcambio($request->all());
         $hoy = getdate();
@@ -131,7 +125,6 @@ class SolicitudcambioController extends Controller {
             flash("La Solicitud de cambio para el cliente <strong>" . $servicio->cliente->nombre . "</strong> no pudo ser almacenado(a). Error: " . $result)->error();
             return redirect()->route('solicitud.index');
         }
-
     }
 
     /**
@@ -245,18 +238,15 @@ class SolicitudcambioController extends Controller {
                 $hoy = getdate();
                 $fecha = $hoy['year'] . '-' . $hoy['mon'] . '-' . $hoy['mday'] . ' ' . $hoy['hours'] . ':' . $hoy['minutes'] . ':' . $hoy['seconds'];
                 $fecha = strtotime($fecha);
-                $servicio =$solicitud->servicio;
+                $servicio = $solicitud->servicio;
                 $fin = strtotime($servicio->fechafin);
-                $pendiente = explode(':',$solicitud->tiempopendiente);
-                $newDate = strtotime('+'.$pendiente[0].' hour',$fecha);
-                $newDate = strtotime('+'.$pendiente[1].' minute',$newDate);
-                $newDate = strtotime('+'.$pendiente[2].' second',$newDate);
-
+                $pendiente = explode(':', $solicitud->tiempopendiente);
+                $newDate = strtotime('+' . $pendiente[0] . ' hour', $fecha);
+                $newDate = strtotime('+' . $pendiente[1] . ' minute', $newDate);
+                $newDate = strtotime('+' . $pendiente[2] . ' second', $newDate);
                 $servicio->fechafin = date("Y-m-d H:i:s", $newDate);
                 $servicio->estado = 'ENTREGADO';
-
                 $servicio->save();
-
                 foreach ($request->lavadoras as $value) {
                     $cambio = new Cambios();
                     $cambio->lavadora_vieja = $request->lavadoras_ser[$cont];
@@ -277,9 +267,8 @@ class SolicitudcambioController extends Controller {
                     $mant->lavadora_id = $item;
                     $mant->save();
                 }
-
+                $servicio->persona->lavadoras()->detach($request->lavadoras_ser);
                 $servicio->lavadoras()->sync($request->lavadoras);
-
                 $aud = new Auditoriaservicio();
                 $u = Auth::user();
                 $aud->usuario = "ID: " . $u->identificacion . ",  USUARIO: " . $u->nombres . " " . $u->apellidos;
