@@ -90,10 +90,14 @@
 @section('script')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="//cdn.datatables.net/plug-ins/1.10.11/sorting/date-eu.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(function () {
     $('#example1').DataTable({
-        responsive: true
+        responsive: true,
+        "order": [[6, "asc"]], //or asc 
+        "columnDefs": [{"targets": 6, "type": "date-es"}],
+        "pageLength": 25,
     });
 });
 function ir(id) {

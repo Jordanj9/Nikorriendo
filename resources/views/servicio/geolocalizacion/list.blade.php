@@ -270,7 +270,7 @@
                 //position pondremos las mismas coordenas que obtuvimos en la geolocalización
                 marker = new google.maps.Marker({
                     map: map,
-                    icon: '{{url('/images/icon-maps/pin2.png')}}',
+                    icon: '{{url('/images/icon-maps/pin8.png')}}',
                     title: item.direccion,
                     draggable: true,
                     animation: google.maps.Animation.DROP,

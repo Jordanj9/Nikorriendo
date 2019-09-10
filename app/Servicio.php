@@ -12,7 +12,7 @@ class Servicio extends Model {
      * @var array
      */
     protected $fillable = [
-        'id', 'fechaentrega', 'fecharecogido', 'fechafin', 'num_lavadoras', 'dias', 'estado', 'barrio_id','observacion', 'direccion', 'firma_recibido_cliente', 'firma_entrega_personal', 'firma_entrega_cliente', 'firma_recogida_personal', 'latitud', 'longitud', 'total', 'cliente_id', 'persona_id', 'created_at', 'updated_at'
+        'id', 'fechaentrega', 'fecharecogido', 'fechafin', 'num_lavadoras', 'dias', 'estado', 'barrio_id', 'observacion', 'direccion', 'firma_recibido_cliente', 'firma_entrega_personal', 'firma_entrega_cliente', 'firma_recogida_personal', 'latitud', 'longitud', 'total', 'cliente_id', 'persona_id', 'sucursal_id', 'created_at', 'updated_at'
     ];
 
     /**

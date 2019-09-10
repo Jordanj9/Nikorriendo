@@ -74,7 +74,7 @@
             @endif
                 @if(session()->exists('PAG_ESTRUCTURA-CLIENTE'))
                     <a class="btn btn-app btn-lg bg-yellow-gradient boton" href="{{route('cliente.index')}}" style="font-weight: bold">
-                        <i class="fa fa-camera-retro"></i> CLIENTES
+                        <i class="fa fa-street-view"></i> CLIENTES
                         <div class="ripple-container"></div></a>
                 @endif
         </div>

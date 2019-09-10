@@ -84,7 +84,7 @@
                                 <a href="{{ route('lavadora.edit',$lavadora->id)}}" data-toggle="tooltip"
                                    data-placement="top" title="Editar lavadora"
                                    style="color: green; margin-left: 10px;"><i class="fa fa-edit"></i></a>
-                                @if($lavadora->estado_lavadora == 'DISPONIBLE')
+                                @if($lavadora->estado_lavadora == 'DISPONIBLE' && session('ROL') == 'ADMINISTRADOR')
                                     <a href="#" onclick="eliminar(event,{{$lavadora->id}})" data-toggle="tooltip"
                                        data-placement="top" title="Eliminar lavadora"
                                        style="color: red; margin-left: 10px;"><i class="fa fa-trash-o"></i></a>

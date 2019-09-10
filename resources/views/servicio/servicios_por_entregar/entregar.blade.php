@@ -130,7 +130,7 @@
                 setTimeout(()=> {
                     window.history.back();
                     window.location.reload();
-                },5000);
+                },3000);
             }
         }).catch(function (error) {
             console.log(error);
@@ -146,7 +146,7 @@
         p.innerText = message;
         setTimeout(function () {
             div_message.style.display = 'none';
-        },4500);
+        },2500);
 
     }
 

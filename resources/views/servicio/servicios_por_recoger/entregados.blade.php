@@ -89,6 +89,9 @@
                                onclick="cambio(event,'{{$servicio->id}}')"
                                style="color: deeppink; margin-left: 10px;"><i class="fa fa-exclamation-circle"></i></a>
                             @endif
+                            <a href="{{route('servicio.edit',$servicio->id)}}" data-toggle="tooltip"
+                               data-placement="top" title="Otro Dia"
+                               style="color: blue; margin-left: 10px;"><i class="fa fa-plus-circle"></i></a>
                             <a href="" data-toggle="tooltip" onclick="observacion(event,'{{$servicio->id}}')"
                                data-placement="top" title="Observación del Servicio"
                                style="color:  #00a157; margin-left: 10px;"><i class="fa fa-file-text"></i></a>
@@ -185,11 +188,15 @@
 @section('script')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="//cdn.datatables.net/plug-ins/1.10.11/sorting/date-eu.js" type="text/javascript"></script>
 <script type="text/javascript">
 
                                 $(function () {
                                 $('#example1').DataTable({
-                                responsive: true
+                                responsive: true,
+                                        "order": [[ 8, "desc" ]], //or asc 
+                                        "columnDefs" : [{"targets":8, "type":"date-es"}],
+                                        "pageLength":25,
                                 });
                                 $('.select2').select2();
                                 });

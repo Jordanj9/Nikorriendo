@@ -46,13 +46,13 @@
                     <div class="col-md-4">
                         <div class="form-line">
                             <label class="control-label">Fecha Inicial</label>
-                            <input class="form-control" type="date" required="required" name="fechai" id="fechai">
+                            <input class="form-control" type="datetime-local" required="required" name="fechai" id="fechai">
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-line">
                             <label class="control-label">Fecha Final</label>
-                            <input class="form-control" type="date" required="required" name="fechaf" id="fechaf">
+                            <input class="form-control" type="datetime-local" required="required" name="fechaf" id="fechaf">
                         </div>
                     </div>
                 </div>
