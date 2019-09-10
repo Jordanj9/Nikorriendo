@@ -103,6 +103,7 @@ class SolicitudcambioController extends Controller {
         $segundos = $pendientes - $minutos;
         $segundos = floor($segundos * 60);
         $solicitud->tiempopendiente = $horas . ":" . $minutos . ":" . $segundos;
+        $solicitud->persona_id = $servicio->persona_id;
         $result = $solicitud->save();
         if ($result) {
             $final = strtotime("+1 day", $fin);
